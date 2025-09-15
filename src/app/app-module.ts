@@ -15,10 +15,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
 import { Navbar } from './components/navbar/navbar';
-import { Login } from './login/login';
+import { Login } from './components/login/login';
+import { Home } from './components/home/home';
 
 @NgModule({
-  declarations: [App, Navbar, Login],
+  declarations: [App, Navbar, Login, Home],
   imports: [
     BrowserModule,
     AppRoutingModule,
