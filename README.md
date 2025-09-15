@@ -1,4 +1,5 @@
 # BooksFrontEnd
+Progetto front-end finale per Academy Betacom
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.2.1.
 
