@@ -1,0 +1,28 @@
+<mat-toolbar color="primary" class="navbar">
+  <!-- Logo -->
+  <span class="logo">PageUp</span>
+
+  <!-- Links di navigazione -->
+  <nav class="nav-links">
+    <a mat-button routerLink="/home">Home</a>
+    <a mat-button routerLink="/about">About</a>
+    <a mat-button routerLink="/contact">Contact</a>
+  </nav>
+
+  <!-- Spacer per spingere search e profilo a destra -->
+  <span class="spacer"></span>
+
+  <!-- Search bar -->
+  <mat-form-field appearance="outline" class="search-bar" subscriptSizing="dynamic">
+    <mat-label>Cerca</mat-label>
+    <input matInput type="text" [(ngModel)]="searchQuery" />
+    <button mat-icon-button matSuffix (click)="onSearch()">
+      <mat-icon>search</mat-icon>
+    </button>
+  </mat-form-field>
+
+  <!-- Icona profilo -->
+  <button mat-icon-button>
+    <mat-icon>account_circle</mat-icon>
+  </button>
+</mat-toolbar>
