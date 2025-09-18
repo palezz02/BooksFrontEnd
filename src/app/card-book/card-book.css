@@ -1,0 +1,32 @@
+.libriContainer {
+  display: flex;
+  width: 90%;
+  overflow: hidden;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 20px;
+}
+
+.libro {
+  max-width: 300px;
+  cursor: pointer;
+  height: 80vh;
+  margin: 8px;
+  transition: transform 0.25s ease-in-out;
+}
+
+.libro:hover {
+  transform: scale(1.03);
+}
+
+.libro img {
+  object-fit: cover;
+  height: 50%;
+}
+
+.libro-header-image {
+  background-image: url('https://material.angular.dev/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+}

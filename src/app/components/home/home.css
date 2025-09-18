@@ -1,0 +1,11 @@
+.siderContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  background-color: #ffffff;
+}
+
+.siderContainer button {
+  width: 5%;
+}
