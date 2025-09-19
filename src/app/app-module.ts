@@ -16,12 +16,14 @@ import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
 import { Navbar } from './components/navbar/navbar';
 import { Login } from './components/login/login';
-import { Home } from './components/home/home';
+import { BestBookCarosel } from './components/best-book-carosel/best-book-carosel';
 import { CardBook } from './components/card-book/card-book';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { LayoutModule } from '@angular/cdk/layout';
 import { BookInfo } from './components/book-info/book-info';
 
 @NgModule({
-  declarations: [App, Navbar, Login, Home, CardBook, BookInfo],
+  declarations: [App, Navbar, Login, CardBook, BookInfo, BestBookCarosel],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -32,7 +34,9 @@ import { BookInfo } from './components/book-info/book-info';
     MatButtonModule,
     MatIconModule,
     FormsModule,
-  ],
+    MatGridListModule,
+    LayoutModule
+],
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
