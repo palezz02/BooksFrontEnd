@@ -17,7 +17,7 @@ import { App } from './app';
 import { Navbar } from './components/navbar/navbar';
 import { Login } from './components/login/login';
 import { BestBookCarosel } from './components/best-book-carosel/best-book-carosel';
-import { CardBook } from './card-book/card-book';
+import { CardBook } from './components/card-book/card-book';
 import { MatGridListModule } from "@angular/material/grid-list";
 import { LayoutModule } from '@angular/cdk/layout';
 
