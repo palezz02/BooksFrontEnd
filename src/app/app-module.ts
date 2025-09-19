@@ -4,7 +4,7 @@ import {
   provideZonelessChangeDetection,
 } from '@angular/core';
 import { BrowserModule, provideClientHydration, withEventReplay } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -22,9 +22,10 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { LayoutModule } from '@angular/cdk/layout';
 import { BookInfo } from './components/book-info/book-info';
 import { BestSeller } from './components/best-seller/best-seller';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 
 @NgModule({
-  declarations: [App, Navbar, Login, CardBook, BookInfo, BestBookCarosel],
+  declarations: [App, Navbar, Login, CardBook, BookInfo, BestBookCarosel, BestSeller],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -37,9 +38,11 @@ import { BestSeller } from './components/best-seller/best-seller';
     FormsModule,
     MatGridListModule,
     LayoutModule,
-    BestSeller,
+    FormsModule,
+    ReactiveFormsModule
 ],
   providers: [
+    provideHttpClient(withFetch()),
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideClientHydration(withEventReplay()),

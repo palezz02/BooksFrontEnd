@@ -13,7 +13,8 @@ interface Book {
 @Component({
   selector: 'app-best-seller',
   templateUrl: './best-seller.html',
-  styleUrls: ['./best-seller.css']
+  styleUrls: ['./best-seller.css'],
+  standalone: false
 })
 export class BestSeller {
   books: Book[] = [
