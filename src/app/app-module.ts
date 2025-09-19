@@ -17,10 +17,11 @@ import { App } from './app';
 import { Navbar } from './components/navbar/navbar';
 import { Login } from './components/login/login';
 import { Home } from './components/home/home';
-import { CardBook } from './card-book/card-book';
+import { CardBook } from './components/card-book/card-book';
+import { BookInfo } from './components/book-info/book-info';
 
 @NgModule({
-  declarations: [App, Navbar, Login, Home, CardBook],
+  declarations: [App, Navbar, Login, Home, CardBook, BookInfo],
   imports: [
     BrowserModule,
     AppRoutingModule,
