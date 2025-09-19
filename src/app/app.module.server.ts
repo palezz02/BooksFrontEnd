@@ -8,16 +8,12 @@ import { BrowserModule, provideClientHydration, withEventReplay } from '@angular
 import { AppRoutingModule } from './app-routing-module';
 
 @NgModule({
-  declarations:[],
-  imports: [
-    AppModule,
-    BrowserModule,
-    AppRoutingModule,
-  ],
+  declarations: [],
+  imports: [AppModule, BrowserModule, AppRoutingModule],
   providers: [
     provideServerRendering(withRoutes(serverRoutes)),
     provideHttpClient(withFetch()),
-    provideClientHydration(withEventReplay())
+    provideClientHydration(withEventReplay()),
   ],
   bootstrap: [App],
 })

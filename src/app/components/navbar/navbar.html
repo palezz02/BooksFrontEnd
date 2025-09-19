@@ -2,11 +2,16 @@
   <!-- Logo -->
   <span class="logo">PageUp</span>
 
-  <!-- Links di navigazione -->
-  <nav class="nav-links">
-    <a mat-button routerLink="/home">Home</a>
-    <a mat-button routerLink="/about">About</a>
-    <a mat-button routerLink="/contact">Contact</a>
+  <!-- Hamburger menu per mobile -->
+  <button mat-icon-button class="hamburger" (click)="toggleMenu()">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <!-- Links di navigazione desktop/tablet -->
+  <nav class="nav-links" [class.mobile-open]="menuOpen">
+    <a mat-button routerLink="/home" (click)="closeMenuIfMobile()">Home</a>
+    <a mat-button routerLink="/about" (click)="closeMenuIfMobile()">About</a>
+    <a mat-button routerLink="/contact" (click)="closeMenuIfMobile()">Contact</a>
   </nav>
 
   <!-- Spacer per spingere search e profilo a destra -->
@@ -26,3 +31,6 @@
     <mat-icon>account_circle</mat-icon>
   </button>
 </mat-toolbar>
+
+<!-- Overlay menu mobile -->
+<div class="mobile-menu-overlay" *ngIf="menuOpen" (click)="toggleMenu()"></div>

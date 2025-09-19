@@ -1,0 +1,116 @@
+.layout {
+  display: flex;
+  flex-direction: row;
+  margin: 0 auto;
+  margin: 0 50px 0 50px;
+  max-width: 1600px;
+  height: 100vh;
+}
+
+.book-image {
+  flex: 1;
+  padding: 16px;
+  max-width: 100%;
+  justify-content: center;
+  display: flex;
+}
+
+.book-image img {
+  max-width: 100%;
+  height: 80vh;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.book-details {
+  flex: 2;
+  padding: 16px;
+  height: 80vh;
+  max-width: 30%;
+}
+
+.book-buy {
+  flex: 1;
+  padding: 16px;
+  max-width: 20%;
+}
+
+.book-buy mat-card {
+  height: 80vh;
+}
+
+.book-buy mat-card div {
+  margin-bottom: 20px;
+}
+
+.book-buy mat-card button {
+  width: 100%;
+  margin-top: 16px;
+}
+
+.category-tag {
+  background-color: #e0e0e0;
+  border-radius: 8px;
+  padding: 4px 8px;
+  cursor: pointer;
+  margin-left: 8px;
+  font-size: 0.8rem;
+}
+
+.category-tag:hover {
+  background-color: #c0c0c0;
+}
+
+/* Responsive design */
+@media (max-width: 1300px) {
+  .layout {
+    flex-direction: column;
+    height: auto;
+    max-width: 100vw;
+  }
+  .book-image,
+  .book-details,
+  .book-buy {
+    max-width: 100%;
+    height: auto;
+    padding: 8px;
+  }
+  .book-image img {
+    height: 40vh;
+  }
+  .book-buy mat-card {
+    height: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .layout {
+    flex-direction: column;
+    padding: 0;
+  }
+  .book-image img {
+    height: 30vh;
+  }
+  .book-details {
+    padding: 8px;
+    font-size: 1rem;
+  }
+  .book-buy {
+    padding: 8px;
+  }
+  .book-buy mat-card {
+    height: auto;
+  }
+}
+
+@media (min-width: 1800px) {
+  .layout {
+    max-width: 2200px;
+  }
+  .book-image img {
+    height: 80vh;
+  }
+  .book-details {
+    font-size: 1rem;
+  }
+}
