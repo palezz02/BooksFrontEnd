@@ -18,6 +18,7 @@ import { Navbar } from './components/navbar/navbar';
 import { Login } from './components/login/login';
 import { Home } from './components/home/home';
 import { CardBook } from './card-book/card-book';
+import { BestSeller } from './best-seller/best-seller';
 
 @NgModule({
   declarations: [App, Navbar, Login, Home, CardBook],
@@ -31,6 +32,7 @@ import { CardBook } from './card-book/card-book';
     MatButtonModule,
     MatIconModule,
     FormsModule,
+    BestSeller,
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),

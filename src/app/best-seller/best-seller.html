@@ -1,0 +1,28 @@
+<div class="carousel-container">
+
+  <button class="arrow left" (click)="prevBook()">&#10094;</button>
+
+  
+  <div class="carousel-content">
+    
+    <div class="left-column">
+      <h1>{{ currentBook.category }}</h1>
+      <p>{{ currentBook.description }}</p>
+    </div>
+
+    
+    <div class="middle-column">
+      <img [src]="currentBook.coverUrl" alt="Book cover" />
+    </div>
+
+   
+    <div class="right-column">
+      <h2>{{ currentBook.title }}</h2>
+      <p>⭐ {{ currentBook.rating }} / 5 ({{ currentBook.reviews }} reviews)</p>
+      <p>Published: {{ currentBook.year }}</p>
+    </div>
+  </div>
+
+
+  <button class="arrow right" (click)="nextBook()">&#10095;</button>
+</div>
