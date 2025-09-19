@@ -16,12 +16,15 @@ import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
 import { Navbar } from './components/navbar/navbar';
 import { Login } from './components/login/login';
-import { Home } from './components/home/home';
-import { CardBook } from './card-book/card-book';
+import { BestBookCarosel } from './components/best-book-carosel/best-book-carosel';
+import { CardBook } from './components/card-book/card-book';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { LayoutModule } from '@angular/cdk/layout';
+import { BookInfo } from './components/book-info/book-info';
 import { BestSeller } from './best-seller/best-seller';
 
 @NgModule({
-  declarations: [App, Navbar, Login, Home, CardBook],
+  declarations: [App, Navbar, Login, CardBook, BookInfo, BestBookCarosel],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -32,8 +35,10 @@ import { BestSeller } from './best-seller/best-seller';
     MatButtonModule,
     MatIconModule,
     FormsModule,
+    MatGridListModule,
+    LayoutModule,
     BestSeller,
-  ],
+],
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),

@@ -1,11 +1,19 @@
 .siderContainer {
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 20px;
   width: 100%;
-  background-color: #ffffff;
 }
 
 .siderContainer button {
   width: 5%;
+}
+
+mat-grid-list {
+  flex: 1;
+}
+
+.container h2 {
+  text-align: center;
 }

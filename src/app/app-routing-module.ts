@@ -2,14 +2,16 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { Login } from './components/login/login';
 import { App } from './app';
-import { Home } from './components/home/home';
+import { BestBookCarosel } from './components/best-book-carosel/best-book-carosel';
 import { authGuard } from './auth/auth-guard-guard';
+import { BookInfo } from './components/book-info/book-info';
 import { BestSeller } from './best-seller/best-seller';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
   { path: 'login', component: Login },
-  { path: 'home', component: Home }, // , canActivate:[authGuard]
+  { path: 'raccomandation', component: BestBookCarosel }, // , canActivate:[authGuard]
+  { path: 'info', component: BookInfo },
   { path: 'books', component: BestSeller }
 ];
 
