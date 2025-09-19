@@ -21,6 +21,7 @@ import { CardBook } from './components/card-book/card-book';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { LayoutModule } from '@angular/cdk/layout';
 import { BookInfo } from './components/book-info/book-info';
+import { BestSeller } from './best-seller/best-seller';
 
 @NgModule({
   declarations: [App, Navbar, Login, CardBook, BookInfo, BestBookCarosel],
@@ -35,7 +36,8 @@ import { BookInfo } from './components/book-info/book-info';
     MatIconModule,
     FormsModule,
     MatGridListModule,
-    LayoutModule
+    LayoutModule,
+    BestSeller,
 ],
   providers: [
     provideBrowserGlobalErrorListeners(),
