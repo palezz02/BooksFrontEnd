@@ -5,7 +5,7 @@ import { App } from './app';
 import { BestBookCarosel } from './components/best-book-carosel/best-book-carosel';
 import { authGuard } from './auth/auth-guard-guard';
 import { BookInfo } from './components/book-info/book-info';
-import { BestSeller } from './best-seller/best-seller';
+import { BestSeller } from './components/best-seller/best-seller';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
