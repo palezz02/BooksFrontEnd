@@ -28,4 +28,8 @@ export class UserService {
   getAll() {
     return this.http.get(this.url + 'getAll');
   }
+
+    signin(body:{}){
+    return this.http.post(this.url + "signin", body);
+  }
 }
