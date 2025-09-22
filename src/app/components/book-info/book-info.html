@@ -8,6 +8,7 @@
   <div class="book-details">
     <h2>{{ book.title }}</h2>
     <h4>{{ book.author }}</h4>
+    <h4 (click)="openPublisherPopup()" class="clickable-publisher">{{ book.publisher }}</h4>
     <div class="categories">
       <strong>Categorie:</strong>
       <ng-container *ngFor="let cat of book.category">
@@ -36,4 +37,10 @@
       </mat-card-content>
     </mat-card>
   </div>
+<app-publisher-popup
+  [publisher]="publisherData"
+  [isVisible]="showPublisherPopup"
+  (close)="closePublisherPopup()">
+</app-publisher-popup>
+
 </div>
