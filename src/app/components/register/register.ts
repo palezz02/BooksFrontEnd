@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../../services/user-service';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-register',
   standalone: false,
@@ -12,10 +12,12 @@ import { UserService } from '../../services/user-service';
 export class Register {
   loginForm: any;
 
-  constructor(private fb: FormBuilder, private userService: UserService) {
+  constructor(private fb: FormBuilder, private userService: UserService, private router: Router) {
     this.loginForm = this.fb.group({
-      userName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      birthDate: ['', Validators.required],
       password: ['', Validators.required],
       confirmPassword: ['', Validators.required],
     });
@@ -23,10 +25,8 @@ export class Register {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      const email = this.loginForm.value.email;
-      const userName = this.loginForm.value.userName;
-      const password = this.loginForm.value.password;
-      const confirmPassword = this.loginForm.value.confirmPassword;
+      const { email, firstName, lastName, birthDate, password, confirmPassword } =
+        this.loginForm.value;
 
       if (password !== confirmPassword) {
         alert('Le password non coincidono!');
@@ -34,13 +34,17 @@ export class Register {
       }
 
       const body = {
-        email: email,
-        userName: userName,
-        password: password,
+        id: 0,
+        email,
+        password,
+        firstName,
+        lastName,
+        birthDate,
+        role: 'CUSTOMER',
       };
 
       this.userService.create(body).subscribe({
-        next: () => alert('Registrazione avvenuta con successo!'),
+        next: () => this.router.navigate(['login']),
         error: () => alert('Errore nella registrazione!'),
       });
     }
