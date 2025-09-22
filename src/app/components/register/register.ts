@@ -19,11 +19,11 @@ export class Register {
   constructor(private fb: FormBuilder, private userService: UserService, private router: Router) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      birthDate: ['', Validators.required],
-      password: ['', Validators.required],
-      confirmPassword: ['', Validators.required],
+      firstName: ['', [Validators.required, Validators.minLength(3)]],
+      lastName: ['', [Validators.required, Validators.minLength(3)]],
+      birthDate: ['', [Validators.required, birthDateRangeValidator]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', [Validators.required]],
     });
   }
 
@@ -66,4 +66,19 @@ export class Register {
       });
     }
   }
+}
+
+function birthDateRangeValidator(control: any) {
+  if (!control.value) return null;
+  const birthDate = new Date(control.value);
+  const today = new Date();
+  const age = today.getFullYear() - birthDate.getFullYear();
+  const m = today.getMonth() - birthDate.getMonth();
+  const d = today.getDate() - birthDate.getDate();
+  // Adjust age if birthday hasn't occurred yet this year
+  const realAge = m < 0 || (m === 0 && d < 0) ? age - 1 : age;
+  if (realAge < 14 || realAge > 100) {
+    return { birthDateRange: true };
+  }
+  return null;
 }
