@@ -1,28 +1,28 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ResponseList } from '../models/ResponseList';
+import { ResponseBase } from '../models/ResponseBase';
+import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthorServiceService {
-
   url = 'http://localhost:8080/rest/author/';
-  constructor(private http : HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  listAuthor(){
-    return this.http.get(this.url + 'listAll');
+  listAuthor(): Observable<ResponseList<any>> {
+    return this.http.get<ResponseList<any>>(this.url + 'listAll');
   }
 
-  insertAuthor(body:{}){
-    return this.http.post(this.url + 'create', body);
+  insertAuthor(body: {}): Observable<ResponseBase> {
+    return this.http.post<ResponseBase>(this.url + 'create', body);
   }
-  removeAuthor(body:{}){
-    return this.http.post(this.url + 'delete', body);
-  }
-
-  updateAuthor(body:{}){
-    console.log(body);
-    return this.http.put(this.url + 'update', body);
+  removeAuthor(body: {}): Observable<ResponseBase> {
+    return this.http.post<ResponseBase>(this.url + 'delete', body);
   }
 
+  updateAuthor(body: {}): Observable<ResponseBase> {
+    return this.http.put<ResponseBase>(this.url + 'update', body);
+  }
 }
