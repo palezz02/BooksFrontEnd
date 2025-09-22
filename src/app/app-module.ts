@@ -24,9 +24,10 @@ import { BookInfo } from './components/book-info/book-info';
 import { BestSeller } from './components/best-seller/best-seller';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { PublisherPopup } from './components/publisher-popup/publisher-popup';
+import { Home } from './components/home/home';
 
 @NgModule({
-  declarations: [App, Navbar, Login, CardBook, BookInfo, BestBookCarosel, BestSeller],
+  declarations: [App, Navbar, Login, CardBook, BookInfo, BestBookCarosel, BestSeller, Home],
   imports: [
     BrowserModule,
     AppRoutingModule,

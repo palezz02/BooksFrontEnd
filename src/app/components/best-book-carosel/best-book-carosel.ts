@@ -2,7 +2,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component } from '@angular/core';
 import { map, Observable, shareReplay } from 'rxjs';
 @Component({
-  selector: 'app-home',
+  selector: 'app-best-book-carosel',
   standalone: false,
   templateUrl: './best-book-carosel.html',
   styleUrl: './best-book-carosel.css',
@@ -28,7 +28,8 @@ export class BestBookCarosel {
       Breakpoints.XSmall,
       Breakpoints.Small,
       Breakpoints.Medium,
-      Breakpoints.Large
+      Breakpoints.Large,
+      Breakpoints.XLarge
     ]).pipe(
       map(result => {
         let cols = 0
@@ -43,6 +44,9 @@ export class BestBookCarosel {
         }
         if (result.breakpoints[Breakpoints.Large]) {
           cols = 4;
+        }
+        if (result.breakpoints[Breakpoints.XLarge]) {
+          cols = 5;
         }
         this.visibleBooks = this.books.slice(0, cols);
         
