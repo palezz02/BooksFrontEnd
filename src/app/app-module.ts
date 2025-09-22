@@ -23,10 +23,11 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { BookInfo } from './components/book-info/book-info';
 import { BestSeller } from './components/best-seller/best-seller';
 import { provideHttpClient, withFetch } from '@angular/common/http';
+import { Register } from './components/register/register';
 import { PublisherPopup } from './components/publisher-popup/publisher-popup';
 
 @NgModule({
-  declarations: [App, Navbar, Login, CardBook, BookInfo, BestBookCarosel, BestSeller],
+  declarations: [App, Navbar, Login, CardBook, BookInfo, BestBookCarosel, BestSeller, Register],
   imports: [
     BrowserModule,
     AppRoutingModule,
