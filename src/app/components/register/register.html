@@ -1,0 +1,43 @@
+<div class="register-bg">
+  <div class="register-card">
+    <h1 class="register-title">Registrazione</h1>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline" class="register-field">
+        <mat-label>Email</mat-label>
+        <input matInput type="text" formControlName="email" required autocomplete="email" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="register-field">
+        <mat-label>User Name</mat-label>
+        <input matInput type="text" formControlName="userName" required autocomplete="username" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="register-field">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          type="password"
+          formControlName="password"
+          required
+          autocomplete="new-password"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="register-field">
+        <mat-label>Confirm Password</mat-label>
+        <input
+          matInput
+          type="password"
+          formControlName="confirmPassword"
+          required
+          autocomplete="new-password"
+        />
+      </mat-form-field>
+
+      <div class="register-buttons">
+        <button mat-raised-button color="primary" type="submit">Invia</button>
+        <button mat-raised-button color="secondary" type="button" routerLink="/login">Login</button>
+      </div>
+    </form>
+  </div>
+</div>
