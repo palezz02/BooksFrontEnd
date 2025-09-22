@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../../services/user-service';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ResponseBase } from '../../models/ResponseBase';
 @Component({
   selector: 'app-register',
   standalone: false,
@@ -10,6 +12,8 @@ import { Router } from '@angular/router';
   styleUrl: './register.css',
 })
 export class Register {
+  private _snackBar = inject(MatSnackBar);
+
   loginForm: any;
 
   constructor(private fb: FormBuilder, private userService: UserService, private router: Router) {
@@ -34,7 +38,6 @@ export class Register {
       }
 
       const body = {
-        id: 0,
         email,
         password,
         firstName,
@@ -44,8 +47,22 @@ export class Register {
       };
 
       this.userService.create(body).subscribe({
-        next: () => this.router.navigate(['login']),
-        error: () => alert('Errore nella registrazione!'),
+        next: (res: ResponseBase) => {
+          if (res.rc) {
+            this.router.navigate(['login']);
+            this._snackBar.open('Registrazione avvenuta con successo!', 'Chiudi', {
+              duration: 3000,
+            });
+          } else {
+            this._snackBar.open(res.msg || 'Errore nella registrazione!', 'Chiudi', {
+              duration: 3000,
+            });
+          }
+        },
+        error: (err) => {
+          console.error('Errore durante la registrazione:', err);
+          this._snackBar.open('Errore nella registrazione!', 'Chiudi', { duration: 3000 });
+        },
       });
     }
   }
