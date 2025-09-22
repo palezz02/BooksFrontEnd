@@ -1,0 +1,19 @@
+<div class="container">
+  <h1>Login</h1>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input matInput type="text" formControlName="email" required />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Password</mat-label>
+      <input matInput type="password" formControlName="password" required />
+    </mat-form-field>
+
+    <div class="button-group">
+      <button class="btn btn-primary me-2" type="submit" [disabled]="loginForm.invalid">Invia</button>
+      <button type="button" class="btn btn-secondary" routerLink="/register">Registrazione</button>
+    </div>
+  </form>
+</div>
