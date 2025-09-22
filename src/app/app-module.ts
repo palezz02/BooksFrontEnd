@@ -9,8 +9,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
@@ -23,15 +25,18 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { BookInfo } from './components/book-info/book-info';
 import { BestSeller } from './components/best-seller/best-seller';
 import { provideHttpClient, withFetch } from '@angular/common/http';
+import { CartInfo } from './components/cart/cart';
 
 @NgModule({
-  declarations: [App, Navbar, Login, CardBook, BookInfo, BestBookCarosel, BestSeller],
+  declarations: [App, Navbar, Login, CardBook, BookInfo, BestBookCarosel, BestSeller, CartInfo],
   imports: [
     BrowserModule,
     AppRoutingModule,
     MatToolbarModule,
     MatFormFieldModule,
     MatInputModule,
+    MatDividerModule,
+    MatListModule,
     MatCardModule,
     MatButtonModule,
     MatIconModule,
@@ -39,8 +44,8 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
     MatGridListModule,
     LayoutModule,
     FormsModule,
-    ReactiveFormsModule
-],
+    ReactiveFormsModule,
+  ],
   providers: [
     provideHttpClient(withFetch()),
     provideBrowserGlobalErrorListeners(),
