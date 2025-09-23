@@ -15,6 +15,8 @@ export class Login {
   private _snackBar = inject(MatSnackBar);
   loginForm: any;
   msg: string | undefined;
+  showPassword = false;
+
   constructor(
     private fb: FormBuilder,
     private login: UserService,
@@ -25,6 +27,10 @@ export class Login {
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
     });
+  }
+
+  toggleShowPassword() {
+    this.showPassword = !this.showPassword;
   }
 
   onSubmit() {

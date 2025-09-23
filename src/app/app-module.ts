@@ -29,6 +29,7 @@ import { UserSetting } from './components/user-setting/user-setting';
 import { Footer } from './components/footer/footer';
 import { Home } from './components/home/home';
 import { MatDivider } from '@angular/material/divider';
+import { AuthorPopup } from './components/author-popup/author-popup';
 import { BooksPage } from './components/books-page/books-page';
 import { MatPaginatorModule } from '@angular/material/paginator';
 
@@ -50,6 +51,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     ReactiveFormsModule,
     PublisherPopup,
     MatDivider,
+    AuthorPopup,
     MatPaginatorModule
 ],
   providers: [
