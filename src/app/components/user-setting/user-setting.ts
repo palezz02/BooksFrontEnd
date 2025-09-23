@@ -17,6 +17,9 @@ export class UserSetting {
   };
 
   showPasswordEdit = false;
+  showNewPassword = false;
+  showConfirmPassword = false;
+  showOldPassword = false;
   form: FormGroup;
 
   constructor(private fb: FormBuilder) {
@@ -44,6 +47,9 @@ export class UserSetting {
       this.confirmPassword = '';
       this.oldPassword = '';
       this.form.patchValue({ newPassword: '', oldPassword: '' });
+      this.showNewPassword = false;
+      this.showConfirmPassword = false;
+      this.showOldPassword = false;
     }
   }
 
@@ -53,6 +59,18 @@ export class UserSetting {
     this.confirmPassword = '';
     this.oldPassword = '';
     this.form.patchValue({ newPassword: '', oldPassword: '' });
+    this.showNewPassword = false;
+    this.showConfirmPassword = false;
+    this.showOldPassword = false;
+  }
+  toggleShowNewPassword() {
+    this.showNewPassword = !this.showNewPassword;
+  }
+  toggleShowConfirmPassword() {
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
+  toggleShowOldPassword() {
+    this.showOldPassword = !this.showOldPassword;
   }
 }
 
