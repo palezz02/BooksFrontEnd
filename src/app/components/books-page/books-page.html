@@ -1,0 +1,41 @@
+<div class="books-page">
+
+  <div class="filters">
+    <input
+      type="text"
+      placeholder="Search by title or author..."
+      [(ngModel)]="searchTerm"
+      (input)="filterBooks()"
+    />
+
+    <select [(ngModel)]="selectedCategory" (change)="filterBooks()">
+      <option value="">All Categories</option>
+      <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+    </select>
+
+    <select [(ngModel)]="selectedLanguage" (change)="filterBooks()">
+      <option value="">All Languages</option>
+      <option *ngFor="let lang of languages" [value]="lang">{{ lang }}</option>
+    </select>
+  </div>
+
+  
+
+  <div class="books-grid">
+    <div class="book-card" *ngFor="let book of pagedBooks">
+      <img [src]="book.coverImage || 'https://via.placeholder.com/150x220'" alt="{{ book.title }}" />
+      <h3>{{ book.title }}</h3>
+      <p><strong>Author:</strong> {{ getAuthorNames(book) }}</p>
+      <p><strong>Publisher:</strong> {{ book.publisher?.name }}</p>
+      <p class="desc">{{ book.description | slice:0:100 }}...</p>
+    </div>
+  </div>
+
+
+  <mat-paginator
+    [length]="filteredBooks.length"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[pageSize]" 
+    (page)="onPageChange($event)">
+  </mat-paginator>
+</div>
