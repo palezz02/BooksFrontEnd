@@ -1,0 +1,103 @@
+<div class="user-setting-container">
+  <mat-card class="user-setting-card">
+    <mat-card-header>
+      <mat-card-title>User Settings</mat-card-title>
+      <mat-card-subtitle>Manage your personal information</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <form>
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>First Name</mat-label>
+            <input matInput type="text" placeholder="User name" [value]="user.name" />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Last Name</mat-label>
+            <input matInput type="text" placeholder="User suername" [value]="user.surname" />
+          </mat-form-field>
+        </div>
+        <mat-form-field appearance="outline" class="form-field full-width">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" [value]="user.email" disabled />
+        </mat-form-field>
+        <mat-form-field
+          appearance="outline"
+          class="form-field full-width"
+          *ngIf="!showPasswordEdit"
+        >
+          <mat-label>Current Password</mat-label>
+          <input matInput type="password" [value]="user.currentPassword" disabled />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="togglePasswordEdit()"
+            aria-label="Edit password"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+        </mat-form-field>
+        <ng-container *ngIf="showPasswordEdit">
+          <mat-form-field appearance="outline" class="form-field full-width">
+            <mat-label>New Password</mat-label>
+            <input
+              matInput
+              type="password"
+              placeholder="New password"
+              [(ngModel)]="newPassword"
+              name="newPassword"
+            />
+            <button
+              mat-icon-button
+              matSuffix
+              type="button"
+              (click)="cancelPasswordEdit()"
+              aria-label="Cancel password edit"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="form-field full-width">
+            <mat-label>Confirm New Password</mat-label>
+            <input
+              matInput
+              type="password"
+              placeholder="Confirm new password"
+              [(ngModel)]="confirmPassword"
+              name="confirmPassword"
+            />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="form-field full-width">
+            <mat-label>Old Password</mat-label>
+            <input
+              matInput
+              type="password"
+              placeholder="Old password"
+              [(ngModel)]="oldPassword"
+              name="oldPassword"
+            />
+          </mat-form-field>
+        </ng-container>
+        <mat-form-field appearance="outline" class="form-field full-width">
+          <mat-label>Date of Birth</mat-label>
+          <input matInput type="date" [value]="user.birthdate" />
+        </mat-form-field>
+        <div class="form-row">
+          <div class="button-row">
+            <button
+              mat-raised-button
+              color="warn"
+              class="cancel-btn"
+              aria-label="Cancel"
+              routerLink="/raccomandation"
+            >
+              Cancel
+            </button>
+          </div>
+          <div class="button-row">
+            <button mat-raised-button color="primary" type="submit">Save</button>
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

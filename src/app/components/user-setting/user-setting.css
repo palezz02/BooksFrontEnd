@@ -1,0 +1,47 @@
+.user-setting-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem;
+  min-height: 80vh;
+}
+
+.user-setting-card {
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 4px 24px rgba(44, 62, 80, 0.12);
+  border-radius: 18px;
+  padding: 24px 16px;
+  margin: 1.5rem;
+}
+
+.user-setting-card > mat-card-header {
+  margin-bottom: 1rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+}
+
+.form-field {
+  flex: 1;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.button-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.cancel-btn {
+  color: #d32f2f;
+}
+.cancel-btn:hover,
+.cancel-btn:focus {
+  color: #b71c1c;
+}

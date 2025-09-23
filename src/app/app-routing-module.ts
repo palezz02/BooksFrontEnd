@@ -7,7 +7,7 @@ import { authGuard } from './auth/auth-guard-guard';
 import { BookInfo } from './components/book-info/book-info';
 import { BestSeller } from './components/best-seller/best-seller';
 import { Register } from './components/register/register';
-
+import { UserSetting } from './components/user-setting/user-setting';
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
   { path: 'login', component: Login },
@@ -15,6 +15,7 @@ const routes: Routes = [
   { path: 'raccomandation', component: BestBookCarosel }, // , canActivate:[authGuard]
   { path: 'info', component: BookInfo },
   { path: 'books', component: BestSeller },
+  { path: 'setting', component: UserSetting },
 ];
 
 @NgModule({

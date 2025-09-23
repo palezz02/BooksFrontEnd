@@ -1,6 +1,35 @@
 <mat-toolbar color="primary" class="navbar">
-  <!-- Logo -->
-  <span class="logo">PageUp</span>
+  <!-- Logo SVG -->
+  <span class="logo">
+    <svg xmlns="http://www.w3.org/2000/svg" width="300" height="80" viewBox="0 0 300 80">
+      <style>
+        .text {
+          font-family: 'Arial', sans-serif;
+          font-weight: bold;
+          font-size: 32px;
+          fill: #2c3e50;
+        }
+        .highlight {
+          fill: #3498db;
+        }
+      </style>
+
+      <!-- Icona libro con freccia -->
+      <g transform="translate(10,10)">
+        <!-- Libro -->
+        <rect x="0" y="10" width="30" height="40" rx="2" ry="2" fill="#3498db" />
+        <rect x="30" y="10" width="30" height="40" rx="2" ry="2" fill="#2980b9" />
+        <!-- Freccia verso l’alto -->
+        <polygon points="30,5 22,15 38,15" class="highlight" />
+      </g>
+
+      <!-- Testo -->
+      <text x="80" y="50" class="text">
+        Page
+        <tspan class="highlight">Up</tspan>
+      </text>
+    </svg>
+  </span>
 
   <!-- Hamburger menu per mobile -->
   <button mat-icon-button class="hamburger" (click)="toggleMenu()">
@@ -27,7 +56,7 @@
   </mat-form-field>
 
   <!-- Icona profilo -->
-  <button mat-icon-button>
+  <button mat-icon-button [routerLink]="'/setting'">
     <mat-icon>account_circle</mat-icon>
   </button>
 </mat-toolbar>
