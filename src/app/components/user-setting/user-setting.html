@@ -41,11 +41,20 @@
             <mat-label>New Password</mat-label>
             <input
               matInput
-              type="password"
+              [type]="showNewPassword ? 'text' : 'password'"
               placeholder="New password"
               [(ngModel)]="newPassword"
               name="newPassword"
             />
+            <button
+              mat-icon-button
+              matSuffix
+              type="button"
+              (click)="toggleShowNewPassword()"
+              aria-label="Show/hide new password"
+            >
+              <mat-icon>{{ showNewPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+            </button>
             <button
               mat-icon-button
               matSuffix
@@ -60,21 +69,39 @@
             <mat-label>Confirm New Password</mat-label>
             <input
               matInput
-              type="password"
+              [type]="showConfirmPassword ? 'text' : 'password'"
               placeholder="Confirm new password"
               [(ngModel)]="confirmPassword"
               name="confirmPassword"
             />
+            <button
+              mat-icon-button
+              matSuffix
+              type="button"
+              (click)="toggleShowConfirmPassword()"
+              aria-label="Show/hide confirm password"
+            >
+              <mat-icon>{{ showConfirmPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+            </button>
           </mat-form-field>
           <mat-form-field appearance="outline" class="form-field full-width">
             <mat-label>Old Password</mat-label>
             <input
               matInput
-              type="password"
+              [type]="showOldPassword ? 'text' : 'password'"
               placeholder="Old password"
               [(ngModel)]="oldPassword"
               name="oldPassword"
             />
+            <button
+              mat-icon-button
+              matSuffix
+              type="button"
+              (click)="toggleShowOldPassword()"
+              aria-label="Show/hide old password"
+            >
+              <mat-icon>{{ showOldPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+            </button>
           </mat-form-field>
         </ng-container>
         <mat-form-field appearance="outline" class="form-field full-width">
