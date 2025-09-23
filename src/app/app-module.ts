@@ -25,11 +25,13 @@ import { BestSeller } from './components/best-seller/best-seller';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { Register } from './components/register/register';
 import { PublisherPopup } from './components/publisher-popup/publisher-popup';
-import { Home } from './components/home/home';
 import { UserSetting } from './components/user-setting/user-setting';
+import { Footer } from './components/footer/footer';
+import { Home } from './components/home/home';
+import { MatDivider } from '@angular/material/divider';
 
 @NgModule({
-  declarations: [App, Navbar, Login, CardBook, BookInfo, BestBookCarosel, BestSeller, Register, UserSetting, Home],
+  declarations: [App, Navbar, Login, CardBook, BookInfo, BestBookCarosel, BestSeller, Register, UserSetting, Footer, Home],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -44,7 +46,8 @@ import { UserSetting } from './components/user-setting/user-setting';
     LayoutModule,
     FormsModule,
     ReactiveFormsModule,
-    PublisherPopup
+    PublisherPopup,
+    MatDivider
 ],
   providers: [
     provideHttpClient(withFetch()),
