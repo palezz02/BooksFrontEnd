@@ -26,9 +26,10 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
 import { Register } from './components/register/register';
 import { PublisherPopup } from './components/publisher-popup/publisher-popup';
 import { Home } from './components/home/home';
+import { UserSetting } from './components/user-setting/user-setting';
 
 @NgModule({
-  declarations: [App, Navbar, Login, CardBook, BookInfo, BestBookCarosel, BestSeller, Register, Home],
+  declarations: [App, Navbar, Login, CardBook, BookInfo, BestBookCarosel, BestSeller, Register, UserSetting, Home],
   imports: [
     BrowserModule,
     AppRoutingModule,
