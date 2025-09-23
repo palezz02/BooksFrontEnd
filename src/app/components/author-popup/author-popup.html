@@ -1,0 +1,15 @@
+<div class="popup-overlay" *ngIf="isVisible">
+  <div class="popup-content">
+    <button class="close-btn" (click)="closePopup()">✖</button>
+    <div class="author-row author-container">
+      <div class="author-column" width="40%">
+        <img *ngIf="author?.coverImage" [src]="author?.coverImage" alt="{{ author?.fullName }}" />
+      </div>
+      <div class="author-column" width="60%">
+        <h2>Autore | {{ author?.fullName }}</h2>
+        <p class="author-dates">{{ author?.birthDate | date : 'dd/MM/yyyy' }} - {{ author?.deathDate | date : 'dd/MM/yyyy' }}</p>
+        <p>{{ author?.biography }}</p>
+      </div>
+    </div>
+  </div>
+</div>

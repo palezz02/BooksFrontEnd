@@ -29,6 +29,7 @@ import { UserSetting } from './components/user-setting/user-setting';
 import { Footer } from './components/footer/footer';
 import { Home } from './components/home/home';
 import { MatDivider } from '@angular/material/divider';
+import { AuthorPopup } from './components/author-popup/author-popup';
 
 @NgModule({
   declarations: [App, Navbar, Login, CardBook, BookInfo, BestBookCarosel, BestSeller, Register, UserSetting, Footer, Home],
@@ -47,7 +48,8 @@ import { MatDivider } from '@angular/material/divider';
     FormsModule,
     ReactiveFormsModule,
     PublisherPopup,
-    MatDivider
+    MatDivider,
+    AuthorPopup
 ],
   providers: [
     provideHttpClient(withFetch()),
