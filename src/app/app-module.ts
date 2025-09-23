@@ -27,9 +27,10 @@ import { Register } from './components/register/register';
 import { PublisherPopup } from './components/publisher-popup/publisher-popup';
 import { Footer } from './components/footer/footer';
 import { MatDivider } from '@angular/material/divider';
+import { UserSetting } from './components/user-setting/user-setting';
 
 @NgModule({
-  declarations: [App, Navbar, Login, CardBook, BookInfo, BestBookCarosel, BestSeller, Register, Footer],
+  declarations: [App, Navbar, Login, CardBook, BookInfo, BestBookCarosel, BestSeller, Register, UserSetting, Footer],
   imports: [
     BrowserModule,
     AppRoutingModule,
