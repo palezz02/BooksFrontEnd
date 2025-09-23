@@ -8,14 +8,17 @@ import { BookInfo } from './components/book-info/book-info';
 import { BestSeller } from './components/best-seller/best-seller';
 import { Register } from './components/register/register';
 import { UserSetting } from './components/user-setting/user-setting';
+import { Home } from './components/home/home';
+
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
   { path: 'login', component: Login },
   { path: 'register', component: Register },
-  { path: 'raccomandation', component: BestBookCarosel }, // , canActivate:[authGuard]
+  // { path: 'raccomandation', component: BestBookCarosel }, // , canActivate:[authGuard]
   { path: 'info', component: BookInfo },
   { path: 'books', component: BestSeller },
   { path: 'setting', component: UserSetting },
+  { path: 'home', component: Home }
 ];
 
 @NgModule({
