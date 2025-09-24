@@ -38,6 +38,7 @@ export class CartInfo {
     updatedAt: new Date(),
     book: {
       title: 'Le avventure di Kiwi',
+      publisher: 'Salani',
       author: 'Kiwi',
       category: ['Avventura', 'Fantasy'],
       year: 2023,
