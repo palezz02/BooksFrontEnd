@@ -10,6 +10,7 @@ import { Register } from './components/register/register';
 import { UserSetting } from './components/user-setting/user-setting';
 import { Home } from './components/home/home';
 import { BooksPage } from './components/books-page/books-page';
+import { CartInfo } from './components/cart/cart';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'setting', component: UserSetting },
   { path: 'home', component: Home },
   { path: 'allBooks', component: BooksPage }
+  { path: 'cart', component: CartInfo },
 ];
 
 @NgModule({
