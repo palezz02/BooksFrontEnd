@@ -42,6 +42,7 @@ export class Login {
         })
         .subscribe((resp: any) => {
           console.log(resp);
+          localStorage.setItem('userId', resp.id);
           if (resp.logged) {
             console.log('utente logged.. role:' + resp.role);
             this.auth.setAuthentificated();

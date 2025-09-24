@@ -38,7 +38,21 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { CartInfo } from './components/cart/cart';
 
 @NgModule({
-  declarations: [App, Navbar, Login, CardBook, BookInfo, BestBookCarosel, BestSeller, Register, UserSetting, Footer, Home, BooksPage, CartInfo],
+  declarations: [
+    App,
+    Navbar,
+    Login,
+    CardBook,
+    BookInfo,
+    BestBookCarosel,
+    BestSeller,
+    Register,
+    UserSetting,
+    Footer,
+    Home,
+    BooksPage,
+    CartInfo,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -53,14 +67,13 @@ import { CartInfo } from './components/cart/cart';
     FormsModule,
     MatGridListModule,
     LayoutModule,
-    FormsModule,
     ReactiveFormsModule,
-
     PublisherPopup,
     MatDivider,
     AuthorPopup,
-    MatPaginatorModule
-],
+    MatPaginatorModule,
+    ReactiveFormsModule,
+  ],
   providers: [
     provideHttpClient(withFetch()),
     provideBrowserGlobalErrorListeners(),

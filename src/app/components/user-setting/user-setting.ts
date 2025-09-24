@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-
+import { UserService } from '../../services/user-service';
+import { isPlatformBrowser } from '@angular/common';
 @Component({
   selector: 'app-user-setting',
   standalone: false,
@@ -22,18 +23,51 @@ export class UserSetting {
   showOldPassword = false;
   form: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
     this.form = this.fb.group(
       {
-        name: [this.user.name, [Validators.required, Validators.minLength(3)]],
-        surname: [this.user.surname, [Validators.required, Validators.minLength(3)]],
-        birthdate: [this.user.birthdate, [Validators.required, birthDateRangeValidator]],
+        name: ['', [Validators.required, Validators.minLength(3)]],
+        surname: ['', [Validators.required, Validators.minLength(3)]],
+        email: [{ value: '', disabled: true }], // disabilitato
+        currentPassword: [{ value: '************', disabled: true }], // disabilitato
+        birthdate: ['', [Validators.required, birthDateRangeValidator]],
         newPassword: ['', [Validators.minLength(6)]],
         confirmPassword: ['', [Validators.required]],
         oldPassword: [''],
       },
       { validators: passwordMatchValidator }
     );
+  }
+
+  ngOnInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      const userId = localStorage.getItem('userId');
+      if (userId) {
+        this.userService.getById(Number(userId)).subscribe((res) => {
+          if (res && res.dati) {
+            // console.log('User data:', res.dati);
+            const utente = res.dati;
+            this.user = {
+              name: utente.firstName,
+              surname: utente.lastName,
+              email: utente.email,
+              birthdate: utente.birthDate,
+              currentPassword: '******************',
+            };
+            this.form.patchValue({
+              name: this.user.name,
+              surname: this.user.surname,
+              birthdate: this.user.birthdate,
+              email: this.user.email,
+            });
+          }
+        });
+      }
+    }
   }
 
   newPassword = '';
@@ -71,6 +105,14 @@ export class UserSetting {
   }
   toggleShowOldPassword() {
     this.showOldPassword = !this.showOldPassword;
+  }
+
+  onSubmit() {
+    if (this.form.valid) {
+      // Qui puoi gestire l'invio dei dati aggiornati dell'utente
+      console.log('Form submitted:', this.form.getRawValue());
+      // Esempio: this.userService.update(this.form.getRawValue()).subscribe(...)
+    }
   }
 }
 
