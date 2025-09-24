@@ -11,6 +11,7 @@ import { UserSetting } from './components/user-setting/user-setting';
 import { Home } from './components/home/home';
 import { BooksPage } from './components/books-page/books-page';
 import { CartInfo } from './components/cart/cart';
+import { NewBook } from './components/new-book/new-book';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
@@ -23,6 +24,7 @@ const routes: Routes = [
   { path: 'home', component: Home },
   { path: 'allBooks', component: BooksPage },
   { path: 'cart', component: CartInfo },
+  { path: 'new', component: NewBook },
 ];
 
 @NgModule({
