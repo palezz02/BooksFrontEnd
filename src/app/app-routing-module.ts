@@ -21,7 +21,7 @@ const routes: Routes = [
   { path: 'books', component: BestSeller },
   { path: 'setting', component: UserSetting },
   { path: 'home', component: Home },
-  { path: 'allBooks', component: BooksPage }
+  { path: 'allBooks', component: BooksPage },
   { path: 'cart', component: CartInfo },
 ];
 
