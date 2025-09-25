@@ -19,6 +19,7 @@ import { App } from './app';
 import { Navbar } from './components/navbar/navbar';
 import { Login } from './components/login/login';
 import { BestBookCarosel } from './components/best-book-carosel/best-book-carosel';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { CardBook } from './components/card-book/card-book';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { LayoutModule } from '@angular/cdk/layout';
@@ -79,6 +80,7 @@ import { NewBook } from './components/new-book/new-book';
     ReactiveFormsModule,
     MatSelectModule,
     MatOptionModule,
+    MatTooltipModule,
   ],
   providers: [
     provideHttpClient(withFetch()),
