@@ -13,7 +13,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatCardModule } from '@angular/material/card';
+import { MatCard, MatCardModule } from '@angular/material/card';
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
 import { Navbar } from './components/navbar/navbar';
@@ -25,7 +25,8 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { BookInfo } from './components/book-info/book-info';
 import { BestSeller } from './components/best-seller/best-seller';
 import { provideHttpClient, withFetch } from '@angular/common/http';
-
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 import { Register } from './components/register/register';
 import { PublisherPopup } from './components/publisher-popup/publisher-popup';
 import { UserSetting } from './components/user-setting/user-setting';
@@ -36,6 +37,7 @@ import { AuthorPopup } from './components/author-popup/author-popup';
 import { BooksPage } from './components/books-page/books-page';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { CartInfo } from './components/cart/cart';
+import { NewBook } from './components/new-book/new-book';
 
 @NgModule({
   declarations: [
@@ -52,6 +54,7 @@ import { CartInfo } from './components/cart/cart';
     Home,
     BooksPage,
     CartInfo,
+    NewBook,
   ],
   imports: [
     BrowserModule,
@@ -68,11 +71,14 @@ import { CartInfo } from './components/cart/cart';
     MatGridListModule,
     LayoutModule,
     ReactiveFormsModule,
+    MatCard,
     PublisherPopup,
     MatDivider,
     AuthorPopup,
     MatPaginatorModule,
     ReactiveFormsModule,
+    MatSelectModule,
+    MatOptionModule,
   ],
   providers: [
     provideHttpClient(withFetch()),

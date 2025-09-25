@@ -68,6 +68,7 @@ button {
 .price-div {
   display: block;
 }
+
 mat-card-content {
   margin-bottom: 2rem;
   display: flex;
@@ -109,7 +110,7 @@ mat-list-item {
     margin-inline: auto;
   }
   .cart-items {
-    padding-: 10px;
+    padding-right: 10px;
     flex-direction: row;
     align-items: flex-start;
     text-align: left;

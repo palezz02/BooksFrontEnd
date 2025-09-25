@@ -1,0 +1,189 @@
+<form [formGroup]="bookForm" (ngSubmit)="onSubmit()" class="book-form">
+  <h2 class="form-title">ADD NEW BOOK</h2>
+
+  <mat-card class="main-card">
+    <mat-card-content>
+      <div class="name-description-wrapper move-bottom">
+        <div class="name-description-container">
+          <div class="inside-card">
+            <mat-form-field appearance="outline" class="spaced-field">
+              <mat-label>Title</mat-label>
+              <input matInput formControlName="title" required />
+              <mat-error *ngIf="bookForm.get('title')?.invalid">Title is required</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="spaced-field">
+              <mat-label>ISBN</mat-label>
+              <input matInput formControlName="isbn" maxlength="13" required />
+              <mat-error *ngIf="bookForm.get('isbn')?.hasError('required')">
+                ISBN is required
+              </mat-error>
+              <mat-error *ngIf="bookForm.get('isbn')?.hasError('pattern')">
+                ISBN must be exactly 13 digits
+              </mat-error>
+              <mat-error *ngIf="bookForm.get('isbn')?.hasError('isbnTaken')">
+                This ISBN already exists
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="spaced-field">
+              <mat-label>Author</mat-label>
+              <input matInput formControlName="author" required />
+              <mat-error *ngIf="bookForm.get('author')?.invalid">Author is required</mat-error>
+            </mat-form-field>
+            <div class="year-edition-language">
+              <mat-form-field appearance="outline" class="spaced-field-year">
+                <mat-label>Year</mat-label>
+                <input matInput formControlName="year" maxlength="13" required />
+                <mat-error *ngIf="bookForm.get('year')?.hasError('required')">
+                  Year is required
+                </mat-error>
+                <mat-error *ngIf="bookForm.get('year')?.hasError('max')">
+                  Year cannot be after 2025
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="spaced-field-edition">
+                <mat-label>Edition</mat-label>
+                <input matInput formControlName="edition" required />
+                <mat-error *ngIf="bookForm.get('edition')?.invalid">Edition is required</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="spaced-field-language">
+                <mat-label>Language code</mat-label>
+                <input matInput formControlName="languageCode" required />
+                <mat-error *ngIf="bookForm.get('languageCode')?.hasError('pattern')">
+                  Language Code is exactly 2 letters
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <mat-form-field appearance="outline" class="description">
+              <mat-label>Description</mat-label>
+              <textarea matInput formControlName="description"></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <div class="name-description-wrapper move-bottom">
+        <div class="name-description-container">
+          <div class="inside-card">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Select category</mat-label>
+              <mat-select multiple [value]="bookForm.value.category">
+                <mat-option
+                  *ngFor="let category of ['Fantasy', 'Science Fiction', 'Romance']"
+                  [value]="category"
+                >
+                  {{ category }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="spaced-field">
+              <mat-label>Publisher</mat-label>
+              <input matInput formControlName="publisher" required />
+              <mat-error *ngIf="bookForm.get('publisher')?.invalid"
+                >Publisher is required</mat-error
+              >
+            </mat-form-field>
+            <div class="pages-stock">
+              <mat-form-field appearance="outline" class="number-field">
+                <mat-label>Pages</mat-label>
+                <input matInput type="number" formControlName="pages" min="0" step="1" required />
+
+                <button
+                  mat-icon-button
+                  matSuffix
+                  type="button"
+                  (click)="decrementPages()"
+                  aria-label="Decrement pages"
+                >
+                  <mat-icon>remove</mat-icon>
+                </button>
+
+                <button
+                  mat-icon-button
+                  matSuffix
+                  type="button"
+                  (click)="incrementPages()"
+                  aria-label="Increment pages"
+                >
+                  <mat-icon>add</mat-icon>
+                </button>
+
+                <mat-error *ngIf="bookForm.get('pages')?.hasError('required')">
+                  Number of pages are required
+                </mat-error>
+                <mat-error *ngIf="bookForm.get('pages')?.hasError('min')">
+                  Number of pages cannot be negative
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="number-field">
+                <mat-label>Stock</mat-label>
+                <input matInput type="number" formControlName="stock" min="0" step="1" required />
+
+                <button
+                  mat-icon-button
+                  matSuffix
+                  type="button"
+                  (click)="decrementStock()"
+                  aria-label="Decrement stock"
+                >
+                  <mat-icon>remove</mat-icon>
+                </button>
+
+                <button
+                  mat-icon-button
+                  matSuffix
+                  type="button"
+                  (click)="incrementStock()"
+                  aria-label="Increment stock"
+                >
+                  <mat-icon>add</mat-icon>
+                </button>
+
+                <mat-error *ngIf="bookForm.get('stock')?.hasError('required')">
+                  Stock is required
+                </mat-error>
+                <mat-error *ngIf="bookForm.get('stock')?.hasError('min')">
+                  Stock cannot be negative
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="image-upload-section">
+              <div *ngIf="imageSrc" class="image-preview">
+                <img [src]="imageSrc" alt="Book cover" width="150" />
+              </div>
+              <label for="cover">Cover URL:</label>
+              <input type="url" id="cover" name="cover" required />
+            </div>
+            <div class="price-submit">
+              <mat-form-field appearance="outline" class="number-field-price">
+                <mat-label>Price</mat-label>
+                <input matInput type="number" formControlName="price" min="0" step="1" required />
+
+                <mat-error *ngIf="bookForm.get('price')?.hasError('required')">
+                  Price is required
+                </mat-error>
+                <mat-error *ngIf="bookForm.get('price')?.hasError('min')">
+                  Price cannot be negative
+                </mat-error>
+              </mat-form-field>
+              <div class="button-row">
+                <button color="primary" type="submit" [disabled]="bookForm.invalid">
+                  <span> Publish</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="#000000"
+                  >
+                    <path d="M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</form>
