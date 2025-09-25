@@ -5,28 +5,30 @@
       <mat-card-subtitle>Manage your personal information</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <form>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="form-row">
           <mat-form-field appearance="outline" class="form-field">
             <mat-label>First Name</mat-label>
-            <input matInput type="text" placeholder="User name" [value]="user.name" />
+            <input matInput type="text" placeholder="User name" formControlName="name" />
           </mat-form-field>
           <mat-form-field appearance="outline" class="form-field">
             <mat-label>Last Name</mat-label>
-            <input matInput type="text" placeholder="User suername" [value]="user.surname" />
+            <input matInput type="text" placeholder="User surname" formControlName="surname" />
           </mat-form-field>
         </div>
+
         <mat-form-field appearance="outline" class="form-field full-width">
           <mat-label>Email</mat-label>
-          <input matInput type="email" [value]="user.email" disabled />
+          <input matInput type="email" formControlName="email" />
         </mat-form-field>
+
         <mat-form-field
           appearance="outline"
           class="form-field full-width"
           *ngIf="!showPasswordEdit"
         >
           <mat-label>Current Password</mat-label>
-          <input matInput type="password" [value]="user.currentPassword" disabled />
+          <input matInput type="password" formControlName="currentPassword" />
           <button
             mat-icon-button
             matSuffix
@@ -36,6 +38,7 @@
             <mat-icon>edit</mat-icon>
           </button>
         </mat-form-field>
+
         <ng-container *ngIf="showPasswordEdit">
           <mat-form-field appearance="outline" class="form-field full-width">
             <mat-label>New Password</mat-label>
@@ -43,8 +46,7 @@
               matInput
               [type]="showNewPassword ? 'text' : 'password'"
               placeholder="New password"
-              [(ngModel)]="newPassword"
-              name="newPassword"
+              formControlName="newPassword"
             />
             <button
               mat-icon-button
@@ -65,14 +67,14 @@
               <mat-icon>close</mat-icon>
             </button>
           </mat-form-field>
+
           <mat-form-field appearance="outline" class="form-field full-width">
             <mat-label>Confirm New Password</mat-label>
             <input
               matInput
               [type]="showConfirmPassword ? 'text' : 'password'"
               placeholder="Confirm new password"
-              [(ngModel)]="confirmPassword"
-              name="confirmPassword"
+              formControlName="confirmPassword"
             />
             <button
               mat-icon-button
@@ -84,14 +86,14 @@
               <mat-icon>{{ showConfirmPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
             </button>
           </mat-form-field>
+
           <mat-form-field appearance="outline" class="form-field full-width">
             <mat-label>Old Password</mat-label>
             <input
               matInput
               [type]="showOldPassword ? 'text' : 'password'"
               placeholder="Old password"
-              [(ngModel)]="oldPassword"
-              name="oldPassword"
+              formControlName="oldPassword"
             />
             <button
               mat-icon-button
@@ -104,10 +106,12 @@
             </button>
           </mat-form-field>
         </ng-container>
+
         <mat-form-field appearance="outline" class="form-field full-width">
           <mat-label>Date of Birth</mat-label>
-          <input matInput type="date" [value]="user.birthdate" />
+          <input matInput type="date" formControlName="birthdate" />
         </mat-form-field>
+
         <div class="form-row">
           <div class="button-row">
             <button

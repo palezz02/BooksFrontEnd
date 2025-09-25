@@ -14,7 +14,7 @@ interface Book {
   selector: 'app-best-seller',
   templateUrl: './best-seller.html',
   styleUrls: ['./best-seller.css'],
-  standalone: false
+  standalone: false,
 })
 export class BestSeller {
   books: Book[] = [
@@ -27,7 +27,7 @@ export class BestSeller {
       title: 'The Enchanted Realm',
       reviews: 120,
       rating: 4.5,
-      year: 2021
+      year: 2021,
     },
     {
       category: 'Science Fiction',
@@ -39,7 +39,7 @@ export class BestSeller {
       title: 'Beyond the Stars',
       reviews: 90,
       rating: 4.2,
-      year: 2022
+      year: 2022,
     },
     {
       category: 'Mystery',
@@ -50,8 +50,8 @@ export class BestSeller {
       title: 'The Hidden Truth',
       reviews: 150,
       rating: 4.8,
-      year: 2020
-    }
+      year: 2020,
+    },
   ];
 
   currentIndex = 0;

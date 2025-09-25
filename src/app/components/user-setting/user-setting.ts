@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-
+import { UserService } from '../../services/user-service';
+import { isPlatformBrowser } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { truncate } from 'fs';
 @Component({
   selector: 'app-user-setting',
   standalone: false,
@@ -8,11 +11,13 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
   styleUrl: './user-setting.css',
 })
 export class UserSetting {
+  private _snackBar = inject(MatSnackBar);
+
   user = {
-    name: 'test',
-    surname: 'asd',
-    email: 'test@gmail.com',
-    birthdate: '2005-11-02',
+    name: 'Loading...',
+    surname: 'Loading...',
+    email: 'Loading...',
+    birthdate: 'Loading...',
     currentPassword: '******************',
   };
 
@@ -22,18 +27,51 @@ export class UserSetting {
   showOldPassword = false;
   form: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
     this.form = this.fb.group(
       {
-        name: [this.user.name, [Validators.required, Validators.minLength(3)]],
-        surname: [this.user.surname, [Validators.required, Validators.minLength(3)]],
-        birthdate: [this.user.birthdate, [Validators.required, birthDateRangeValidator]],
-        newPassword: ['', [Validators.minLength(6)]],
-        confirmPassword: ['', [Validators.required]],
+        name: ['', [Validators.required, Validators.minLength(3)]],
+        surname: ['', [Validators.required, Validators.minLength(3)]],
+        email: [{ value: '', disabled: true }], // disabilitato
+        currentPassword: [{ value: '************', disabled: true }], // disabilitato
+        birthdate: ['', [Validators.required, birthDateRangeValidator]],
+        newPassword: [''],
+        confirmPassword: [''],
         oldPassword: [''],
       },
       { validators: passwordMatchValidator }
     );
+  }
+
+  ngOnInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      const userId = localStorage.getItem('userId');
+      if (userId) {
+        this.userService.getById(Number(userId)).subscribe((res) => {
+          if (res && res.dati) {
+            // console.log('User data:', res.dati);
+            const utente = res.dati;
+            this.user = {
+              name: utente.firstName,
+              surname: utente.lastName,
+              email: utente.email,
+              birthdate: utente.birthDate,
+              currentPassword: '******************',
+            };
+            this.form.patchValue({
+              name: this.user.name,
+              surname: this.user.surname,
+              birthdate: this.user.birthdate,
+              email: this.user.email,
+            });
+          }
+        });
+      }
+    }
   }
 
   newPassword = '';
@@ -42,7 +80,18 @@ export class UserSetting {
 
   togglePasswordEdit() {
     this.showPasswordEdit = !this.showPasswordEdit;
-    if (!this.showPasswordEdit) {
+    const newPasswordControl = this.form.get('newPassword');
+    const confirmPasswordControl = this.form.get('confirmPassword');
+    const oldPasswordControl = this.form.get('oldPassword');
+    // Aggiunge i validators se si abilita la modifica
+    if (this.showPasswordEdit) {
+      newPasswordControl?.setValidators([Validators.required, Validators.minLength(6)]);
+      confirmPasswordControl?.setValidators([Validators.required]);
+      oldPasswordControl?.setValidators([Validators.required]);
+    } else {
+      newPasswordControl?.setValidators([Validators.minLength(6)]);
+      confirmPasswordControl?.setValidators([]);
+      oldPasswordControl?.setValidators([]);
       this.newPassword = '';
       this.confirmPassword = '';
       this.oldPassword = '';
@@ -51,10 +100,26 @@ export class UserSetting {
       this.showConfirmPassword = false;
       this.showOldPassword = false;
     }
+    // Aggiorna lo stato di validità dei controlli
+    newPasswordControl?.updateValueAndValidity();
+    confirmPasswordControl?.updateValueAndValidity();
+    oldPasswordControl?.updateValueAndValidity();
   }
 
   cancelPasswordEdit() {
     this.showPasswordEdit = false;
+    const newPasswordControl = this.form.get('newPassword');
+    const confirmPasswordControl = this.form.get('confirmPassword');
+    const oldPasswordControl = this.form.get('oldPassword');
+
+    // Toglie i validators se si annulla la modifica
+    newPasswordControl?.setValidators([Validators.minLength(6)]);
+    confirmPasswordControl?.setValidators([]);
+    oldPasswordControl?.setValidators([]);
+    // Aggiorna lo stato di validità dei controlli
+    newPasswordControl?.updateValueAndValidity();
+    confirmPasswordControl?.updateValueAndValidity();
+    oldPasswordControl?.updateValueAndValidity();
     this.newPassword = '';
     this.confirmPassword = '';
     this.oldPassword = '';
@@ -63,6 +128,8 @@ export class UserSetting {
     this.showConfirmPassword = false;
     this.showOldPassword = false;
   }
+
+  // Mostra o no la password
   toggleShowNewPassword() {
     this.showNewPassword = !this.showNewPassword;
   }
@@ -71,6 +138,83 @@ export class UserSetting {
   }
   toggleShowOldPassword() {
     this.showOldPassword = !this.showOldPassword;
+  }
+
+  onSubmit() {
+    if (this.form.valid) {
+      // Qui puoi gestire l'invio dei dati aggiornati dell'utente
+      console.log('Form submitted:', this.form.getRawValue());
+      let id = localStorage.getItem('userId');
+      let email = null;
+      let firstName = this.form.get('name')?.value;
+      let lastName = this.form.get('surname')?.value;
+      let birthDate = this.form.get('birthdate')?.value;
+      let password = null;
+      let passwordChanging = false;
+      if (this.form.get('newPassword')?.value) {
+        password = this.form.get('newPassword')?.value;
+        passwordChanging = true;
+      }
+      if (firstName === this.user.name) {
+        firstName = null;
+      }
+      if (lastName === this.user.surname) {
+        lastName = null;
+      }
+      if (birthDate === this.user.birthdate) {
+        birthDate = null;
+      }
+      const userNew = { id, email, firstName, lastName, birthDate, password };
+      console.log(userNew);
+
+      const userLogin = {
+        user: this.user.email,
+        pwd: this.form.get('oldPassword')?.value,
+      };
+
+      if (passwordChanging == true) {
+        this.userService.signin(userLogin).subscribe((res) => {
+          if (!res.logged) {
+            this._snackBar.open('Password errata.', 'Chiudi', {
+              duration: 3000,
+            });
+            return;
+          } else {
+            this.userService.update(userNew).subscribe(
+              (res) => {
+                this._snackBar.open('Utente aggiornato con successo!', 'Chiudi', {
+                  duration: 3000,
+                });
+                this.ngOnInit();
+                this.cancelPasswordEdit();
+              },
+              (error) => {
+                this._snackBar.open('Errore nella modifica!', 'Chiudi', { duration: 3000 });
+              }
+            );
+          }
+        });
+      } else {
+        this.userService.update(userNew).subscribe(
+          (res) => {
+            this._snackBar.open('Utente aggiornato con successo!', 'Chiudi', { duration: 3000 });
+            this.ngOnInit();
+            this.cancelPasswordEdit();
+          },
+          (error) => {
+            this._snackBar.open('Errore nella modifica!', 'Chiudi', { duration: 3000 });
+          }
+        );
+      }
+    } else {
+      this._snackBar.open(
+        'Errore nei dati inseriti, compila tutti i campi o controlla la password.',
+        'Chiudi',
+        {
+          duration: 3000,
+        }
+      );
+    }
   }
 }
 
