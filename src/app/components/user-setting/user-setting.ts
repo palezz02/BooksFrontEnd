@@ -4,6 +4,7 @@ import { UserService } from '../../services/user-service';
 import { isPlatformBrowser } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { truncate } from 'fs';
+import { PasswordFunctions } from '../../Utils/password-functions';
 @Component({
   selector: 'app-user-setting',
   standalone: false,
@@ -30,7 +31,8 @@ export class UserSetting {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private PasswordFunctions: PasswordFunctions
   ) {
     this.form = this.fb.group(
       {
@@ -152,7 +154,7 @@ export class UserSetting {
       let password = null;
       let passwordChanging = false;
       if (this.form.get('newPassword')?.value) {
-        password = this.form.get('newPassword')?.value;
+        password = this.PasswordFunctions.hashPassword(this.form.get('newPassword')?.value);
         passwordChanging = true;
       }
       if (firstName === this.user.name) {
@@ -165,11 +167,10 @@ export class UserSetting {
         birthDate = null;
       }
       const userNew = { id, email, firstName, lastName, birthDate, password };
-      console.log(userNew);
 
       const userLogin = {
         user: this.user.email,
-        pwd: this.form.get('oldPassword')?.value,
+        pwd: this.PasswordFunctions.hashPassword(this.form.get('oldPassword')?.value),
       };
 
       if (passwordChanging == true) {

@@ -4,6 +4,7 @@ import { UserService } from '../../services/user-service';
 import { AuthService } from '../../auth/authService';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { PasswordFunctions } from '../../Utils/password-functions';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,8 @@ export class Login {
     private fb: FormBuilder,
     private login: UserService,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private PasswordFunctions: PasswordFunctions
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -38,7 +40,7 @@ export class Login {
       this.login
         .signin({
           user: this.loginForm.value.email,
-          pwd: this.loginForm.value.password,
+          pwd: this.PasswordFunctions.hashPassword(this.loginForm.value.password),
         })
         .subscribe((resp: any) => {
           console.log(resp);
