@@ -34,6 +34,8 @@
             matSuffix
             (click)="togglePasswordEdit()"
             aria-label="Edit password"
+            matTooltip="Edit password"
+            matTooltipPosition="above"
           >
             <mat-icon>edit</mat-icon>
           </button>
@@ -52,19 +54,23 @@
               mat-icon-button
               matSuffix
               type="button"
-              (click)="toggleShowNewPassword()"
-              aria-label="Show/hide new password"
+              (click)="cancelPasswordEdit()"
+              aria-label="Cancel password edit"
+              matTooltip="Cancel password change"
+              matTooltipPosition="above"
             >
-              <mat-icon>{{ showNewPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+              <mat-icon>arrow_back</mat-icon>
             </button>
             <button
               mat-icon-button
               matSuffix
               type="button"
-              (click)="cancelPasswordEdit()"
-              aria-label="Cancel password edit"
+              (click)="toggleShowNewPassword()"
+              aria-label="Show/hide new password"
+              matTooltip="{{ showNewPassword ? 'Hide password' : 'Show password' }}"
+              matTooltipPosition="above"
             >
-              <mat-icon>close</mat-icon>
+              <mat-icon>{{ showNewPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
             </button>
           </mat-form-field>
 
@@ -82,6 +88,8 @@
               type="button"
               (click)="toggleShowConfirmPassword()"
               aria-label="Show/hide confirm password"
+              matTooltip="{{ showConfirmPassword ? 'Hide password' : 'Show password' }}"
+              matTooltipPosition="above"
             >
               <mat-icon>{{ showConfirmPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
             </button>
@@ -101,6 +109,8 @@
               type="button"
               (click)="toggleShowOldPassword()"
               aria-label="Show/hide old password"
+              matTooltip="{{ showOldPassword ? 'Hide password' : 'Show password' }}"
+              matTooltipPosition="above"
             >
               <mat-icon>{{ showOldPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
             </button>
@@ -110,6 +120,7 @@
         <mat-form-field appearance="outline" class="form-field full-width">
           <mat-label>Date of Birth</mat-label>
           <input matInput type="date" formControlName="birthdate" />
+          <mat-error>Data di nascita non valida</mat-error>
         </mat-form-field>
 
         <div class="form-row">

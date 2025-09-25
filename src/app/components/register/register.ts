@@ -15,6 +15,8 @@ export class Register {
   private _snackBar = inject(MatSnackBar);
 
   loginForm: any;
+  showPassword = false;
+  showConfirmPassword = false;
 
   constructor(private fb: FormBuilder, private userService: UserService, private router: Router) {
     this.loginForm = this.fb.group({
@@ -25,6 +27,14 @@ export class Register {
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]],
     });
+  }
+
+  toggleShowPassword() {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleShowConfirmPassword() {
+    this.showConfirmPassword = !this.showConfirmPassword;
   }
 
   onSubmit() {

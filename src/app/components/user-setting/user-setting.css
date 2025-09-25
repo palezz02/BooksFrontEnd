@@ -45,3 +45,7 @@
 .cancel-btn:focus {
   color: #b71c1c;
 }
+
+mat-error {
+  margin: 5px 0 5px 0;
+}
