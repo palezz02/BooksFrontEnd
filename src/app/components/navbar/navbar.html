@@ -64,6 +64,11 @@
   <button mat-icon-button [routerLink]="'/setting'">
     <mat-icon>account_circle</mat-icon>
   </button>
+
+  <!-- Icona admin -->
+  <button mat-icon-button [routerLink]="'/admin'" [hidden]="!admin">
+    <mat-icon>admin_panel_settings</mat-icon>
+  </button>
 </mat-toolbar>
 
 <!-- Overlay menu mobile -->

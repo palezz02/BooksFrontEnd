@@ -1,4 +1,5 @@
-import { Component, HostListener } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, HostListener, Inject, PLATFORM_ID } from '@angular/core';
 
 @Component({
   selector: 'app-navbar',
@@ -9,6 +10,15 @@ import { Component, HostListener } from '@angular/core';
 export class Navbar {
   searchQuery = '';
   menuOpen = false;
+  admin = false;
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+
+  ngOnInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      const role = localStorage.getItem('isAdmin');
+      this.admin = role == '1';
+    }
+  }
 
   onSearch() {
     console.log('Ricerca:', this.searchQuery);
