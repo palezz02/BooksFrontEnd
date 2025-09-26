@@ -19,7 +19,7 @@ export class AddressServiceService {
     return this.http.post<ResponseBase>(this.url + 'create', body);
   }
   removeAddress(body: {}): Observable<ResponseBase> {
-    return this.http.post<ResponseBase>(this.url + 'delete', body);
+    return this.http.post<ResponseBase>(this.url + 'delete', { body });
   }
 
   updateAddress(body: {}): Observable<ResponseBase> {

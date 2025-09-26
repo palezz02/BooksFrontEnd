@@ -42,6 +42,9 @@ import { NewBook } from './components/new-book/new-book';
 import { ErrorPage } from './components/error-page/error-page';
 import { Reviews } from './components/reviews/reviews';
 import { Info } from './components/info/info';
+import { MatDialogContent } from '@angular/material/dialog';
+import { MatDialogActions } from '@angular/material/dialog';
+import { DeleteAccountConfirmDialog } from './components/delete-account-confirm-dialog/delete-account-confirm-dialog';
 @NgModule({
   declarations: [
     App,
@@ -61,6 +64,7 @@ import { Info } from './components/info/info';
     ErrorPage,
     Reviews,
     Info,
+    DeleteAccountConfirmDialog,
   ],
   imports: [
     BrowserModule,
@@ -86,6 +90,8 @@ import { Info } from './components/info/info';
     MatSelectModule,
     MatOptionModule,
     MatTooltipModule,
+    MatDialogContent,
+    MatDialogActions,
   ],
   providers: [
     provideHttpClient(withFetch()),

@@ -19,7 +19,7 @@ export class AuthorServiceService {
     return this.http.post<ResponseBase>(this.url + 'create', body);
   }
   removeAuthor(body: {}): Observable<ResponseBase> {
-    return this.http.post<ResponseBase>(this.url + 'delete', body);
+    return this.http.post<ResponseBase>(this.url + 'delete', { body });
   }
 
   updateAuthor(body: {}): Observable<ResponseBase> {
