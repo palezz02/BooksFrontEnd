@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ResponseList } from '../models/ResponseList';
 import { ResponseBase } from '../models/ResponseBase';
+import { ResponseObject } from '../models/ResponseObject';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -25,4 +26,10 @@ export class AuthorServiceService {
   updateAuthor(body: {}): Observable<ResponseBase> {
     return this.http.put<ResponseBase>(this.url + 'update', body);
   }
+
+  getById(id: number): Observable<ResponseObject<any>> {
+  const params = new HttpParams().set('id', id);
+  return this.http.get<ResponseObject<any>>(this.url + 'getById', { params });
+}
+
 }
