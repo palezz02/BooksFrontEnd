@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { ResponseList } from '../models/ResponseList';
 import { ResponseBase } from '../models/ResponseBase';
 import { Observable } from 'rxjs';
+import { ResponseObject } from '../models/ResponseObject';
 
 @Injectable({
   providedIn: 'root',
@@ -24,5 +25,10 @@ export class AuthorServiceService {
 
   updateAuthor(body: {}): Observable<ResponseBase> {
     return this.http.put<ResponseBase>(this.url + 'update', body);
+  }
+
+  getById(id: number): Observable<ResponseObject<any>> {
+    let params = new HttpParams().set('id', id);
+    return this.http.get<ResponseObject<any>>(this.url + 'getById', { params });
   }
 }

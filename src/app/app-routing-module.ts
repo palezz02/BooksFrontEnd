@@ -12,6 +12,7 @@ import { Home } from './components/home/home';
 import { BooksPage } from './components/books-page/books-page';
 import { CartInfo } from './components/cart/cart';
 import { NewBook } from './components/new-book/new-book';
+import { BookDelete } from './components/book-delete/book-delete';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: 'allBooks', component: BooksPage },
   { path: 'cart', component: CartInfo },
   { path: 'new', component: NewBook },
+  { path: 'bookdelete', component: BookDelete },
 ];
 
 @NgModule({
