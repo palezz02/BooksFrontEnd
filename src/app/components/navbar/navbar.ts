@@ -13,11 +13,15 @@ export class Navbar {
   admin = false;
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
 
-  ngOnInit() {
+  updateAdminStatus() {
     if (isPlatformBrowser(this.platformId)) {
       const role = localStorage.getItem('isAdmin');
       this.admin = role == '1';
     }
+  }
+
+  ngOnInit() {
+    this.updateAdminStatus();
   }
 
   onSearch() {
@@ -39,6 +43,13 @@ export class Navbar {
   onResize() {
     if (window.innerWidth > 600 && this.menuOpen) {
       this.menuOpen = false;
+    }
+  }
+
+  scrollToFooter() {
+    const footer = document.getElementById('footer');
+    if (footer) {
+      footer.scrollIntoView({ behavior: 'smooth' });
     }
   }
 }
