@@ -22,14 +22,14 @@ export class OrderItemServiceService {
   }
 
   insertOrderItem(body: {}): Observable<ResponseBase> {
-    return this.http.post<ResponseBase>(this.url + 'create', body);
+    return this.http.post<ResponseBase>(this.url + 'create', { body });
   }
   removeOrderItem(body: {}): Observable<ResponseBase> {
-    return this.http.post<ResponseBase>(this.url + 'delete', body);
+    return this.http.post<ResponseBase>(this.url + 'delete', { body });
   }
 
   updateOrderItem(body: {}): Observable<ResponseBase> {
     console.log(body);
-    return this.http.put<ResponseBase>(this.url + 'update', body);
+    return this.http.put<ResponseBase>(this.url + 'update', { body });
   }
 }

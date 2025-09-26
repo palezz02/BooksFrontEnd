@@ -16,13 +16,13 @@ export class AuthorServiceService {
   }
 
   insertAuthor(body: {}): Observable<ResponseBase> {
-    return this.http.post<ResponseBase>(this.url + 'create', body);
+    return this.http.post<ResponseBase>(this.url + 'create', { body });
   }
   removeAuthor(body: {}): Observable<ResponseBase> {
-    return this.http.post<ResponseBase>(this.url + 'delete', body);
+    return this.http.post<ResponseBase>(this.url + 'delete', { body });
   }
 
   updateAuthor(body: {}): Observable<ResponseBase> {
-    return this.http.put<ResponseBase>(this.url + 'update', body);
+    return this.http.put<ResponseBase>(this.url + 'update', { body });
   }
 }

@@ -125,18 +125,30 @@
 
         <div class="form-row">
           <div class="button-row">
+            <button mat-raised-button color="primary" type="submit">Save</button>
+          </div>
+          <div class="button-row">
             <button
               mat-raised-button
               color="warn"
               class="cancel-btn"
               aria-label="Cancel"
-              click="window.history.back()"
+              (click)="goBack()"
             >
               Cancel
             </button>
           </div>
+
           <div class="button-row">
-            <button mat-raised-button color="primary" type="submit">Save</button>
+            <button
+              mat-raised-button
+              color="warn"
+              class="cancel-btn"
+              aria-label="Cancel"
+              (click)="deleteAccount()"
+            >
+              Delete Account
+            </button>
           </div>
         </div>
       </form>

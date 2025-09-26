@@ -21,14 +21,14 @@ export class PublisherService {
   }
 
   insertPublisher(body: {}): Observable<ResponseBase> {
-    return this.http.post<ResponseBase>(this.url + 'create', body);
+    return this.http.post<ResponseBase>(this.url + 'create', { body });
   }
   removePublisher(body: {}): Observable<ResponseBase> {
-    return this.http.post<ResponseBase>(this.url + 'delete', body);
+    return this.http.post<ResponseBase>(this.url + 'delete', { body });
   }
 
   updatePublisher(body: {}): Observable<ResponseBase> {
     console.log(body);
-    return this.http.put<ResponseBase>(this.url + 'update', body);
+    return this.http.put<ResponseBase>(this.url + 'update', { body });
   }
 }

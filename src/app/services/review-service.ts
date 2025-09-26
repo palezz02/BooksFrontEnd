@@ -13,15 +13,15 @@ export class ReviewService {
   constructor(private http: HttpClient) {}
 
   create(body: {}): Observable<ResponseBase> {
-    return this.http.post<ResponseBase>(this.url + 'create', body);
+    return this.http.post<ResponseBase>(this.url + 'create', { body });
   }
 
   update(body: {}): Observable<ResponseBase> {
-    return this.http.put<ResponseBase>(this.url + 'update', body);
+    return this.http.put<ResponseBase>(this.url + 'update', { body });
   }
 
   delete(body: {}): Observable<ResponseBase> {
-    return this.http.delete<ResponseBase>(this.url + 'delete', body);
+    return this.http.delete<ResponseBase>(this.url + 'delete', { body });
   }
 
   getById(id: number): Observable<ResponseObject<any>> {
