@@ -65,6 +65,7 @@ p {
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
+  align-items: center;
   margin-inline: auto !important;
 }
 .spaced-field-year {
@@ -75,10 +76,10 @@ p {
   width: 35% !important;
   margin-top: 4% !important;
 }
-.spaced-field-language {
+/* .spaced-field-language {
   width: 30% !important;
   margin-top: 4% !important;
-}
+} */
 
 .image-upload-section {
   display: flex;
@@ -117,6 +118,34 @@ mat-form-field {
   gap: 10px;
 }
 
+.category-newCategory, .author-newAuthor {
+  width: 100% !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-inline: auto !important;
+}
+
+.category-newCategory mat-form-field, .author-newAuthor mat-form-field {
+  width: 90% !important;
+  margin-right: 5%;
+  align-self: center;
+  margin-inline: auto !important;
+}
+
+.add-category{
+  width: 10% !important;
+  /* border-radius: 100%; */
+  display: flex;
+  justify-content: center;
+}
+.add-category button{
+  border-radius: 5px;
+  background-color: transparent;
+  box-shadow: none;
+  border: #363636 1px solid;
+  color: #363636;
+}
 @media screen and (max-width: 768px) {
   .book-form mat-card-content {
     display: flex;

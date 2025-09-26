@@ -24,11 +24,32 @@
                 This ISBN already exists
               </mat-error>
             </mat-form-field>
-            <mat-form-field appearance="outline" class="spaced-field">
-              <mat-label>Author</mat-label>
-              <input matInput formControlName="author" required />
-              <mat-error *ngIf="bookForm.get('author')?.invalid">Author is required</mat-error>
-            </mat-form-field>
+            
+            <div class="author-newAuthor">
+              <mat-form-field appearance="outline" class="full-width author">
+                <mat-label>Select Author</mat-label>
+                <mat-select multiple [value]="bookForm.value.author">
+                  <mat-option *ngFor="let author of authors" [value]="author">
+                    {{ author }}
+                  </mat-option>
+                  <a href="#" (click)="openNewAuthorInput($event)">Add new author</a>
+                  <div *ngIf="showNewAuthorInput" class="new-author-input">
+                    <mat-form-field appearance="outline" style="width: 100%">
+                      <input
+                        #newAuthorInput
+                        matInput
+                        placeholder="New author"
+                        formControlName="newAuthor"
+                        (keydown.enter)="addAuthor()"
+                      />
+                    </mat-form-field>
+                    <div class="flex gap-2 mt-2">
+                      <button mat-raised-button color="primary" (click)="addAuthor()">Add</button>
+                    </div>
+                  </div>
+                </mat-select>
+              </mat-form-field>
+            </div>
             <div class="year-edition-language">
               <mat-form-field appearance="outline" class="spaced-field-year">
                 <mat-label>Year</mat-label>
@@ -45,13 +66,31 @@
                 <input matInput formControlName="edition" required />
                 <mat-error *ngIf="bookForm.get('edition')?.invalid">Edition is required</mat-error>
               </mat-form-field>
-              <mat-form-field appearance="outline" class="spaced-field-language">
-                <mat-label>Language code</mat-label>
-                <input matInput formControlName="languageCode" required />
-                <mat-error *ngIf="bookForm.get('languageCode')?.hasError('pattern')">
-                  Language Code is exactly 2 letters
-                </mat-error>
+              <div class="languageCode-newLanguageCode">
+              <mat-form-field appearance="outline" class="full-width languageCode">
+                <mat-label>Select Language code</mat-label>
+                <mat-select multiple [value]="bookForm.value.languageCode">
+                  <mat-option *ngFor="let languageCode of languageCodes" [value]="languageCode">
+                    {{ languageCode }}
+                  </mat-option>
+                <a href="#" (click)="openNewLanguageCodeInput($event)">Add new language code</a>
+                  <div *ngIf="showNewLanguageCodeInput" class="new-languageCode-input">
+                    <mat-form-field appearance="outline" style="width: 100%">
+                      <input
+                        #newLanguageCodeInput
+                        matInput
+                        placeholder="New languageCode"
+                        formControlName="newLanguageCode"
+                        (keydown.enter)="addLanguageCode()"
+                      />
+                    </mat-form-field>
+                    <div class="flex gap-2 mt-2">
+                      <button mat-raised-button color="primary" (click)="addLanguageCode()">Add</button>
+                    </div>
+                  </div>
+                </mat-select>
               </mat-form-field>
+            </div>
             </div>
             <mat-form-field appearance="outline" class="description">
               <mat-label>Description</mat-label>
@@ -64,17 +103,31 @@
       <div class="name-description-wrapper move-bottom">
         <div class="name-description-container">
           <div class="inside-card">
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Select category</mat-label>
-              <mat-select multiple [value]="bookForm.value.category">
-                <mat-option
-                  *ngFor="let category of ['Fantasy', 'Science Fiction', 'Romance']"
-                  [value]="category"
-                >
-                  {{ category }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+            <div class="category-newCategory">
+              <mat-form-field appearance="outline" class="full-width category">
+                <mat-label>Select category</mat-label>
+                <mat-select multiple [value]="bookForm.value.category">
+                  <mat-option *ngFor="let category of categories" [value]="category">
+                    {{ category }}
+                  </mat-option>
+                  <a href="#" (click)="openNewCategoryInput($event)">Add new category</a>
+                  <div *ngIf="showNewCategoryInput" class="new-category-input">
+                    <mat-form-field appearance="outline" style="width: 100%">
+                      <input
+                        #newCategoryInput
+                        matInput
+                        placeholder="New category"
+                        formControlName="newCategory"
+                        (keydown.enter)="addCategory()"
+                      />
+                    </mat-form-field>
+                    <div class="flex gap-2 mt-2">
+                      <button mat-raised-button color="primary" (click)="addCategory()">Add</button>
+                    </div>
+                  </div>
+                </mat-select>
+              </mat-form-field>
+            </div>
 
             <mat-form-field appearance="outline" class="spaced-field">
               <mat-label>Publisher</mat-label>

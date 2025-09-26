@@ -12,6 +12,13 @@ import { isPlatformBrowser } from '@angular/common';
 })
 // implements OnInit
 export class NewBook {
+  showNewCategoryInput = false;
+  showNewAuthorInput = false;
+  showNewLanguageCodeInput = false;
+  categories: string[] = ['Fantasy', 'Science Fiction', 'Romance'];
+  authors: string[] = ['Grazia Deledda', 'Elsa Morante', 'Anna Maria Ortese'];
+  languageCodes: string[] = ['IT', 'FR', 'EN'];
+
   private formBuilder = inject(FormBuilder);
   // private authService = inject(AuthService);
   private router = inject(Router);
@@ -19,8 +26,10 @@ export class NewBook {
 
   bookForm = this.formBuilder.group({
     title: ['', Validators.required],
-    author: ['', Validators.required],
-    category: this.formBuilder.array<string>([]),
+    author: this.formBuilder.control<string[]>([]),
+    newAuthor: [''],
+    category: this.formBuilder.control<string[]>([]),
+    newCategory: [''],
     isbn: [
       '',
       [
@@ -37,12 +46,8 @@ export class NewBook {
     stock: [0, [Validators.required, Validators.min(0)]],
     pages: [0, [Validators.required, Validators.min(0), Validators.max(10000)]],
     price: [0, [Validators.required, Validators.min(0.01)]],
-    languageCode: [
-      '',
-      [
-        Validators.pattern(/^[a-zA-Z]{2}$/), // exactly two letters
-      ],
-    ],
+    languageCode: this.formBuilder.control<string[]>([], [Validators.pattern(/^[a-zA-Z]{2}$/)]),
+    newLanguageCode: [''],
     edition: ['', Validators.maxLength(100)],
   });
 
@@ -61,15 +66,60 @@ export class NewBook {
   //   }
   // }
 
-  addCategory(value: string) {
-    const trimmed = value.trim();
-    if (trimmed) {
-      this.category.push(this.formBuilder.control(trimmed));
+
+   openNewLanguageCodeInput(event: Event) {
+    event.preventDefault();
+    this.showNewLanguageCodeInput = true;
+  }
+  addLanguageCode() {
+    const newLanguageCode = this.bookForm.get('newLanguageCode')?.value?.trim();
+
+    if (newLanguageCode && !this.languageCodes.includes(newLanguageCode)) {
+      this.languageCodes.push(newLanguageCode);
+
+      const currentLanguageCodes = this.bookForm.get('languageCode')?.value ?? [];
+      this.bookForm.get('languageCode')?.setValue([...currentLanguageCodes, newLanguageCode]);
     }
+
+    this.bookForm.get('newLanguageCode')?.reset('');
+    this.showNewLanguageCodeInput = false;
   }
 
-  removeCategory(index: number) {
-    this.category.removeAt(index);
+
+  openNewAuthorInput(event: Event) {
+    event.preventDefault();
+    this.showNewAuthorInput = true;
+  }
+  addAuthor() {
+    const newAuthor = this.bookForm.get('newAuthor')?.value?.trim();
+
+    if (newAuthor && !this.authors.includes(newAuthor)) {
+      this.authors.push(newAuthor);
+
+      const currentAuthors = this.bookForm.get('author')?.value ?? [];
+      this.bookForm.get('author')?.setValue([...currentAuthors, newAuthor]);
+    }
+
+    this.bookForm.get('newAuthor')?.reset('');
+    this.showNewAuthorInput = false;
+  }
+
+  openNewCategoryInput(event: Event) {
+    event.preventDefault();
+    this.showNewCategoryInput = true;
+  }
+  addCategory() {
+    const newCategory = this.bookForm.get('newCategory')?.value?.trim();
+
+    if (newCategory && !this.categories.includes(newCategory)) {
+      this.categories.push(newCategory);
+
+      const currentCategories = this.bookForm.get('category')?.value ?? [];
+      this.bookForm.get('category')?.setValue([...currentCategories, newCategory]);
+    }
+
+    this.bookForm.get('newCategory')?.reset('');
+    this.showNewCategoryInput = false;
   }
 
   incrementStock() {
@@ -109,7 +159,7 @@ export class NewBook {
 
     this.bookForm.reset({
       title: '',
-      author: '',
+      author: [],
       category: [],
       isbn: '',
       year: new Date().getFullYear(),
@@ -120,7 +170,7 @@ export class NewBook {
       price: 0,
       publisher: '',
       // inventory: { stock: 0, price: 0 },
-      languageCode: '',
+      languageCode: [],
     });
     this.category.clear();
     this.imageSrc = null;
