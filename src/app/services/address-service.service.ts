@@ -16,13 +16,13 @@ export class AddressServiceService {
   }
 
   insertAddress(body: {}): Observable<ResponseBase> {
-    return this.http.post<ResponseBase>(this.url + 'create', { body });
+    return this.http.post<ResponseBase>(this.url + 'create', body);
   }
   removeAddress(body: {}): Observable<ResponseBase> {
     return this.http.post<ResponseBase>(this.url + 'delete', { body });
   }
 
   updateAddress(body: {}): Observable<ResponseBase> {
-    return this.http.put<ResponseBase>(this.url + 'update', { body });
+    return this.http.put<ResponseBase>(this.url + 'update', body);
   }
 }
