@@ -39,6 +39,7 @@ import { BooksPage } from './components/books-page/books-page';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { CartInfo } from './components/cart/cart';
 import { NewBook } from './components/new-book/new-book';
+import { ErrorPage } from './components/error-page/error-page';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { NewBook } from './components/new-book/new-book';
     BooksPage,
     CartInfo,
     NewBook,
+    ErrorPage,
   ],
   imports: [
     BrowserModule,
