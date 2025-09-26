@@ -40,7 +40,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { CartInfo } from './components/cart/cart';
 import { NewBook } from './components/new-book/new-book';
 import { ErrorPage } from './components/error-page/error-page';
-
+import { Reviews } from './components/reviews/reviews';
+import { Info } from './components/info/info';
 @NgModule({
   declarations: [
     App,
@@ -58,6 +59,8 @@ import { ErrorPage } from './components/error-page/error-page';
     CartInfo,
     NewBook,
     ErrorPage,
+    Reviews,
+    Info,
   ],
   imports: [
     BrowserModule,
