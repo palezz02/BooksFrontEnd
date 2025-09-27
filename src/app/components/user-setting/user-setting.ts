@@ -3,8 +3,10 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { UserService } from '../../services/user-service';
 import { isPlatformBrowser } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { truncate } from 'fs';
 import { PasswordFunctions } from '../../Utils/password-functions';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteAccountConfirmDialog } from '../delete-account-confirm-dialog/delete-account-confirm-dialog';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-user-setting',
   standalone: false,
@@ -13,6 +15,40 @@ import { PasswordFunctions } from '../../Utils/password-functions';
 })
 export class UserSetting {
   private _snackBar = inject(MatSnackBar);
+  private _dialog = inject(MatDialog);
+
+  deleteAccount() {
+    this._dialog
+      .open(DeleteAccountConfirmDialog)
+      .afterClosed()
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          this._snackBar.open('Account eliminato con successo.', 'Chiudi', {
+            duration: 3000,
+          });
+          const userId = Number(localStorage.getItem('userId'));
+
+          this.userService.delete({ id: userId }).subscribe(
+            (res) => {
+              this._snackBar.open('Utente eliminato con successo!', 'Chiudi', {
+                duration: 3000,
+              });
+              localStorage.removeItem('userId');
+              localStorage.removeItem('isAdmin');
+              this.router.navigate(['/home']);
+            },
+            (error) => {
+              this._snackBar.open('Errore nella eliminazione!', 'Chiudi', { duration: 3000 });
+            }
+          );
+        }
+      });
+  }
+
+  goBack() {
+    window.history.back();
+    return;
+  }
 
   user = {
     name: 'Loading...',
@@ -32,7 +68,8 @@ export class UserSetting {
     private fb: FormBuilder,
     private userService: UserService,
     @Inject(PLATFORM_ID) private platformId: Object,
-    private PasswordFunctions: PasswordFunctions
+    private PasswordFunctions: PasswordFunctions,
+    private router: Router
   ) {
     this.form = this.fb.group(
       {
@@ -157,13 +194,14 @@ export class UserSetting {
         password = this.PasswordFunctions.hashPassword(this.form.get('newPassword')?.value);
         passwordChanging = true;
       }
-      if (firstName === this.user.name) {
+
+      if (firstName == this.user.name) {
         firstName = null;
       }
-      if (lastName === this.user.surname) {
+      if (lastName == this.user.surname) {
         lastName = null;
       }
-      if (birthDate === this.user.birthdate) {
+      if (birthDate == this.user.birthdate) {
         birthDate = null;
       }
       const userNew = { id, email, firstName, lastName, birthDate, password };
@@ -195,7 +233,13 @@ export class UserSetting {
             );
           }
         });
-      } else {
+      } else if (
+        userNew.email !== null ||
+        userNew.firstName !== null ||
+        userNew.lastName !== null ||
+        userNew.birthDate !== null ||
+        userNew.password !== null
+      ) {
         this.userService.update(userNew).subscribe(
           (res) => {
             this._snackBar.open('Utente aggiornato con successo!', 'Chiudi', { duration: 3000 });

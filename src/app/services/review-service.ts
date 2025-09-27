@@ -21,7 +21,7 @@ export class ReviewService {
   }
 
   delete(body: {}): Observable<ResponseBase> {
-    return this.http.delete<ResponseBase>(this.url + 'delete', body);
+    return this.http.delete<ResponseBase>(this.url + 'delete', { body });
   }
 
   getById(id: number): Observable<ResponseObject<any>> {

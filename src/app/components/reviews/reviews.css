@@ -1,0 +1,261 @@
+.review-carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 40px auto;
+  position: relative;
+  flex-wrap: wrap;
+  max-width: 100vw;
+  padding: 0 8px;
+}
+
+.nav-btn {
+  background: #e3f2fd;
+  color: #1976d2;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 22px;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 40px;
+  padding: 0;
+}
+
+.nav-btn:disabled {
+  background: #bbdefb;
+  color: #90caf9;
+  cursor: not-allowed;
+}
+
+.nav-btn .mat-icon {
+  color: #1976d2;
+  font-size: 28px;
+}
+
+.reviews {
+  display: flex;
+  gap: 20px;
+  align-items: stretch;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.review-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 20px 24px 16px 24px;
+  min-width: 240px;
+  max-width: 380px;
+  width: 100%;
+  margin-bottom: 16px;
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  position: relative; /* necessario per posizionare row4 */
+}
+
+.review-row {
+  display: flex;
+  width: 100%;
+}
+
+.row1 {
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  background: #e0e0e0;
+  color: #555;
+  font-size: 22px;
+  font-weight: bold;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+}
+
+.reviewer {
+  font-weight: 500;
+  color: #333;
+  font-size: 15px;
+  margin-left: 8px;
+}
+
+.rating {
+  color: #fbc02d;
+  font-size: 16px;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.row2 .title {
+  font-weight: bold;
+  font-size: 16px;
+  color: #1976d2;
+  margin-bottom: 2px;
+  margin-top: 2px;
+}
+
+.row3 .text {
+  color: #444;
+  font-size: 15px;
+  margin-bottom: 0;
+  margin-top: 2px;
+  padding-bottom: 40px; /* spazio per evitare che il testo vada sotto i like/dislike */
+}
+
+.row4 {
+  position: absolute;
+  right: 18px;
+  bottom: 12px;
+  justify-content: flex-end;
+  align-items: flex-end;
+  width: auto;
+  margin-top: 0;
+  z-index: 2;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.like-btn,
+.dislike-btn {
+  background: #f5f5f5;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  font-size: 18px;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  padding: 0;
+}
+
+.like-btn:hover {
+  background: #c8e6c9;
+}
+
+.dislike-btn:hover {
+  background: #ffcdd2;
+}
+
+.mat-icon {
+  font-size: 20px;
+  color: #555;
+}
+
+.average-rating {
+  color: black;
+  font-size: 1rem;
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  width: fit-content;
+  margin: 0 auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  text-align: center;
+}
+
+/* Responsive styles */
+@media (max-width: 900px) {
+  .reviews {
+    gap: 12px;
+  }
+  .review-card {
+    min-width: 180px;
+    max-width: 95vw;
+    padding: 14px 10px 12px 10px;
+  }
+  .row2 .title,
+  .reviewer {
+    font-size: 14px;
+  }
+  .row3 .text {
+    font-size: 13px;
+    padding-bottom: 32px;
+  }
+  .avatar {
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 600px) {
+  .review-carousel {
+    flex-direction: column;
+    gap: 8px;
+    margin: 20px auto;
+    padding: 0 2px;
+  }
+  .reviews {
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+  }
+  .review-card {
+    min-width: 0;
+    max-width: 100vw;
+    padding: 10px 4px 10px 4px;
+    position: relative;
+  }
+  .row2 .title,
+  .reviewer {
+    font-size: 13px;
+  }
+  .row3 .text {
+    font-size: 12px;
+    padding-bottom: 24px;
+  }
+  .avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+  .average-rating {
+    font-size: 0.95rem;
+    padding: 10px;
+  }
+  .nav-btn {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    min-height: 32px;
+    font-size: 18px;
+  }
+  .nav-btn .mat-icon {
+    font-size: 22px;
+  }
+  .row4 {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    margin-bottom: 0;
+    margin-top: 0;
+    width: auto;
+    justify-content: flex-end;
+    align-items: flex-end;
+    z-index: 2;
+    /* background: rgba(255,255,255,0.85);  // opzionale per leggibilità */
+  }
+}

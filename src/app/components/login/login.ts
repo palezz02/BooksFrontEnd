@@ -51,11 +51,13 @@ export class Login {
             this.msg = 'Login avvenuto con successo!';
             if (resp.role == 'ADMIN') {
               this.auth.setAdmin();
+              window.location.href = '/home';
             }
             this._snackBar.open(this.msg, 'Chiudi', {
               duration: 3000,
             });
-            this.router.navigate(['books']);
+
+            this.router.navigate(['home']);
           } else {
             this.msg = 'User / Password invalido';
             this._snackBar.open(this.msg, 'Chiudi', {
