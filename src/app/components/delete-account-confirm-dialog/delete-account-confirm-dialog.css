@@ -1,0 +1,43 @@
+/* Centra il titolo e aggiungi spazio */
+h2[mat-dialog-title] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #d32f2f;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+/* Stile per il contenuto */
+mat-dialog-content div {
+  margin: 18px 0 10px 0;
+  text-align: center;
+}
+
+mat-dialog-content strong {
+  color: #d32f2f;
+}
+
+mat-dialog-content span {
+  font-weight: bold;
+}
+
+/* Pulsanti */
+mat-dialog-actions {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+button[mat-stroked-button] {
+  min-width: 110px;
+}
+
+button[mat-raised-button][color='warn'] {
+  min-width: 170px;
+  font-weight: bold;
+}
