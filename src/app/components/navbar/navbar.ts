@@ -1,4 +1,5 @@
-import { Component, HostListener } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, HostListener, Inject, PLATFORM_ID } from '@angular/core';
 
 @Component({
   selector: 'app-navbar',
@@ -9,6 +10,19 @@ import { Component, HostListener } from '@angular/core';
 export class Navbar {
   searchQuery = '';
   menuOpen = false;
+  admin = false;
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+
+  updateAdminStatus() {
+    if (isPlatformBrowser(this.platformId)) {
+      const role = localStorage.getItem('isAdmin');
+      this.admin = role == '1';
+    }
+  }
+
+  ngOnInit() {
+    this.updateAdminStatus();
+  }
 
   onSearch() {
     console.log('Ricerca:', this.searchQuery);
@@ -29,6 +43,13 @@ export class Navbar {
   onResize() {
     if (window.innerWidth > 600 && this.menuOpen) {
       this.menuOpen = false;
+    }
+  }
+
+  scrollToFooter() {
+    const footer = document.getElementById('footer');
+    if (footer) {
+      footer.scrollIntoView({ behavior: 'smooth' });
     }
   }
 }

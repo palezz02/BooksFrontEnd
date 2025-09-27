@@ -39,8 +39,7 @@
   <!-- Links di navigazione desktop/tablet -->
   <nav class="nav-links" [class.mobile-open]="menuOpen">
     <a mat-button routerLink="/home" (click)="closeMenuIfMobile()">Home</a>
-    <a mat-button routerLink="/about" (click)="closeMenuIfMobile()">About</a>
-    <a mat-button routerLink="/contact" (click)="closeMenuIfMobile()">Contact</a>
+    <button mat-button (click)="scrollToFooter(); closeMenuIfMobile()">Contact</button>
   </nav>
 
   <!-- Spacer per spingere search e profilo a destra -->
@@ -63,6 +62,11 @@
   <!-- Icona profilo -->
   <button mat-icon-button [routerLink]="'/setting'">
     <mat-icon>account_circle</mat-icon>
+  </button>
+
+  <!-- Icona admin -->
+  <button mat-icon-button [routerLink]="'/admin'" [hidden]="!admin">
+    <mat-icon>admin_panel_settings</mat-icon>
   </button>
 </mat-toolbar>
 
