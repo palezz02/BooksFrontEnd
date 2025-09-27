@@ -1,28 +1,41 @@
-<div class="carousel-container">
+<div class="carousel-container" *ngIf="books.length > 0">
 
   <button class="arrow left" (click)="prevBook()">&#10094;</button>
 
-  
   <div class="carousel-content">
-    
+
+
     <div class="left-column">
-      <h1>{{ currentBook.category }}</h1>
+      <h1>{{ currentBookCategories }}</h1>
       <p>{{ currentBook.description }}</p>
+      <p><strong>Authors:</strong> {{ currentBookAuthors }}</p>
+      <p><strong>Publisher:</strong> {{ currentBook.publisher }}</p>
     </div>
 
-    
+
     <div class="middle-column">
-      <img [src]="currentBook.coverUrl" alt="Book cover" />
+      <img [src]="currentBook.coverImage" alt="Book cover" />
     </div>
 
-   
+
     <div class="right-column">
       <h2>{{ currentBook.title }}</h2>
-      <p>⭐ {{ currentBook.rating }} / 5 ({{ currentBook.reviews }} reviews)</p>
-      <p>Published: {{ currentBook.year }}</p>
-    </div>
-  </div>
 
+      <p *ngIf="currentBook.averageRating !== null">
+        ⭐ {{ currentBook.averageRating | number:'1.1-1' }} / 5
+      </p>
+
+      <p *ngIf="currentBook.reviews">({{ currentBook.reviews.length }} reviews)</p>
+
+      <p>Published: {{ currentBook.publicationDate | date: 'yyyy' }}</p>
+      <p>Language: {{ currentBook.languageCode }}</p>
+      <p>Edition: {{ currentBook.edition }}</p>
+    </div>
+
+
+  </div>
 
   <button class="arrow right" (click)="nextBook()">&#10095;</button>
 </div>
+
+<p *ngIf="books.length === 0">Loading books...</p>

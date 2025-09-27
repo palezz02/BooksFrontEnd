@@ -1,62 +1,63 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { BookService } from '../../services/book-service';
+import { AuthorServiceService } from '../../services/author-service.service';
+import { PublisherService } from '../../services/publisher-service';
+import { forkJoin, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-interface Book {
-  category: string;
-  description: string;
-  coverUrl: string;
+interface BookDTO {
+  id: number;
   title: string;
-  reviews: number;
-  rating: number;
-  year: number;
+  description: string;
+  coverImage: string;
+  publicationDate: string;
+  languageCode: string;
+  edition: string;
+  publisher: number;         
+  authors: number[];       
+  categories: { id: number; name: string }[];
+  reviews: number[];
+  averageRating: number;
 }
+
+interface Author {
+  id: number;
+  fullName: string;
+}
+
+interface Publisher {
+  id: number;
+  name: string;
+}
+
+interface Category {
+  id: number;
+  name: string;
+}
+
 
 @Component({
   selector: 'app-best-seller',
   templateUrl: './best-seller.html',
   styleUrls: ['./best-seller.css'],
-  standalone: false,
+  standalone: false
 })
-export class BestSeller {
-  books: Book[] = [
-    {
-      category: 'Fantasy',
-      description: `In a world where magic is fading, a young sorcerer embarks on a perilous journey to reclaim ancient powers 
-      and prevent a looming darkness from consuming the realm. Along the way, alliances will be tested, secrets revealed, 
-      and the true nature of courage discovered. This is a tale of wonder, betrayal, and the enduring spirit of heroes.`,
-      coverUrl: 'https://picsum.photos/400/600?random=1',
-      title: 'The Enchanted Realm',
-      reviews: 120,
-      rating: 4.5,
-      year: 2021,
-    },
-    {
-      category: 'Science Fiction',
-      description: `In the year 2157, humanity has begun colonizing distant worlds, but with new frontiers come new threats. 
-      When a brilliant but troubled captain uncovers a conspiracy that could destroy the fragile balance of the galaxy, 
-      she must navigate political intrigue, alien civilizations, and her own past to prevent catastrophe. A story of adventure, 
-      mystery, and the infinite possibilities of the stars.`,
-      coverUrl: 'https://picsum.photos/400/600?random=2',
-      title: 'Beyond the Stars',
-      reviews: 90,
-      rating: 4.2,
-      year: 2022,
-    },
-    {
-      category: 'Mystery',
-      description: `Detective Eleanor Blake thought she had seen it all, until a seemingly straightforward case spirals into a web 
-      of lies, deception, and dark secrets. Every clue uncovers another layer of intrigue, pushing her closer to a revelation 
-      that could shatter everything she believes. A gripping thriller that will keep you guessing until the very last page.`,
-      coverUrl: 'https://picsum.photos/400/600?random=3',
-      title: 'The Hidden Truth',
-      reviews: 150,
-      rating: 4.8,
-      year: 2020,
-    },
-  ];
+export class BestSeller implements OnInit {
+  books: any[] = []; 
 
   currentIndex = 0;
 
-  get currentBook(): Book {
+  constructor(
+    private bookService: BookService,
+    private authorService: AuthorServiceService,
+    private publisherService: PublisherService
+  ) {}
+
+  ngOnInit() {
+    this.loadBooks();
+  }
+
+  get currentBook() {
     return this.books[this.currentIndex];
   }
 
@@ -66,5 +67,49 @@ export class BestSeller {
 
   nextBook() {
     this.currentIndex = (this.currentIndex + 1) % this.books.length;
+  }
+
+  //get currentBookCategories(): string {
+  //  return this.currentBook?.categories?.map(c => c.name).join(', ') || '';
+  //}
+
+  get currentBookAuthors(): string {
+    return this.currentBook?.authors?.join(', ') || '';
+  }
+
+  get currentBookCategories(): string {
+    return this.currentBook?.categories?.map((c: Category) => c.name).join(', ') || '';
+  }
+
+
+  loadBooks() {
+    this.bookService.getAll().subscribe((res: any) => {
+      const bookDTOs: BookDTO[] = res.dati;
+
+      
+      const observables: Observable<any>[] = bookDTOs.map(book => {
+        const authorRequests: Observable<any>[] = book.authors.map(id => this.authorService.getById(id));
+        const publisherRequest: Observable<any> = this.publisherService.getPublisher(book.publisher);
+
+        
+        return forkJoin([...authorRequests, publisherRequest]).pipe(
+          map((results: any[]) => {
+            const authors = results.slice(0, book.authors.length).map(a => a.dati.fullName);
+            const publisher = results[results.length - 1].dati.name;
+
+            return {
+              ...book,
+              authors,
+              publisher
+            };
+          })
+        );
+      });
+
+     
+      forkJoin(observables).subscribe((booksWithNames: any[]) => {
+        this.books = booksWithNames;
+      });
+    });
   }
 }
