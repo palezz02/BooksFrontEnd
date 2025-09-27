@@ -17,6 +17,7 @@ interface BookDTO {
   authors: number[];       
   categories: { id: number; name: string }[];
   reviews: number[];
+  averageRating: number;
 }
 
 interface Author {
@@ -77,8 +78,8 @@ export class BestSeller implements OnInit {
   }
 
   get currentBookCategories(): string {
-  return this.currentBook?.categories?.map((c: Category) => c.name).join(', ') || '';
-}
+    return this.currentBook?.categories?.map((c: Category) => c.name).join(', ') || '';
+  }
 
 
   loadBooks() {

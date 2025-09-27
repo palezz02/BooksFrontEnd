@@ -20,11 +20,18 @@
 
     <div class="right-column">
       <h2>{{ currentBook.title }}</h2>
-      <p *ngIf="currentBook.reviews">⭐ {{ currentBook.reviews.length }} reviews</p>
+
+      <p *ngIf="currentBook.averageRating !== null">
+        ⭐ {{ currentBook.averageRating | number:'1.1-1' }} / 5
+      </p>
+
+      <p *ngIf="currentBook.reviews">({{ currentBook.reviews.length }} reviews)</p>
+
       <p>Published: {{ currentBook.publicationDate | date: 'yyyy' }}</p>
       <p>Language: {{ currentBook.languageCode }}</p>
       <p>Edition: {{ currentBook.edition }}</p>
     </div>
+
 
   </div>
 
