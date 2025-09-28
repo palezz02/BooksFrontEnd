@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import CryptoJS from 'crypto-js';
-import { SALT_KEY } from '../../environments/pwd';
+import { SALT_KEY } from '../../environment/pwd';
 
 @Injectable({
   providedIn: 'root',
