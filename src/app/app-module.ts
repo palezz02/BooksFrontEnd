@@ -45,6 +45,7 @@ import { Info } from './components/info/info';
 import { MatDialogContent } from '@angular/material/dialog';
 import { MatDialogActions } from '@angular/material/dialog';
 import { DeleteAccountConfirmDialog } from './components/delete-account-confirm-dialog/delete-account-confirm-dialog';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 @NgModule({
   declarations: [
     App,
@@ -92,6 +93,7 @@ import { DeleteAccountConfirmDialog } from './components/delete-account-confirm-
     MatTooltipModule,
     MatDialogContent,
     MatDialogActions,
+    MatProgressSpinnerModule,
   ],
   providers: [
     provideHttpClient(withFetch()),
