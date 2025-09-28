@@ -1,17 +1,14 @@
 <div class="cart-page">
-  <!-- Loading State -->
   <div *ngIf="isLoading" class="loading-container">
     <mat-spinner></mat-spinner>
     <p>Loading cart...</p>
   </div>
 
-  <!-- Empty Cart State -->
   <div *ngIf="!isLoading && cartItems.length === 0" class="empty-cart">
     <mat-icon class="empty-icon">shopping_cart</mat-icon>
     <h2>Your cart is empty</h2>
     <p>Add some books to get started!</p>
     
-    <!-- Optional: Add refresh and clear buttons for empty state -->
     <div class="empty-cart-actions" style="margin-top: 24px; display: flex; gap: 16px;">
       <button mat-button color="accent" (click)="refreshCart()">
         <mat-icon>refresh</mat-icon>
@@ -20,15 +17,12 @@
     </div>
   </div>
 
-  <!-- Cart Items -->
   <mat-card *ngIf="cartItems.length > 0" class="cart-card">
-    <!-- Cart Header with Actions -->
     <div class="cart-header" style="padding: 16px 24px; border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center;">
       <h3 style="margin: 0; font-size: 18px; font-weight: 600;">Your Cart ({{ getQuantity() }} items)</h3>
      
     </div>
 
-    <!-- Cart Items List -->
     <div class="cart-items" *ngFor="let item of cartItems; let i = index">
       <div>
         <img mat-card-image 
@@ -78,7 +72,6 @@
     </div>
   </mat-card>
 
-  <!-- Order Summary -->
   <mat-card *ngIf="cartItems.length > 0" class="price-details-card">
     <mat-card-header>
       <mat-card-title>Price Details</mat-card-title>
@@ -86,7 +79,6 @@
     
     <mat-card-content>
       <mat-list>
-        <!-- Fixed: Use getQuantity() instead of getTotalQuantity() -->
         <mat-list-item>
           <div class="item-title">{{ getQuantity() }} items</div>
         </mat-list-item>
@@ -103,7 +95,6 @@
       
       <div class="total-amount-row">
         <div class="total-amount-label">Total Amount</div>
-        <!-- Fixed: Use getTotal() instead of getTotalAmount() -->
         <div class="total-amount-price">{{ getTotal() | currency : 'EUR' }}</div>
       </div>
     </mat-card-content>

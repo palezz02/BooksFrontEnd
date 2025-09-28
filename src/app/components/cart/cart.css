@@ -2,14 +2,8 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 16px;
-  /* min-height: 80vh; */
   display: flex;
-  /* flex-direction: column; */
   gap: 24px;
-   /* display: grid;
-    grid-template-columns: 1fr 400px;
-    gap: 32px;
-    align-items: start; */
 }
 
 .loading-container {
