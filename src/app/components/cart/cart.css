@@ -1,39 +1,35 @@
-.cart-page {
+.cart-content {
   display: flex;
   margin-inline: auto;
   max-width: 1250px;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  justify-content: space-between; /* width: 90%; */
 }
-
 .cart-card,
 .price-details-card {
   width: 90%;
-  max-width: 600px;
+  height: 0%;
+  max-width: 600px; /* margin-inline: auto; */
   margin-top: 2rem;
   border: 1px solid rgb(223, 223, 223);
+  justify-content: space-between;
 }
 mat-card img {
-  max-width: 8rem;
-  height: auto;
+  max-width: 10rem;
   border-radius: 10%;
-  object-fit: cover;
+  margin-right: 1rem;
 }
-
 .cart-items {
   display: flex;
   padding: 1rem;
   width: 100%;
-  gap: 1rem;
 }
-
 .item-details {
-  margin-right: 1.2rem;
+  /* margin-left: 1rem; */
+  margin-right: 1.2rem; /* margin: 0;  padding: 0; */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
-  flex: 1;
+  width: 1000%;
 }
 .item-details h3 {
   margin: 0;
@@ -48,7 +44,6 @@ p {
   display: flex;
   gap: 0.5rem;
 }
-
 .quantity-control {
   font-weight: bold;
   display: flex;
@@ -68,7 +63,6 @@ button {
 .price-div {
   display: block;
 }
-
 mat-card-content {
   margin-bottom: 2rem;
   display: flex;
@@ -88,7 +82,6 @@ mat-card-content {
   margin-bottom: 2rem;
   margin-top: 1rem;
 }
-
 .place-order-button {
   margin-bottom: 2rem;
   margin-inline: auto;
@@ -103,40 +96,4 @@ mat-card-content {
 }
 mat-list-item {
   padding: 0;
-}
-@media (max-width: 768px) {
-  .cart-card {
-    padding-right: 20px;
-    margin-inline: auto;
-  }
-  .cart-items {
-    padding-right: 10px;
-    flex-direction: row;
-    align-items: flex-start;
-    text-align: left;
-  }
-
-  .cart-items img {
-    max-width: 6rem;
-    margin-bottom: 0;
-  }
-
-  .item-details {
-    margin-right: 0.5rem;
-  }
-
-  .quantity-control {
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-  .price-details-card {
-    margin-inline: auto;
-  }
-}
-@media (min-width: 768px) and (max-width: 1200px) {
-  .cart-card,
-  .price-details-card {
-    width: 48%;
-    max-width: none;
-  }
 }

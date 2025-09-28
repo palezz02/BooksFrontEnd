@@ -1,26 +1,21 @@
 <div class="cart-page">
-  <!-- Loading State -->
   <div *ngIf="isLoading" class="loading-container">
     <mat-spinner></mat-spinner>
-    <p>Loading cart...</p>
+    <p>Loading cart ...</p>
   </div>
 
-  <!-- Empty Cart State -->
-  <div *ngIf="!isLoading && cartItems.length === 0" class="empty-cart">
+  <div *ngIf="!isLoading && !cartItems.length" class="empty-cart">
     <mat-icon class="empty-icon">shopping_cart</mat-icon>
     <h2>Your cart is empty</h2>
     <p>Add some books to get started!</p>
-    <button mat-raised-button color="primary">
-      Browse Books
-    </button>
+    <button mat-raised-button color="primary" routerLink="/books">Browse Books</button>
   </div>
 
-  <!-- Cart Items -->
   <div *ngIf="cartItems.length > 0" class="cart-content">
-    <mat-card class="cart-card">
+    <mat-card  class="cart-card">
       <mat-card-header>
-        <mat-card-title>Shopping Cart ({{ getTotalQuantity() }} items)</mat-card-title>
-        <div class="cart-actions">
+        <mat-card-title>Your Shopping Cart</mat-card-title>
+      <div class="cart-actions">
           <button mat-button color="accent" (click)="refreshCart()">
             <mat-icon>refresh</mat-icon>
             Refresh
@@ -31,120 +26,78 @@
           </button>
         </div>
       </mat-card-header>
-
       <mat-card-content>
-        <div class="cart-item" *ngFor="let item of cartItems">
-          <div class="book-image">
-            <img [src]="item.book?.coverImage || 'assets/default-book-cover.jpg'" 
-                 [alt]="item.book?.title" 
-                 class="cart-image" />
-          </div>
-          
-          <div class="item-details">
-            <div class="top-item">
-              <div class="book-info">
-                <h3>{{ item.book?.title }}</h3>
-                <p class="book-meta">
-                  <span *ngIf="item.book?.isbn">ISBN: {{ item.book.isbn }}</span>
-                  <span *ngIf="item.book?.pageCount"> • {{ item.book.pageCount }} pages</span>
-                  <span *ngIf="item.book?.languageCode"> • {{ item.book.languageCode }}</span>
-                </p>
-                <p class="book-description" *ngIf="item.book?.description">
-                  {{ item.book.description.length > 100 ? (item.book.description | slice:0:100) + '...' : item.book.description }}
-                </p>
-                <p class="stock-info" 
-                   [class.low-stock]="item.stock < 5"
-                   [class.out-of-stock]="item.stock === 0">
-                  <mat-icon *ngIf="item.stock < 5 && item.stock > 0" class="warning-icon">warning</mat-icon>
-                  <span *ngIf="item.stock > 0">{{ item.stock }} in stock</span>
-                  <span *ngIf="item.stock === 0">Out of stock</span>
-                </p>
-              </div>
-              
-              <div class="remove-button">
-                <button mat-icon-button 
-                        color="warn" 
-                        (click)="removeItem(item)">
-                  <mat-icon>delete</mat-icon>
-                </button>
-              </div>
+      <div class="cart-items" *ngFor="let item of cartItems">
+        <div>
+          <img
+            mat-card-image
+            [src]="item.book?.imageSrc"
+            alt="{{ item.book.title }}"
+            class="cart-image"
+          />
+        </div>
+        <div class="item-details">
+          <div class="top-item">
+            <div>
+              <h2>{{ item.book.title }}</h2>
+              <p>
+                <span>{{ item.book.author }}</span>
+                <span> •</span>
+                <!-- <span>{{ item.book.category }}</span> -->
+                <span> •</span>
+                <span>{{ item.book.year }}</span>
+              </p>
             </div>
-            
-            <div class="quantity-control">
-              <div class="price-info">
-                <span class="unit-price">{{ item.unitPrice | currency:'EUR' }} each</span>
-                <span class="subtotal">{{ item.subtotal | currency:'EUR' }}</span>
-              </div>
-              
-              <div class="quantity-selector">
-                <button mat-icon-button 
-                        (click)="decreaseQuantity(item)"
-                        [disabled]="item.quantity <= 1">
-                  <mat-icon>remove</mat-icon>
-                </button>
-                
-                <span class="quantity-display">{{ item.quantity }}</span>
-                
-                <button mat-icon-button 
-                        (click)="increaseQuantity(item)"
-                        [disabled]="item.quantity >= item.stock">
-                  <mat-icon>add</mat-icon>
-                </button>
-              </div>
+            <div>
+              <button mat-icon-button color="warn" (click)="removeItem(item)">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="quantity-control">
+            <p>{{ item.price | currency : 'EUR' }}</p>
+            <div class="quantity">
+              <button mat-icon-button (click)="decreaseQuantity(item)">
+                <mat-icon>remove</mat-icon>
+              </button>
+              <span>{{ item.quantity }}</span>
+              <button mat-icon-button (click)="increaseQuantity(item)">
+                <mat-icon>add</mat-icon>
+              </button>
             </div>
           </div>
         </div>
+      </div>
       </mat-card-content>
     </mat-card>
-
-    <!-- Order Summary -->
     <mat-card class="price-details-card">
+      <!-- *ngIf="cart as c"  -->
+
       <mat-card-header>
-        <mat-card-title>Order Summary</mat-card-title>
+        <mat-card-title>Price Details</mat-card-title>
       </mat-card-header>
-      
       <mat-card-content>
-        <div class="summary-row" *ngFor="let item of cartItems">
-          <div class="summary-item">
-            <span class="item-name">{{ item.quantity }}x {{ item.book?.title }}</span>
-            <span class="item-price">{{ item.subtotal | currency:'EUR' }}</span>
-          </div>
-        </div>
-        
-        <mat-divider></mat-divider>
-        
-        <div class="summary-row total-row">
-          <div class="summary-item">
-            <span class="total-label">Total ({{ getTotalQuantity() }} items)</span>
-            <span class="total-price">{{ getTotalAmount() | currency:'EUR' }}</span>
-          </div>
-        </div>
-        
-        <div class="shipping-info">
-          <p><mat-icon>local_shipping</mat-icon> Free shipping on orders over €50</p>
-          <p *ngIf="getTotalAmount() < 50">
-            Add {{ (50 - getTotalAmount()) | currency:'EUR' }} more for free shipping
-          </p>
+        <mat-list>
+          <mat-list-item>
+            <div matListItemTitle class="item-title">({{ getTotalQuantity() }} items) items</div>
+          </mat-list-item>
+          <mat-list-item *ngFor="let item of cartItems">
+            <div class="list-item-content">
+              <div class="item-name">{{ item.quantity }} x {{ item.book.title }}</div>
+              <div class="item-price">
+                <p>{{ item.price | currency : 'EUR' }}</p>
+              </div>
+            </div>
+          </mat-list-item>
+        </mat-list>
+        <div class="total-amount-row">
+          <div class="total-amount-label">Total Amount</div>
+          <div class="total-amount-price">{{ getTotalAmount() | currency : 'EUR' }}</div>
         </div>
       </mat-card-content>
-      
-      <mat-card-actions class="checkout-actions">
-        <button mat-button color="accent">
-          <mat-icon>arrow_back</mat-icon>
-          Continue Shopping
-        </button>
-        
-        <button mat-raised-button 
-                color="primary" 
-                class="checkout-button"
-                [disabled]="cartItems.length === 0 || isProcessingOrder"
-                (click)="proceedToCheckout()">
-          <mat-icon>shopping_cart_checkout</mat-icon>
-          <span *ngIf="!isProcessingOrder">Proceed to Checkout</span>
-          <span *ngIf="isProcessingOrder">Processing...</span>
-          <mat-spinner diameter="20" *ngIf="isProcessingOrder"></mat-spinner>
-        </button>
-      </mat-card-actions>
+      <button mat-flat-button color="accent" class="place-order-button">
+        <p><span> Place order</span><mat-icon>arrow_forward</mat-icon></p>
+      </button>
     </mat-card>
   </div>
 </div>
