@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { InventoryService } from '../../services/inventory-service';
 import { BookService } from '../../services/book-service';
 import { OrderItemServiceService } from '../../services/order-item-service.service';
 
 @Component({
-  selector: 'app-cart',
+  selector: 'cart',
   templateUrl: './cart.html',
   styleUrls: ['./cart.css'],
   standalone: false,
@@ -12,71 +12,79 @@ import { OrderItemServiceService } from '../../services/order-item-service.servi
 export class CartInfo implements OnInit {
   cartItems: any[] = [];
   isLoading = true;
-  isProcessingOrder = false;
 
   constructor(
     private inventoryService: InventoryService,
     private bookService: BookService,
-    private orderItemService: OrderItemServiceService
+    private orderItemService: OrderItemServiceService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    this.loadCart();
+    this.loadCartFromInventory();
   }
 
-  loadCart(): void {
+  loadCartFromInventory(): void {
     this.isLoading = true;
     
-    // Load all order items (this represents the cart)
-    this.orderItemService.listOrderItems().subscribe({
+    this.inventoryService.getAll().subscribe({
       next: (response) => {
-        if (response.rc) {
-          this.processOrderItems(response.dati);
+        if (response.rc && response.dati) {
+          this.processInventoryData(response.dati);
         }
         this.isLoading = false;
       },
       error: (error) => {
-        console.error('Error loading cart:', error);
+        console.error('Error loading inventory:', error);
         this.isLoading = false;
       }
     });
   }
 
-  processOrderItems(orderItems: any[]): void {
+  processInventoryData(inventories: any[]): void {
     this.cartItems = [];
     
-    orderItems.forEach(orderItem => {
-      // Get inventory details for each order item
-      this.inventoryService.getById(orderItem.inventory).subscribe({
-        next: (inventoryResponse) => {
-          if (inventoryResponse.rc) {
-            const inventory = inventoryResponse.dati;
-            
-            // Get book details from inventory
-            this.bookService.getById(inventory.bookId).subscribe({
-              next: (bookResponse) => {
-                if (bookResponse.rc) {
-                  const cartItem = {
-                    orderItem: orderItem,
-                    inventory: inventory,
-                    book: bookResponse.dati,
-                    quantity: orderItem.quantity,
-                    unitPrice: orderItem.unitPrice,
-                    subtotal: orderItem.subtotal,
-                    stock: inventory.stock
-                  };
-                  this.cartItems.push(cartItem);
-                }
+    inventories.forEach(inventory => {
+      if (inventory.bookId) {
+        this.bookService.getById(inventory.bookId).subscribe({
+          next: (bookResponse) => {
+            if (bookResponse.rc && bookResponse.dati) {
+              const book = bookResponse.dati;
+              
+              if (inventory.orderItem && inventory.orderItem.length > 0) {
+                inventory.orderItem.forEach((orderItemId: number) => {
+                  this.orderItemService.getOrderItem(orderItemId).subscribe({
+                    next: (orderItemResponse) => {
+                      if (orderItemResponse.rc && orderItemResponse.dati) {
+                        const orderItem = orderItemResponse.dati;
+                        
+                        const cartItem = {
+                          inventory: inventory,
+                          book: book,
+                          orderItem: orderItem,
+                          quantity: orderItem.quantity,
+                          unitPrice: orderItem.unitPrice,
+                          subtotal: orderItem.subtotal
+                        };
+                        
+                        this.cartItems.push(cartItem);
+                      }
+                    }
+                  });
+                });
               }
-            });
+            }
+          },
+          error: (error) => {
+            console.error('Error loading book:', error);
           }
-        }
-      });
+        });
+      }
     });
   }
 
   increaseQuantity(cartItem: any): void {
-    if (cartItem.quantity >= cartItem.stock) {
+    if (cartItem.quantity >= cartItem.inventory.stock) {
       alert('Not enough stock available');
       return;
     }
@@ -91,16 +99,37 @@ export class CartInfo implements OnInit {
       quantity: newQuantity
     };
 
+    const originalQuantity = cartItem.quantity;
+    const originalSubtotal = cartItem.subtotal;
+    
+    cartItem.quantity = newQuantity;
+    cartItem.subtotal = newSubtotal;
+    cartItem.orderItem.quantity = newQuantity;
+    cartItem.orderItem.subtotal = newSubtotal;
+
+    this.cartItems = [...this.cartItems];
+    this.cdr.detectChanges();
+
     this.orderItemService.updateOrderItem(updateReq).subscribe({
       next: (response) => {
         if (response.rc) {
-          cartItem.quantity = newQuantity;
-          cartItem.subtotal = newSubtotal;
+          console.log('Quantity updated successfully');
         } else {
+          cartItem.quantity = originalQuantity;
+          cartItem.subtotal = originalSubtotal;
+          cartItem.orderItem.quantity = originalQuantity;
+          cartItem.orderItem.subtotal = originalSubtotal;
+          this.cartItems = [...this.cartItems];
+          this.cdr.detectChanges();
           alert('Error updating quantity: ' + response.msg);
         }
       },
       error: (error) => {
+        cartItem.quantity = originalQuantity;
+        cartItem.subtotal = originalSubtotal;
+        cartItem.orderItem.quantity = originalQuantity;
+        cartItem.orderItem.subtotal = originalSubtotal;
+        this.cartItems = [...this.cartItems];
         console.error('Error updating quantity:', error);
         alert('Error updating quantity');
       }
@@ -123,16 +152,35 @@ export class CartInfo implements OnInit {
       quantity: newQuantity
     };
 
+    const originalQuantity = cartItem.quantity;
+    const originalSubtotal = cartItem.subtotal;
+    
+    cartItem.quantity = newQuantity;
+    cartItem.subtotal = newSubtotal;
+    cartItem.orderItem.quantity = newQuantity;
+    cartItem.orderItem.subtotal = newSubtotal;
+
+    this.cartItems = [...this.cartItems];
+
     this.orderItemService.updateOrderItem(updateReq).subscribe({
       next: (response) => {
         if (response.rc) {
-          cartItem.quantity = newQuantity;
-          cartItem.subtotal = newSubtotal;
+          console.log('Quantity updated successfully');
         } else {
+          cartItem.quantity = originalQuantity;
+          cartItem.subtotal = originalSubtotal;
+          cartItem.orderItem.quantity = originalQuantity;
+          cartItem.orderItem.subtotal = originalSubtotal;
+          this.cartItems = [...this.cartItems];
           alert('Error updating quantity: ' + response.msg);
         }
       },
       error: (error) => {
+        cartItem.quantity = originalQuantity;
+        cartItem.subtotal = originalSubtotal;
+        cartItem.orderItem.quantity = originalQuantity;
+        cartItem.orderItem.subtotal = originalSubtotal;
+        this.cartItems = [...this.cartItems];
         console.error('Error updating quantity:', error);
         alert('Error updating quantity');
       }
@@ -140,74 +188,78 @@ export class CartInfo implements OnInit {
   }
 
   removeItem(cartItem: any): void {
-    const deleteReq = {
-      id: cartItem.orderItem.id
-    };
+   const deleteReq = {
+  id: cartItem.orderItem?.id,
+  orderId: cartItem.orderItem?.orderId,
+  inventoryId: cartItem.inventory?.id,
+  quantity: cartItem.quantity
+};
 
+
+    console.log('deleteReq being sent', deleteReq);
+
+    const originalIndex = this.cartItems.indexOf(cartItem);
+    if (originalIndex > -1) {
+      this.cartItems.splice(originalIndex, 1);
+      this.cartItems = [...this.cartItems];
+    }
+    this.cdr.markForCheck();
     this.orderItemService.removeOrderItem(deleteReq).subscribe({
       next: (response) => {
         if (response.rc) {
-          const index = this.cartItems.indexOf(cartItem);
-          if (index > -1) {
-            this.cartItems.splice(index, 1);
-          }
+          console.log('Item removed successfully');
         } else {
+          if (originalIndex > -1) {
+
+            this.cartItems.splice(originalIndex, 0, cartItem);
+            this.cartItems = [...this.cartItems];
+                        this.cdr.markForCheck();
+
+          }
+         this.cdr.markForCheck();
+
           alert('Error removing item: ' + response.msg);
         }
       },
       error: (error) => {
+        if (originalIndex > -1) {
+          this.cartItems.splice(originalIndex, 0, cartItem);
+          this.cartItems = [...this.cartItems];
+        }
         console.error('Error removing item:', error);
         alert('Error removing item');
       }
     });
   }
 
-  clearCart(): void {
-    if (confirm('Are you sure you want to clear your cart?')) {
-      const removePromises = this.cartItems.map(cartItem => {
-        const deleteReq = { id: cartItem.orderItem.id };
-        return this.orderItemService.removeOrderItem(deleteReq).toPromise();
-      });
-
-      Promise.all(removePromises).then(() => {
-        this.cartItems = [];
-        alert('Cart cleared successfully');
-      }).catch((error) => {
-        console.error('Error clearing cart:', error);
-        alert('Error clearing cart');
-      });
-    }
-  }
-
-  refreshCart(): void {
-    this.loadCart();
-  }
-
-  getTotalQuantity(): number {
-    return this.cartItems.reduce((total, item) => total + item.quantity, 0);
-  }
-
-  getTotalAmount(): number {
+  getTotal(): number {
     return this.cartItems.reduce((total, item) => total + item.subtotal, 0);
   }
 
-  proceedToCheckout(): void {
+  getQuantity(): number {
+    return this.cartItems.reduce((total, item) => total + item.quantity, 0);
+  }
+
+  refreshCart(): void {
+    console.log('Refreshing cart...');
+    this.loadCartFromInventory();
+  }
+
+
+  trackByCartItem(index: number, item: any): any {
+    return item.orderItem?.id || index;
+  }
+
+  placeOrder(): void {
     if (this.cartItems.length === 0) {
       alert('Your cart is empty');
       return;
     }
 
-    this.isProcessingOrder = true;
+    console.log('Placing order for:', this.cartItems);
+    alert('Order placed successfully!');
     
-    // Here you would create an Order and associate all OrderItems with it
-    console.log('Processing checkout for items:', this.cartItems);
-    
-    // Simulate checkout process
-    setTimeout(() => {
-      this.isProcessingOrder = false;
-      alert('Order placed successfully!');
-      // After successful order, clear the cart
-      this.cartItems = [];
-    }, 2000);
+    // After successful order, you might want to clear the cart
+    // or redirect to order confirmation page
   }
 }
