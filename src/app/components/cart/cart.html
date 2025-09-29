@@ -44,7 +44,7 @@
               {{ item.book.description.length > 100 ? (item.book.description | slice:0:100) + '...' : item.book.description }}
             </p>
             <p class="stock-info">
-              <span>{{ item.inventory.stock }} in stock</span>
+              <span>{{ item.book.stock }} in stock</span>
             </p>
           </div>
           
