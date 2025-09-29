@@ -32,4 +32,13 @@ export class BookService {
   getAll(): Observable<ResponseList<any>> {
     return this.http.get<ResponseList<any>>(this.url + 'getAll');
   }
+
+  getBestByCategory(limit: number, offset: number): Observable<ResponseList<any>> {
+    let params = new HttpParams()
+      .set('limit', limit)
+      .set('offset', offset);
+
+    return this.http.get<ResponseList<any>>(this.url + 'getBestByCategory', { params });
+  }
+
 }
