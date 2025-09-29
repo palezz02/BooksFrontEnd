@@ -31,4 +31,9 @@ export class PublisherService {
     console.log(body);
     return this.http.put<ResponseBase>(this.url + 'update', body);
   }
+
+   getById(id: number): Observable<ResponseObject<any>> {
+    let params = new HttpParams().set('id', id);
+    return this.http.get<ResponseObject<any>>(this.url + 'getById', { params });
+  }
 }

@@ -9,19 +9,26 @@
     <!-- Autore -->
     <ng-container matColumnDef="author">
       <th mat-header-cell *matHeaderCellDef>Autore</th>
-      <td mat-cell *matCellDef="let book">{{ book.author }}</td>
+      <td mat-cell *matCellDef="let book">
+        <ng-container *ngIf="(bookAuthors[book.id]?.length || 0) > 0; else noAuthor">
+          <div *ngFor="let author of bookAuthors[book.id]">{{ author }}</div>
+        </ng-container>
+        <ng-template #noAuthor>N/A</ng-template>
+      </td>
     </ng-container>
 
     <!-- Editore -->
     <ng-container matColumnDef="publisher">
       <th mat-header-cell *matHeaderCellDef>Editore</th>
-      <td mat-cell *matCellDef="let book">{{ book.publisher }}</td>
+      <td mat-cell *matCellDef="let book">
+        {{ publisherNames[book.publisher] || '—' }}
+      </td>
     </ng-container>
 
     <!-- Anno -->
     <ng-container matColumnDef="year">
       <th mat-header-cell *matHeaderCellDef>Anno</th>
-      <td mat-cell *matCellDef="let book">{{ book.year }}</td>
+      <td mat-cell *matCellDef="let book">{{ book.publicationDate | date : 'yyyy' }}</td>
     </ng-container>
 
     <!-- Prezzo -->
@@ -36,30 +43,29 @@
       <td mat-cell *matCellDef="let book">{{ book.stock }}</td>
     </ng-container>
 
-
     <!-- Actions -->
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>Azioni</th>
       <td mat-cell *matCellDef="let book">
-         <button
-            mat-icon-button
-            matSuffix
-            aria-label="Edit book"
-            matTooltip="Edit book"
-            matTooltipPosition="above"
-          >
-            <mat-icon>edit</mat-icon>
-          </button>
-     
-         <button
-            mat-icon-button
-            matSuffix
-            aria-label="delete book"
-            matTooltip="delete book"
-            matTooltipPosition="above"
-          >
-            <mat-icon>delete</mat-icon>
-          </button>
+        <button
+          mat-icon-button
+          matSuffix
+          aria-label="Edit book"
+          matTooltip="Edit book"
+          matTooltipPosition="above"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+
+        <button
+          mat-icon-button
+          matSuffix
+          aria-label="delete book"
+          matTooltip="delete book"
+          matTooltipPosition="above"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
       </td>
     </ng-container>
 
