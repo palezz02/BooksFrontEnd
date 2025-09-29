@@ -4,7 +4,7 @@
     <p>Loading cart...</p>
   </div>
 
-  <div *ngIf="!isLoading && cartItems.length === 0" class="empty-cart">
+  <!-- <div *ngIf="!isLoading && cartItems.length === 0" class="empty-cart">
     <mat-icon class="empty-icon">shopping_cart</mat-icon>
     <h2>Your cart is empty</h2>
     <p>Add some books to get started!</p>
@@ -15,7 +15,7 @@
         Refresh Cart
       </button>
     </div>
-  </div>
+  </div> -->
 
   <mat-card *ngIf="cartItems.length > 0" class="cart-card">
     <div class="cart-header" style="padding: 16px 24px; border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center;">
