@@ -55,44 +55,59 @@ export class BooksPage implements OnInit {
   pageSize = 10;
   currentPage = 0;
 
-  ngOnInit() {
-    this.bookService.getAll().subscribe((res: any) => {
-      const bookDTOs: BookDTO[] = res.dati;
+ngOnInit() {
+  this.bookService.getAll().subscribe((res: any) => {
+    const bookDTOs: BookDTO[] = res.dati;
 
-      const observables = bookDTOs.map(book => {
-        const authorRequests = book.authors.map(id =>
-          this.authorService.getById(id)
-        );
-        const publisherRequest = this.publisherService.getPublisher(book.publisher);
+    const observables = bookDTOs.map(book => {
+      const authorRequests = book.authors.map(id =>
+        this.authorService.getById(id)
+      );
+      const publisherRequest = this.publisherService.getPublisher(book.publisher);
 
-        return forkJoin([...authorRequests, publisherRequest]).pipe(
-          map((results: any[]) => {
-            const authors = results.slice(0, book.authors.length).map(a => ({
-              id: a.dati.id,
-              fullName: a.dati.fullName
-            }));
+      return forkJoin([...authorRequests, publisherRequest]).pipe(
+        map((results: any[]) => {
+          const authors = results.slice(0, book.authors.length).map(a => ({
+            id: a.dati.id,
+            fullName: a.dati.fullName
+          }));
 
-            const publisher = {
-              id: results[results.length - 1].dati.id,
-              name: results[results.length - 1].dati.name
-            };
+          const publisher = {
+            id: results[results.length - 1].dati.id,
+            name: results[results.length - 1].dati.name
+          };
 
-            return {
-              ...book,
-              authors,
-              publisher
-            };
-          })
-        );
-      });
-
-      forkJoin(observables).subscribe((booksWithNames: any[]) => {
-        this.books = booksWithNames;
-        this.filteredBooks = this.books;
-        this.updatePagedBooks();
-      });
+          return {
+            ...book,
+            authors,
+            publisher
+          };
+        })
+      );
     });
-  }
+
+    forkJoin(observables).subscribe((booksWithNames: any[]) => {
+      this.books = booksWithNames;
+      this.filteredBooks = this.books;
+
+      // ✅ collect unique categories from DB
+      this.categories = Array.from(
+        new Set(
+          this.books.flatMap(b => b.categories.map((c: any) => c.name))
+        )
+      );
+
+      // ✅ collect unique languages from DB
+      this.languages = Array.from(
+        new Set(this.books.map(b => b.languageCode.toUpperCase()))
+      );
+
+
+      this.updatePagedBooks();
+    });
+  });
+}
+
 
 
 
@@ -116,9 +131,11 @@ export class BooksPage implements OnInit {
           c.name === this.selectedCategory
         );
 
+        
       const matchesLanguage =
         this.selectedLanguage === '' ||
-        book.languageCode === this.selectedLanguage;
+        book.languageCode.toLowerCase() === this.selectedLanguage.toLowerCase();
+
 
       return matchesSearch && matchesCategory && matchesLanguage;
     });

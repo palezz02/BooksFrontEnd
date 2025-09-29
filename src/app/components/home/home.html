@@ -1,3 +1,6 @@
 <app-best-seller></app-best-seller>
-<app-best-book-carosel [books]="books"></app-best-book-carosel>
+<app-best-book-carosel 
+    *ngIf="books$ | async as books"
+    [books]="books">>
+</app-best-book-carosel>
 

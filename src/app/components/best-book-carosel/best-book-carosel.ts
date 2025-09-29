@@ -47,13 +47,16 @@ export class BestBookCarosel implements OnInit, OnChanges {
   ngOnInit() {
     this.cols$.subscribe(cols => {
       this.currentCols = cols;
-      this.updateVisibleBooks(this.currentCols);
+      if (this.books && this.books.length > 0) {
+        this.updateVisibleBooks();
+      }
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['books'] && this.books && this.books.length > 0) {
-      this.updateVisibleBooks(this.currentCols);
+      this.startIndex = 0;
+      this.updateVisibleBooks();
     }
   }
 
@@ -67,10 +70,17 @@ export class BestBookCarosel implements OnInit, OnChanges {
     } else if (direction === 'left') {
       this.startIndex = (this.startIndex - 1 + this.books.length) % this.books.length;
     }
-    this.updateVisibleBooks(this.currentCols);
+    this.updateVisibleBooks();
   }
 
-  private updateVisibleBooks(cols: number) {
+  private updateVisibleBooks() {
+    const cols = this.currentCols;
+    
+    if (cols === 0 || this.books.length === 0) {
+        this.visibleBooks = [];
+        return;
+    }
+
     const endIndex = this.startIndex + cols;
     if (endIndex <= this.books.length) {
       this.visibleBooks = this.books.slice(this.startIndex, endIndex);
