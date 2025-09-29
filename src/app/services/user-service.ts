@@ -41,6 +41,12 @@ export class UserService {
     return this.http.get<ResponseList<any>>(this.url + 'getBestByCategory');
   }
 
+
+  getCartBooks(userId: number): Observable<ResponseList<any>> {
+    let params = new HttpParams().set('id', userId);
+    return this.http.get<ResponseList<any>>(this.url + 'getCartBooks', { params });
+  }
+
   signin(body: {}): Observable<any> {
     return this.http.post<any>(this.url + 'signin', body );
   }
