@@ -83,18 +83,21 @@ export class BestSeller implements OnInit {
 
 
   loadBooks() {
-    this.bookService.getAll().subscribe((res: any) => {
+    this.bookService.getBestByCategory(50, 0).subscribe((res: any) => {
       const bookDTOs: BookDTO[] = res.dati;
 
-      
       const observables: Observable<any>[] = bookDTOs.map(book => {
-        const authorRequests: Observable<any>[] = book.authors.map(id => this.authorService.getById(id));
-        const publisherRequest: Observable<any> = this.publisherService.getPublisher(book.publisher);
+        const authorRequests: Observable<any>[] = book.authors.map(id =>
+          this.authorService.getById(id)
+        );
+        const publisherRequest: Observable<any> =
+          this.publisherService.getPublisher(book.publisher);
 
-        
         return forkJoin([...authorRequests, publisherRequest]).pipe(
           map((results: any[]) => {
-            const authors = results.slice(0, book.authors.length).map(a => a.dati.fullName);
+            const authors = results
+              .slice(0, book.authors.length)
+              .map(a => a.dati.fullName);
             const publisher = results[results.length - 1].dati.name;
 
             return {
@@ -106,10 +109,10 @@ export class BestSeller implements OnInit {
         );
       });
 
-     
       forkJoin(observables).subscribe((booksWithNames: any[]) => {
         this.books = booksWithNames;
       });
     });
   }
+
 }
