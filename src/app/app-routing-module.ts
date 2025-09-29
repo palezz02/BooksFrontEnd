@@ -11,14 +11,14 @@ import { CartInfo } from './components/cart/cart';
 import { NewBook } from './components/new-book/new-book';
 import { ErrorPage } from './components/error-page/error-page';
 import { CheckoutComponent } from './components/checkout/checkout';
+import { Info } from './components/info/info';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
   { path: 'login', component: Login },
   { path: 'register', component: Register },
   // { path: 'raccomandation', component: BestBookCarosel }, // , canActivate:[authGuard]
-  { path: 'info', component: BookInfo },
-  { path: 'books', component: BestSeller },
+  { path: 'info/:bookId', component: Info },
   { path: 'setting', component: UserSetting },
   { path: 'home', component: Home },
   { path: 'allBooks', component: BooksPage },
