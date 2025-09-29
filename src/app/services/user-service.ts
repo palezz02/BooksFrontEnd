@@ -21,7 +21,7 @@ export class UserService {
   }
 
   delete(body: {}): Observable<ResponseBase> {
-    return this.http.delete<ResponseBase>(this.url + 'delete', body);
+    return this.http.delete<ResponseBase>(this.url + 'delete', { body });
   }
 
   getById(id: number): Observable<ResponseObject<any>> {
@@ -33,7 +33,21 @@ export class UserService {
     return this.http.get<ResponseList<any>>(this.url + 'getAll');
   }
 
+  getBestByReviews(): Observable<ResponseList<any>> {
+    return this.http.get<ResponseList<any>>(this.url + 'getBestByReviews');
+  }
+
+  getBestByCategory(): Observable<ResponseList<any>> {
+    return this.http.get<ResponseList<any>>(this.url + 'getBestByCategory');
+  }
+
+
+  getCartBooks(userId: number): Observable<ResponseList<any>> {
+    let params = new HttpParams().set('id', userId);
+    return this.http.get<ResponseList<any>>(this.url + 'getCartBooks', { params });
+  }
+
   signin(body: {}): Observable<any> {
-    return this.http.post<any>(this.url + 'signin', body);
+    return this.http.post<any>(this.url + 'signin', body );
   }
 }

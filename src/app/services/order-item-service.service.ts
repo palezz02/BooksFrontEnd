@@ -25,7 +25,7 @@ export class OrderItemServiceService {
     return this.http.post<ResponseBase>(this.url + 'create', body);
   }
   removeOrderItem(body: {}): Observable<ResponseBase> {
-    return this.http.post<ResponseBase>(this.url + 'delete', body);
+    return this.http.delete<ResponseBase>(this.url + 'delete', { body });
   }
 
   updateOrderItem(body: {}): Observable<ResponseBase> {

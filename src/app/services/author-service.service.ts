@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ResponseList } from '../models/ResponseList';
 import { ResponseBase } from '../models/ResponseBase';
+import { ResponseObject } from '../models/ResponseObject';
 import { Observable } from 'rxjs';
 import { ResponseObject } from '../models/ResponseObject';
 
@@ -20,7 +21,7 @@ export class AuthorServiceService {
     return this.http.post<ResponseBase>(this.url + 'create', body);
   }
   removeAuthor(body: {}): Observable<ResponseBase> {
-    return this.http.post<ResponseBase>(this.url + 'delete', body);
+    return this.http.post<ResponseBase>(this.url + 'delete', { body });
   }
 
   updateAuthor(body: {}): Observable<ResponseBase> {
@@ -28,7 +29,8 @@ export class AuthorServiceService {
   }
 
   getById(id: number): Observable<ResponseObject<any>> {
-    let params = new HttpParams().set('id', id);
-    return this.http.get<ResponseObject<any>>(this.url + 'getById', { params });
-  }
+  const params = new HttpParams().set('id', id);
+  return this.http.get<ResponseObject<any>>(this.url + 'getById', { params });
+}
+
 }
