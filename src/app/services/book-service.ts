@@ -39,7 +39,11 @@ export class BookService {
   }
 
   getBestByCategory(limit: number, offset: number): Observable<ResponseList<any>> {
-    let params = new HttpParams().set('limit', limit).set('offset', offset);
+    let params = new HttpParams()
+      .set('limit', limit)
+      .set('offset', offset);
+
     return this.http.get<ResponseList<any>>(this.url + 'getBestByCategory', { params });
   }
+
 }
