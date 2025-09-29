@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { InventoryService } from '../../services/inventory-service';
 import { BookService } from '../../services/book-service';
 import { OrderItemServiceService } from '../../services/order-item-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'cart',
@@ -17,6 +18,7 @@ export class CartInfo implements OnInit {
     private inventoryService: InventoryService,
     private bookService: BookService,
     private orderItemService: OrderItemServiceService,
+     private router: Router,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -257,7 +259,8 @@ export class CartInfo implements OnInit {
     }
 
     console.log('Placing order for:', this.cartItems);
-    alert('Order placed successfully!');
+    // alert('Order placed successfully!');
+    this.router.navigate(['/checkout']);
     
     // After successful order, you might want to clear the cart
     // or redirect to order confirmation page
