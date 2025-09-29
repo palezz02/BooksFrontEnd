@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { BookService } from '../../services/book-service';
 import { ResponseList } from '../../models/ResponseList';
+import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -10,14 +11,13 @@ import { ResponseList } from '../../models/ResponseList';
 })
 export class Home {
 
-  books: any = [];
+  books$!: Observable<any[]>;
 
   constructor(private bookService: BookService) { }
 
   ngOnInit(): void { 
-    this.bookService.getBestByReviews(5, 0).subscribe((resp:ResponseList<any>) => {
-      this.books = resp.dati;
-      console.log(this.books);
-    });
+    this.books$ = this.bookService.getBestByReviews(5, 0).pipe(
+      map((resp: ResponseList<any>) => resp.dati)
+    );
   }
 }
