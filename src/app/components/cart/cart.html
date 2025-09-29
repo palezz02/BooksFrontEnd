@@ -1,65 +1,109 @@
 <div class="cart-page">
-  <mat-card *ngIf="cart as c" class="cart-card">
-    <div class="cart-items" *ngFor="let item of c.orderItem; let i = index">
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner></mat-spinner>
+    <p>Loading cart...</p>
+  </div>
+
+  <!-- <div *ngIf="!isLoading && cartItems.length === 0" class="empty-cart">
+    <mat-icon class="empty-icon">shopping_cart</mat-icon>
+    <h2>Your cart is empty</h2>
+    <p>Add some books to get started!</p>
+    
+    <div class="empty-cart-actions" style="margin-top: 24px; display: flex; gap: 16px;">
+      <button mat-button color="accent" (click)="refreshCart()">
+        <mat-icon>refresh</mat-icon>
+        Refresh Cart
+      </button>
+    </div>
+  </div> -->
+
+  <mat-card *ngIf="cartItems.length > 0" class="cart-card">
+    <div class="cart-header" style="padding: 16px 24px; border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center;">
+      <h3 style="margin: 0; font-size: 18px; font-weight: 600;">Your Cart ({{ getQuantity() }} items)</h3>
+     
+    </div>
+
+    <div class="cart-items" *ngFor="let item of cartItems; let i = index">
       <div>
-        <img mat-card-image [src]="c.book.imageUrl" alt="{{ c.book.title }}" class="cart-image" />
+        <img mat-card-image 
+             [src]="item.book?.coverImage || 'assets/default-book-cover.jpg'" 
+             [alt]="item.book?.title" 
+             class="cart-image" />
       </div>
+      
       <div class="item-details">
         <div class="top-item">
           <div>
-            <h2>{{ c.book.title }}</h2>
+            <h2>{{ item.book?.title }}</h2>
             <p>
-              <span>{{ c.book.author }}</span>
-              <span> •</span>
-              <span>{{ c.book.category.join(', ') }}</span>
-              <span> •</span>
-              <span>{{ c.book.year }}</span>
+              <span *ngIf="item.book?.isbn">ISBN: {{ item.book.isbn }}</span>
+              <span *ngIf="item.book?.pageCount"> • {{ item.book.pageCount }} pages</span>
+              <span *ngIf="item.book?.languageCode"> • {{ item.book.languageCode }}</span>
+            </p>
+            <p *ngIf="item.book?.description" class="book-description">
+              {{ item.book.description.length > 100 ? (item.book.description | slice:0:100) + '...' : item.book.description }}
+            </p>
+            <p class="stock-info">
+              <span>{{ item.inventory.stock }} in stock</span>
             </p>
           </div>
+          
           <div>
-            <button mat-icon-button color="warn" (click)="removeItem(i)">
+            <button mat-icon-button color="warn" (click)="removeItem(item)" matTooltip="Remove item">
               <mat-icon>close</mat-icon>
             </button>
           </div>
         </div>
+        
         <div class="quantity-control">
-          <p>{{ item.price | currency : 'EUR' }}</p>
+          <p>{{ item.unitPrice | currency : 'EUR' }} each</p>
           <div class="quantity">
-            <button mat-icon-button (click)="decreaseQuantity(i)">
+            <button mat-icon-button (click)="decreaseQuantity(item)" [disabled]="item.quantity <= 1">
               <mat-icon>remove</mat-icon>
             </button>
             <span>{{ item.quantity }}</span>
-            <button mat-icon-button (click)="increaseQuantity(i)"><mat-icon>add</mat-icon></button>
+            <button mat-icon-button (click)="increaseQuantity(item)" [disabled]="item.quantity >= item.inventory.stock">
+              <mat-icon>add</mat-icon>
+            </button>
           </div>
+          <p class="subtotal">{{ item.subtotal | currency : 'EUR' }}</p>
         </div>
       </div>
     </div>
   </mat-card>
-  <mat-card *ngIf="cart as c" class="price-details-card">
+
+  <mat-card *ngIf="cartItems.length > 0" class="price-details-card">
     <mat-card-header>
       <mat-card-title>Price Details</mat-card-title>
     </mat-card-header>
+    
     <mat-card-content>
       <mat-list>
         <mat-list-item>
-          <div matListItemTitle class="item-title">{{ getQuantity() }} items</div>
+          <div class="item-title">{{ getQuantity() }} items</div>
         </mat-list-item>
-        <mat-list-item *ngFor="let item of c.orderItem; let i = index">
+        
+        <mat-list-item *ngFor="let item of cartItems">
           <div class="list-item-content">
-            <div class="item-name">{{ item.quantity }} x {{ c.book.title }}</div>
+            <div class="item-name">{{ item.quantity }} x {{ item.book?.title }}</div>
             <div class="item-price">
-              <p>{{ item.price | currency : 'EUR' }}</p>
+              <p>{{ item.subtotal | currency : 'EUR' }}</p>
             </div>
           </div>
         </mat-list-item>
       </mat-list>
+      
       <div class="total-amount-row">
         <div class="total-amount-label">Total Amount</div>
         <div class="total-amount-price">{{ getTotal() | currency : 'EUR' }}</div>
       </div>
     </mat-card-content>
-    <button mat-flat-button color="accent" class="place-order-button">
-      <p><span> Place order</span><mat-icon>arrow_forward</mat-icon></p>
+    
+    <button mat-flat-button color="accent" class="place-order-button" (click)="placeOrder()">
+      <p>
+        <span>Place order</span>
+        <mat-icon>arrow_forward</mat-icon>
+      </p>
     </button>
   </mat-card>
 </div>
