@@ -13,6 +13,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
 import { MatCard, MatCardModule } from '@angular/material/card';
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
@@ -36,9 +38,10 @@ import { Home } from './components/home/home';
 import { MatDivider } from '@angular/material/divider';
 import { AuthorPopup } from './components/author-popup/author-popup';
 import { BooksPage } from './components/books-page/books-page';
-import { MatPaginatorModule } from '@angular/material/paginator';
 import { CartInfo } from './components/cart/cart';
 import { NewBook } from './components/new-book/new-book';
+import { UserPage } from './components/user-page/user-page';
+import { BookDelete } from './components/book-delete/book-delete';
 import { ErrorPage } from './components/error-page/error-page';
 import { Reviews } from './components/reviews/reviews';
 import { Info } from './components/info/info';
@@ -63,11 +66,13 @@ import { CheckoutComponent } from './components/checkout/checkout';
     BooksPage,
     CartInfo,
     NewBook,
+    BookDelete,
+    UserPage,
     ErrorPage,
     Reviews,
     Info,
     DeleteAccountConfirmDialog,
-    CheckoutComponent
+    CheckoutComponent,
   ],
   imports: [
     BrowserModule,
@@ -93,6 +98,9 @@ import { CheckoutComponent } from './components/checkout/checkout';
     MatSelectModule,
     MatOptionModule,
     MatTooltipModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatPaginator,
     MatDialogContent,
     MatDialogActions,
     MatProgressSpinnerModule,
