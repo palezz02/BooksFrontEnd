@@ -1,100 +1,73 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Component } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { map, Observable, shareReplay } from 'rxjs';
+
 @Component({
   selector: 'app-best-book-carosel',
   standalone: false,
   templateUrl: './best-book-carosel.html',
-  styleUrl: './best-book-carosel.css',
+  styleUrls: ['./best-book-carosel.css'],
 })
-export class BestBookCarosel {
-  cols$: Observable<number> | undefined;
-  books = [
-    {
-      id: 1,
-      title: 'Libro 1',
-      url: 'https://cdn-imgix.headout.com/tour/19364/TOUR-IMAGE/a0f87f7e-434d-4c3c-9584-f7ee351d5f64-10432-dubai-img-worlds-of-adventure---uae-resident-offer-01.jpg?auto=format&w=510.8727272727273&h=401.4&q=90&ar=14%3A11&crop=faces&fit=crop',
-    },
-    {
-      id: 2,
-      title: 'Libro 2',
-      url: 'https://cdn-imgix.headout.com/tour/19364/TOUR-IMAGE/a0f87f7e-434d-4c3c-9584-f7ee351d5f64-10432-dubai-img-worlds-of-adventure---uae-resident-offer-01.jpg?auto=format&w=510.8727272727273&h=401.4&q=90&ar=14%3A11&crop=faces&fit=crop',
-    },
-    {
-      id: 3,
-      title: 'Libro 3',
-      url: 'https://cdn-imgix.headout.com/tour/19364/TOUR-IMAGE/a0f87f7e-434d-4c3c-9584-f7ee351d5f64-10432-dubai-img-worlds-of-adventure---uae-resident-offer-01.jpg?auto=format&w=510.8727272727273&h=401.4&q=90&ar=14%3A11&crop=faces&fit=crop',
-    },
-    {
-      id: 4,
-      title: 'Libro 4',
-      url: 'https://cdn-imgix.headout.com/tour/19364/TOUR-IMAGE/a0f87f7e-434d-4c3c-9584-f7ee351d5f64-10432-dubai-img-worlds-of-adventure---uae-resident-offer-01.jpg?auto=format&w=510.8727272727273&h=401.4&q=90&ar=14%3A11&crop=faces&fit=crop',
-    },
-    {
-      id: 5,
-      title: 'Libro 5',
-      url: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.imgacademy.com%2F&psig=AOvVaw3gltVG-0o192BWjcWU64Ei&ust=1758368683739000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCICy543g5I8DFQAAAAAdAAAAABAK',
-    },
-    {
-      id: 6,
-      title: 'Libro 6',
-      url: 'https://cdn-imgix.headout.com/tour/19364/TOUR-IMAGE/a0f87f7e-434d-4c3c-9584-f7ee351d5f64-10432-dubai-img-worlds-of-adventure---uae-resident-offer-01.jpg?auto=format&w=510.8727272727273&h=401.4&q=90&ar=14%3A11&crop=faces&fit=crop',
-    },
-    {
-      id: 7,
-      title: 'Libro 7',
-      url: 'https://cdn-imgix.headout.com/tour/19364/TOUR-IMAGE/a0f87f7e-434d-4c3c-9584-f7ee351d5f64-10432-dubai-img-worlds-of-adventure---uae-resident-offer-01.jpg?auto=format&w=510.8727272727273&h=401.4&q=90&ar=14%3A11&crop=faces&fit=crop',
-    },
-  ];
+export class BestBookCarosel implements OnInit, OnChanges {
+  
+  cols$: Observable<number>;
+  currentCols: number = 0;
+  
+  @Input() books: any[] = [];
   visibleBooks: any[] = [];
+
   private startIndex = 0;
 
-  constructor(private breakpointObserver: BreakpointObserver) {}
-
-  ngOnInit() {
+  constructor(private breakpointObserver: BreakpointObserver) {
     this.cols$ = this.breakpointObserver.observe([
       Breakpoints.XSmall,
       Breakpoints.Small,
       Breakpoints.Medium,
       Breakpoints.Large,
-      Breakpoints.XLarge
+      Breakpoints.XLarge,
     ]).pipe(
       map(result => {
-        let cols = 0
         if (result.breakpoints[Breakpoints.XSmall]) {
-          cols = 1;
+          return 1;
+        } else if (result.breakpoints[Breakpoints.Small]) {
+          return 2;
+        } else if (result.breakpoints[Breakpoints.Medium]) {
+          return 3;
+        } else if (result.breakpoints[Breakpoints.Large]) {
+          return 4;
+        } else if (result.breakpoints[Breakpoints.XLarge]) {
+          return 5;
         }
-        if (result.breakpoints[Breakpoints.Small]) {
-          cols = 2;
-        }
-        if (result.breakpoints[Breakpoints.Medium]) {
-          cols = 3;
-        }
-        if (result.breakpoints[Breakpoints.Large]) {
-          cols = 4;
-        }
-        if (result.breakpoints[Breakpoints.XLarge]) {
-          cols = 5;
-        }
-        this.visibleBooks = this.books.slice(0, cols);
-        
-        return cols;
+        return 0;
       }),
-      shareReplay()
+      shareReplay({ bufferSize: 1, refCount: true })
     );
   }
 
+  ngOnInit() {
+    this.cols$.subscribe(cols => {
+      this.currentCols = cols;
+      this.updateVisibleBooks(this.currentCols);
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['books'] && this.books && this.books.length > 0) {
+      this.updateVisibleBooks(this.currentCols);
+    }
+  }
+
   scroll(direction: string) {
-    let cols = 0;
-    this.cols$?.subscribe((c) => (cols = c)).unsubscribe();
+    if (this.books.length === 0) {
+      return;
+    }
 
     if (direction === 'right') {
       this.startIndex = (this.startIndex + 1) % this.books.length;
     } else if (direction === 'left') {
       this.startIndex = (this.startIndex - 1 + this.books.length) % this.books.length;
     }
-
-    this.updateVisibleBooks(cols);
+    this.updateVisibleBooks(this.currentCols);
   }
 
   private updateVisibleBooks(cols: number) {
