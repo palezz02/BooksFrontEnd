@@ -9,9 +9,7 @@ import { Home } from './components/home/home';
 import { BooksPage } from './components/books-page/books-page';
 import { CartInfo } from './components/cart/cart';
 import { NewBook } from './components/new-book/new-book';
-import { authAdminGuard } from './auth/auth-admin-guard-guard';
 import { ErrorPage } from './components/error-page/error-page';
-import { Info } from './components/info/info';
 import { CheckoutComponent } from './components/checkout/checkout';
 
 const routes: Routes = [

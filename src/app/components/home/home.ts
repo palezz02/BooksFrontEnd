@@ -15,7 +15,7 @@ export class Home {
   constructor(private bookService: BookService) { }
 
   ngOnInit(): void { 
-    this.bookService.getAll().subscribe((resp:ResponseList<any>) => {
+    this.bookService.getBestByReviews(5, 0).subscribe((resp:ResponseList<any>) => {
       this.books = resp.dati;
       console.log(this.books);
     });
