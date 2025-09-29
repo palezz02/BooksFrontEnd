@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { BookService } from '../../services/book-service';
+import { ResponseList } from '../../models/ResponseList';
 
 @Component({
   selector: 'app-home',
@@ -8,4 +10,14 @@ import { Component } from '@angular/core';
 })
 export class Home {
 
+  books: any = [];
+
+  constructor(private bookService: BookService) { }
+
+  ngOnInit(): void { 
+    this.bookService.getAll().subscribe((resp:ResponseList<any>) => {
+      this.books = resp.dati;
+      console.log(this.books);
+    });
+  }
 }

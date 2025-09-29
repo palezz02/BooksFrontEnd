@@ -1,9 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { Login } from './components/login/login';
-import { App } from './app';
-import { BestBookCarosel } from './components/best-book-carosel/best-book-carosel';
-import { authGuard } from './auth/auth-guard-guard';
 import { BookInfo } from './components/book-info/book-info';
 import { BestSeller } from './components/best-seller/best-seller';
 import { Register } from './components/register/register';
@@ -12,15 +9,15 @@ import { Home } from './components/home/home';
 import { BooksPage } from './components/books-page/books-page';
 import { CartInfo } from './components/cart/cart';
 import { NewBook } from './components/new-book/new-book';
+import { authAdminGuard } from './auth/auth-admin-guard-guard';
 import { ErrorPage } from './components/error-page/error-page';
-import { Info } from './components/info/info';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
   { path: 'login', component: Login },
   { path: 'register', component: Register },
   // { path: 'raccomandation', component: BestBookCarosel }, // , canActivate:[authGuard]
-  { path: 'info', component: Info },
+  { path: 'info', component: BookInfo },
   { path: 'books', component: BestSeller },
   { path: 'setting', component: UserSetting },
   { path: 'home', component: Home },
