@@ -20,6 +20,7 @@ const routes: Routes = [
   { path: 'register', component: Register },
   // { path: 'raccomandation', component: BestBookCarosel }, // , canActivate:[authGuard]
   { path: 'info', component: BookInfo },
+  { path: 'books/:id', component: BookInfo },
   { path: 'books', component: BestSeller },
   { path: 'setting', component: UserSetting },
   { path: 'home', component: Home },
