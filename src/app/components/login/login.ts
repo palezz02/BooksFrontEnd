@@ -47,6 +47,7 @@ export class Login {
           localStorage.setItem('userId', resp.id);
           if (resp.logged) {
             console.log('utente logged.. role:' + resp.role);
+            localStorage.setItem('token', resp.token);
             this.auth.setAuthentificated();
             this.msg = 'Login avvenuto con successo!';
             if (resp.role == 'ADMIN') {
