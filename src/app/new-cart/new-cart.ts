@@ -1,8 +1,9 @@
-import { Component, HostListener, inject, OnDestroy } from '@angular/core';
+import { Component, HostListener, Inject, inject, OnDestroy, PLATFORM_ID } from '@angular/core';
 import { UserService } from '../services/user-service';
 import { OrderItemServiceService } from '../services/order-item-service.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-new-cart',
@@ -18,24 +19,28 @@ export class NewCart implements OnDestroy {
 
   constructor(
     private userService: UserService,
+    @Inject(PLATFORM_ID) private platformId: Object,
     private orderItemService: OrderItemServiceService,
     private router: Router
   ) {}
 
   ngOnInit() {
-    this.userService.getCartBooks(3).subscribe({
-      next: (res) => {
-        this.cartItems = (res.dati || []).map((item) => ({
-          ...item,
-          subtotal: item.unitPrice * item.quantity,
-        }));
-        this.originalItems = JSON.parse(JSON.stringify(this.cartItems));
-        this.isLoading = false;
-      },
-      error: () => {
-        this.isLoading = false;
-      },
-    });
+    if (isPlatformBrowser(this.platformId)) {
+      const userId = Number(localStorage.getItem('userId')) || -1;
+      this.userService.getCartBooks(userId).subscribe({
+        next: (res) => {
+          this.cartItems = (res.dati || []).map((item) => ({
+            ...item,
+            subtotal: item.unitPrice * item.quantity,
+          }));
+          this.originalItems = JSON.parse(JSON.stringify(this.cartItems));
+          this.isLoading = false;
+        },
+        error: () => {
+          this.isLoading = false;
+        },
+      });
+    }
   }
 
   getQuantity() {

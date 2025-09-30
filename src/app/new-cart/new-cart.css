@@ -14,6 +14,7 @@
   justify-content: center;
   height: 300px;
   gap: 16px;
+  margin: 0 auto;
 }
 
 .loading-container p {
@@ -32,6 +33,7 @@
   background: #f5f5f5;
   border-radius: 8px;
   min-height: 300px;
+  margin: 0 auto;
 }
 
 .empty-cart .empty-icon {

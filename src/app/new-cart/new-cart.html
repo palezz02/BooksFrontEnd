@@ -8,12 +8,6 @@
     <mat-icon class="empty-icon">shopping_cart</mat-icon>
     <h2>Your cart is empty</h2>
     <p>Add some books to get started!</p>
-    <div class="empty-cart-actions" style="margin-top: 24px; display: flex; gap: 16px">
-      <button mat-button color="accent">
-        <mat-icon>refresh</mat-icon>
-        Refresh Cart
-      </button>
-    </div>
   </div>
 
   <mat-card *ngIf="cartItems.length > 0" class="cart-card">
