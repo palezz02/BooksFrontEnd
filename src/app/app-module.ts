@@ -57,6 +57,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CheckoutComponent } from './components/checkout/checkout';
 import { jwtInterceptor } from './Utils/JwtIterceptor';
 import { NewCart } from './new-cart/new-cart';
+import { AddressSetting } from './components/address-setting/address-setting';
 @NgModule({
   declarations: [
     App,
@@ -81,6 +82,7 @@ import { NewCart } from './new-cart/new-cart';
     DeleteAccountConfirmDialog,
     CheckoutComponent,
     NewCart,
+    AddressSetting,
   ],
   imports: [
     BrowserModule,
