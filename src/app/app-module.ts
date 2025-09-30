@@ -42,6 +42,7 @@ import { CartInfo } from './components/cart/cart';
 import { NewBook } from './components/new-book/new-book';
 import { UserPage } from './components/user-page/user-page';
 import { BookDelete } from './components/book-delete/book-delete';
+import { UpdateBookPopup } from './components/update-book-popup/update-book-popup';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { BookDelete } from './components/book-delete/book-delete';
     NewBook,
     BookDelete,
     UserPage,
+    UpdateBookPopup,
   ],
   imports: [
     BrowserModule,
