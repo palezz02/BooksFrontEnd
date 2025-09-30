@@ -17,7 +17,7 @@ export class BookService {
   }
 
   update(body: {}): Observable<ResponseBase> {
-    return this.http.put<ResponseBase>(this.url + 'update', { body });
+    return this.http.put<ResponseBase>(this.url + 'update',  body );
   }
 
   delete(body: {}): Observable<ResponseBase> {
