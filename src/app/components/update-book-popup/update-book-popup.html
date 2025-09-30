@@ -72,10 +72,10 @@
               <mat-label>Select category</mat-label>
               <mat-select multiple [value]="updateBookForm.value.category">
                 <mat-option
-                  *ngFor="let category of ['Fantasy', 'Science Fiction', 'Romance']"
-                  [value]="category"
+                  *ngFor="let c of cat"
+                  [value]="c.name"
                 >
-                  {{ category }}
+                  {{ c.name }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
