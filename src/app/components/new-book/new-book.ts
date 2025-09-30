@@ -136,7 +136,7 @@ export class NewBook implements OnInit {
       this.authorService.insertAuthor(authorReq).subscribe({
         next: (response) => {
           if (response.rc) {
-            console.log('Author created successfully');
+            // console.log('Author created successfully');
             this.loadAuthors(); // Reload authors list
             this.bookForm.get('newAuthor')?.reset('');
             this.showNewAuthorInput = false;
@@ -145,7 +145,7 @@ export class NewBook implements OnInit {
           }
         },
         error: (err) => {
-          console.error('Error creating author:', err);
+          // console.error('Error creating author:', err);
           alert('Error creating author');
         }
       });
@@ -168,7 +168,7 @@ export class NewBook implements OnInit {
       this.categoryService.create(categoryReq).subscribe({
         next: (response) => {
           if (response.rc) {
-            console.log('Category created successfully');
+            // console.log('Category created successfully');
             this.loadCategories(); // Reload categories list
             this.bookForm.get('newCategory')?.reset('');
             this.showNewCategoryInput = false;
@@ -177,7 +177,7 @@ export class NewBook implements OnInit {
           }
         },
         error: (err) => {
-          console.error('Error creating category:', err);
+          // console.error('Error creating category:', err);
           alert('Error creating category');
         }
       });
@@ -201,7 +201,7 @@ export class NewBook implements OnInit {
       this.publisherService.insertPublisher(publisherReq).subscribe({
         next: (response) => {
           if (response.rc) {
-            console.log('Publisher created successfully');
+            // console.log('Publisher created successfully');
             this.loadPublishers(); // Reload publishers list
             this.bookForm.get('newPublisher')?.reset('');
             this.showNewPublisherInput = false;
@@ -210,7 +210,7 @@ export class NewBook implements OnInit {
           }
         },
         error: (err) => {
-          console.error('Error creating publisher:', err);
+          // console.error('Error creating publisher:', err);
           alert('Error creating publisher');
         }
       });
@@ -261,11 +261,11 @@ export class NewBook implements OnInit {
       categoryIds: this.bookForm.value.categoryIds
     };
 
-    console.log('Sending book request:', bookReq);
+    // console.log('Sending book request:', bookReq);
 
     this.bookService.create(bookReq).subscribe({
       next: (response) => {
-        console.log('Book creation response:', response);
+        // console.log('Book creation response:', response);
         if (response.rc) {
           alert('Book created successfully!');
           this.bookForm.reset();
@@ -275,7 +275,7 @@ export class NewBook implements OnInit {
         }
       },
       error: (err) => {
-        console.error('Error creating book:', err);
+        // console.error('Error creating book:', err);
         let errorMessage = 'Error creating book.';
         if (err.error && err.error.msg) {
           errorMessage = 'Error: ' + err.error.msg;
