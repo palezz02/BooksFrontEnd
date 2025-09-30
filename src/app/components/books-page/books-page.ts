@@ -90,14 +90,14 @@ ngOnInit() {
       this.books = booksWithNames;
       this.filteredBooks = this.books;
 
-      // ✅ collect unique categories from DB
+
       this.categories = Array.from(
         new Set(
           this.books.flatMap(b => b.categories.map((c: any) => c.name))
         )
       );
 
-      // ✅ collect unique languages from DB
+
       this.languages = Array.from(
         new Set(this.books.map(b => b.languageCode.toUpperCase()))
       );
