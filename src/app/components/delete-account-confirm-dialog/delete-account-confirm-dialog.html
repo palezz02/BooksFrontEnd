@@ -1,0 +1,23 @@
+<h2
+  mat-dialog-title
+  style="display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 1.5rem"
+>
+  <span style="font-weight: 600; color: #d32f2f">Eliminazione account</span>
+</h2>
+<mat-dialog-content>
+  <div>
+    <p>
+      <strong>Attenzione:</strong> Questa azione è
+      <span style="color: #d32f2f">irreversibile</span>.<br />
+      Tutti i tuoi dati saranno eliminati definitivamente.<br />
+      Sei sicuro di voler procedere?
+    </p>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-stroked-button color="primary" (click)="cancel()">Annulla</button>
+  <button mat-stroked-button color="warn" (click)="confirm()" style="color: red">
+    <mat-icon>warning</mat-icon>
+    Elimina definitivamente
+  </button>
+</mat-dialog-actions>

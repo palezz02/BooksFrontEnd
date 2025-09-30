@@ -43,7 +43,14 @@ import { NewBook } from './components/new-book/new-book';
 import { UserPage } from './components/user-page/user-page';
 import { BookDelete } from './components/book-delete/book-delete';
 import { UpdateBookPopup } from './components/update-book-popup/update-book-popup';
-
+import { ErrorPage } from './components/error-page/error-page';
+import { Reviews } from './components/reviews/reviews';
+import { Info } from './components/info/info';
+import { MatDialogContent } from '@angular/material/dialog';
+import { MatDialogActions } from '@angular/material/dialog';
+import { DeleteAccountConfirmDialog } from './components/delete-account-confirm-dialog/delete-account-confirm-dialog';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { CheckoutComponent } from './components/checkout/checkout';
 @NgModule({
   declarations: [
     App,
@@ -63,6 +70,11 @@ import { UpdateBookPopup } from './components/update-book-popup/update-book-popu
     BookDelete,
     UserPage,
     UpdateBookPopup,
+    ErrorPage,
+    Reviews,
+    Info,
+    DeleteAccountConfirmDialog,
+    CheckoutComponent,
   ],
   imports: [
     BrowserModule,
@@ -91,6 +103,9 @@ import { UpdateBookPopup } from './components/update-book-popup/update-book-popu
     MatTableModule,
     MatPaginatorModule,
     MatPaginator,
+    MatDialogContent,
+    MatDialogActions,
+    MatProgressSpinnerModule,
   ],
   providers: [
     provideHttpClient(withFetch()),

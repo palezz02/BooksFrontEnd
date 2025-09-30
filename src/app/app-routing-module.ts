@@ -1,9 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { Login } from './components/login/login';
-import { App } from './app';
-import { BestBookCarosel } from './components/best-book-carosel/best-book-carosel';
-import { authGuard } from './auth/auth-guard-guard';
 import { BookInfo } from './components/book-info/book-info';
 import { BestSeller } from './components/best-seller/best-seller';
 import { Register } from './components/register/register';
@@ -14,6 +11,8 @@ import { CartInfo } from './components/cart/cart';
 import { NewBook } from './components/new-book/new-book';
 import { BookDelete } from './components/book-delete/book-delete';
 import { UpdateBookPopup } from './components/update-book-popup/update-book-popup';
+import { ErrorPage } from './components/error-page/error-page';
+import { CheckoutComponent } from './components/checkout/checkout';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
@@ -30,6 +29,8 @@ const routes: Routes = [
   { path: 'new', component: NewBook },
   { path: 'bookdelete', component: BookDelete },
   { path: 'updateBook', component: UpdateBookPopup },
+  { path: 'error', component: ErrorPage },
+  {path: 'checkout', component: CheckoutComponent},
 ];
 
 @NgModule({

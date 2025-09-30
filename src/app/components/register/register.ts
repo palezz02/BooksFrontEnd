@@ -5,6 +5,7 @@ import { UserService } from '../../services/user-service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ResponseBase } from '../../models/ResponseBase';
+import { PasswordFunctions } from '../../Utils/password-functions';
 @Component({
   selector: 'app-register',
   standalone: false,
@@ -18,7 +19,12 @@ export class Register {
   showPassword = false;
   showConfirmPassword = false;
 
-  constructor(private fb: FormBuilder, private userService: UserService, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService,
+    private router: Router,
+    private PasswordFunctions: PasswordFunctions
+  ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       firstName: ['', [Validators.required, Validators.minLength(3)]],
@@ -39,14 +45,14 @@ export class Register {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      const { email, firstName, lastName, birthDate, password, confirmPassword } =
+      let { email, firstName, lastName, birthDate, password, confirmPassword } =
         this.loginForm.value;
 
       if (password !== confirmPassword) {
         alert('Le password non coincidono!');
         return;
       }
-
+      password = this.PasswordFunctions.hashPassword(password);
       const body = {
         email,
         password,
