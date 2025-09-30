@@ -35,12 +35,24 @@
 }
 
 .skeleton-title,
-.skeleton-book-title {
+.skeleton-book-title,
+.skeleton-text,
+.skeleton-img,
+.skeleton-rating,
+.skeleton-reviews,
+.skeleton-pub,
+.skeleton-lang,
+.skeleton-edition,
+.skeleton-card,
+.skeleton-author,
+.skeleton-publisher,
+.skeleton-desc {
   width: 70%;
   height: 2.5rem;
   background: linear-gradient(90deg, #eee 25%, #ddd 50%, #eee 75%);
   border-radius: 6px;
-  animation: skeleton-loading 1.2s infinite linear;
+  background-size: 600px 100%;
+  animation: skeleton-loading 3.2s linear infinite;
 }
 
 .skeleton-text {
@@ -48,7 +60,7 @@
   height: 1.2rem;
   background: linear-gradient(90deg, #eee 25%, #ddd 50%, #eee 75%);
   border-radius: 6px;
-  animation: skeleton-loading 1.2s infinite linear;
+  animation: skeleton-loading 2.4s linear infinite;
 }
 .skeleton-text.short {
   width: 60%;
@@ -59,7 +71,7 @@
   height: 70vh;
   background: linear-gradient(90deg, #eee 25%, #ddd 50%, #eee 75%);
   border-radius: 10px;
-  animation: skeleton-loading 1.2s infinite linear;
+  animation: skeleton-loading 2.4s linear infinite;
 }
 
 .skeleton-rating,
@@ -71,7 +83,7 @@
   height: 1.1rem;
   background: linear-gradient(90deg, #eee 25%, #ddd 50%, #eee 75%);
   border-radius: 6px;
-  animation: skeleton-loading 1.2s infinite linear;
+  animation: skeleton-loading 2.4s linear infinite;
 }
 
 .skeleton-best-book-carosel {
@@ -101,15 +113,15 @@
   height: 70vh;
   background: linear-gradient(90deg, #eee 25%, #ddd 50%, #eee 75%);
   border-radius: 10px;
-  animation: skeleton-loading 1.2s infinite linear;
+  animation: skeleton-loading 2.4s linear infinite;
 }
 
 @keyframes skeleton-loading {
   0% {
-    background-position: -200px 0;
+    background-position: -600px 0;
   }
   100% {
-    background-position: calc(200px + 100%) 0;
+    background-position: 600px 0;
   }
 }
 
