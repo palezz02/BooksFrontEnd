@@ -12,6 +12,7 @@ import { NewBook } from './components/new-book/new-book';
 import { BookDelete } from './components/book-delete/book-delete';
 import { ErrorPage } from './components/error-page/error-page';
 import { CheckoutComponent } from './components/checkout/checkout';
+import { NewCart } from './new-cart/new-cart';
 import { Info } from './components/info/info';
 
 const routes: Routes = [
@@ -24,11 +25,11 @@ const routes: Routes = [
   { path: 'setting', component: UserSetting },
   { path: 'home', component: Home },
   { path: 'allBooks', component: BooksPage },
-  { path: 'cart', component: CartInfo },
+  { path: 'cart', component: NewCart },
   { path: 'new', component: NewBook },
   { path: 'bookdelete', component: BookDelete },
   { path: 'error', component: ErrorPage },
-  {path: 'checkout', component: CheckoutComponent},
+  { path: 'checkout', component: CheckoutComponent },
 ];
 
 @NgModule({

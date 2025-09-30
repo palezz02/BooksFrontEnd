@@ -1,34 +1,7 @@
 <mat-toolbar color="primary" class="navbar">
   <!-- Logo SVG -->
   <span class="logo">
-    <svg xmlns="http://www.w3.org/2000/svg" width="300" height="80" viewBox="0 0 300 80">
-      <style>
-        .text {
-          font-family: 'Arial', sans-serif;
-          font-weight: bold;
-          font-size: 32px;
-          fill: #2c3e50;
-        }
-        .highlight {
-          fill: #3498db;
-        }
-      </style>
-
-      <!-- Icona libro con freccia -->
-      <g transform="translate(10,10)">
-        <!-- Libro -->
-        <rect x="0" y="10" width="30" height="40" rx="2" ry="2" fill="#3498db" />
-        <rect x="30" y="10" width="30" height="40" rx="2" ry="2" fill="#2980b9" />
-        <!-- Freccia verso l’alto -->
-        <polygon points="30,5 22,15 38,15" class="highlight" />
-      </g>
-
-      <!-- Testo -->
-      <text x="80" y="50" class="text">
-        Page
-        <tspan class="highlight">Up</tspan>
-      </text>
-    </svg>
+    <p>Page<span>Up</span></p>
   </span>
 
   <!-- Hamburger menu per mobile -->
@@ -39,6 +12,7 @@
   <!-- Links di navigazione desktop/tablet -->
   <nav class="nav-links" [class.mobile-open]="menuOpen">
     <a mat-button routerLink="/home" (click)="closeMenuIfMobile()">Home</a>
+    <a mat-button routerLink="/allBooks" (click)="closeMenuIfMobile()">Catalog</a>
     <button mat-button (click)="scrollToFooter(); closeMenuIfMobile()">Contact</button>
   </nav>
 
@@ -46,13 +20,13 @@
   <span class="spacer"></span>
 
   <!-- Search bar -->
-  <mat-form-field appearance="outline" class="search-bar" subscriptSizing="dynamic">
+  <!-- <mat-form-field appearance="outline" class="search-bar" subscriptSizing="dynamic">
     <mat-label>Cerca</mat-label>
     <input matInput type="text" [(ngModel)]="searchQuery" />
     <button mat-icon-button matSuffix (click)="onSearch()">
       <mat-icon>search</mat-icon>
     </button>
-  </mat-form-field>
+  </mat-form-field> -->
 
   <!-- Icona carrello -->
   <button mat-icon-button [routerLink]="'/cart'">
