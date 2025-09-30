@@ -1,0 +1,116 @@
+<div class="cart-page">
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner></mat-spinner>
+    <p>Loading cart...</p>
+  </div>
+
+  <div *ngIf="!isLoading && cartItems.length === 0" class="empty-cart">
+    <mat-icon class="empty-icon">shopping_cart</mat-icon>
+    <h2>Your cart is empty</h2>
+    <p>Add some books to get started!</p>
+    <div class="empty-cart-actions" style="margin-top: 24px; display: flex; gap: 16px">
+      <button mat-button color="accent">
+        <mat-icon>refresh</mat-icon>
+        Refresh Cart
+      </button>
+    </div>
+  </div>
+
+  <mat-card *ngIf="cartItems.length > 0" class="cart-card">
+    <div
+      class="cart-header"
+      style="
+        padding: 16px 24px;
+        border-bottom: 1px solid #e0e0e0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      "
+    >
+      <h3 style="margin: 0; font-size: 18px; font-weight: 600">
+        Your Cart ({{ getQuantity() }} items)
+      </h3>
+    </div>
+
+    <div class="cart-items" *ngFor="let item of cartItems">
+      <div>
+        <img
+          mat-card-image
+          [src]="item.coverImage || 'assets/default-book-cover.jpg'"
+          [alt]="item.title"
+          class="cart-image"
+        />
+      </div>
+      <div class="item-details">
+        <div class="top-item">
+          <div>
+            <h2>{{ item.title }}</h2>
+            <p>
+              <span>ISBN: {{ item.isbn }}</span>
+              <span> • {{ item.pageCount }} pages</span>
+              <span> • {{ item.languageCode }}</span>
+            </p>
+            <p class="book-description">{{ item.description }}</p>
+            <p class="stock-info">
+              <span>{{ item.stock }} in stock</span>
+            </p>
+          </div>
+          <div>
+            <button
+              mat-icon-button
+              color="warn"
+              matTooltip="Remove item"
+              (click)="removeItem(item)"
+            >
+              <mat-icon (click)="removeItem(item)">close</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="quantity-control">
+          <p>{{ item.unitPrice | currency : 'EUR' }} each</p>
+          <div class="quantity">
+            <button mat-icon-button (click)="removeQuantity(item)">
+              <mat-icon>remove</mat-icon>
+            </button>
+            <span>{{ item.quantity }}</span>
+            <button mat-icon-button (click)="addQuantity(item)">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+          <p class="subtotal">{{ item.subtotal | currency : 'EUR' }}</p>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+
+  <mat-card *ngIf="cartItems.length > 0" class="price-details-card">
+    <mat-card-header>
+      <mat-card-title>Price Details</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item>
+          <div class="item-title">{{ getQuantity() }} items</div>
+        </mat-list-item>
+        <mat-list-item *ngFor="let item of cartItems">
+          <div class="list-item-content">
+            <div class="item-name">{{ item.quantity }} x {{ item.title }}</div>
+            <div class="item-price">
+              <p>{{ item.subtotal | currency : 'EUR' }}</p>
+            </div>
+          </div>
+        </mat-list-item>
+      </mat-list>
+      <div class="total-amount-row">
+        <div class="total-amount-label">Total Amount</div>
+        <div class="total-amount-price">{{ getTotal() | currency : 'EUR' }}</div>
+      </div>
+    </mat-card-content>
+    <button mat-flat-button color="accent" class="place-order-button" (click)="placeOrder()">
+      <p>
+        <span>Place order</span>
+        <mat-icon>arrow_forward</mat-icon>
+      </p>
+    </button>
+  </mat-card>
+</div>

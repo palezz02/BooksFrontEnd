@@ -4,7 +4,6 @@ import { ResponseList } from '../models/ResponseList';
 import { ResponseBase } from '../models/ResponseBase';
 import { ResponseObject } from '../models/ResponseObject';
 import { Observable } from 'rxjs';
-import { ResponseObject } from '../models/ResponseObject';
 
 @Injectable({
   providedIn: 'root',
@@ -29,8 +28,7 @@ export class AuthorServiceService {
   }
 
   getById(id: number): Observable<ResponseObject<any>> {
-  const params = new HttpParams().set('id', id);
-  return this.http.get<ResponseObject<any>>(this.url + 'getById', { params });
-}
-
+    const params = new HttpParams().set('id', id);
+    return this.http.get<ResponseObject<any>>(this.url + 'getById', { params });
+  }
 }

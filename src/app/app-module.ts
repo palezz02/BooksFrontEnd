@@ -56,6 +56,7 @@ import { DeleteAccountConfirmDialog } from './components/delete-account-confirm-
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CheckoutComponent } from './components/checkout/checkout';
 import { jwtInterceptor } from './Utils/JwtIterceptor';
+import { NewCart } from './new-cart/new-cart';
 @NgModule({
   declarations: [
     App,
@@ -79,6 +80,7 @@ import { jwtInterceptor } from './Utils/JwtIterceptor';
     Info,
     DeleteAccountConfirmDialog,
     CheckoutComponent,
+    NewCart,
   ],
   imports: [
     BrowserModule,
