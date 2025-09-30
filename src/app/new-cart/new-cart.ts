@@ -1,9 +1,12 @@
-import { Component, HostListener, Inject, inject, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { Component, inject, Inject } from '@angular/core';
 import { UserService } from '../services/user-service';
 import { OrderItemServiceService } from '../services/order-item-service.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-new-cart',
@@ -11,75 +14,45 @@ import { isPlatformBrowser } from '@angular/common';
   templateUrl: './new-cart.html',
   styleUrl: './new-cart.css',
 })
-export class NewCart implements OnDestroy {
+export class NewCart {
   private _snackBar = inject(MatSnackBar);
-  isLoading = true;
-  cartItems: any[] = [];
-  originalItems: any[] = [];
+
+  cartItems$!: Observable<any[]>; // ✅ observable for async pipe
 
   constructor(
     private userService: UserService,
-    @Inject(PLATFORM_ID) private platformId: Object,
     private orderItemService: OrderItemServiceService,
-    private router: Router
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
       const userId = Number(localStorage.getItem('userId')) || -1;
-      this.userService.getCartBooks(userId).subscribe({
-        next: (res) => {
-          this.cartItems = (res.dati || []).map((item) => ({
+
+      this.cartItems$ = this.userService.getCartBooks(userId).pipe(
+        map((res) =>
+          (res.dati || []).map((item: any) => ({
             ...item,
             subtotal: item.unitPrice * item.quantity,
-          }));
-          this.originalItems = JSON.parse(JSON.stringify(this.cartItems));
-          this.isLoading = false;
-        },
-        error: () => {
-          this.isLoading = false;
-        },
-      });
+          }))
+        ),
+        catchError(() => of([])) // in case of error, return empty cart
+      );
+    } else {
+      this.cartItems$ = of([]);
     }
   }
 
-  getQuantity() {
-    return this.cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  getQuantity(items: any[]): number {
+    return items.reduce((sum, item) => sum + item.quantity, 0);
   }
 
-  getTotal() {
-    return this.cartItems.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0);
-  }
-
-  // Aggiorna su chiusura browser/tab
-  @HostListener('window:beforeunload', ['$event'])
-  beforeUnloadHandler(event: any) {
-    this.checkAndUpdateQuantities();
-  }
-
-  // Aggiorna su cambio pagina Angular
-  ngOnDestroy() {
-    this.checkAndUpdateQuantities();
-  }
-
-  checkAndUpdateQuantities() {
-    this.cartItems.forEach((item, idx) => {
-      const original = this.originalItems[idx];
-      if (item.quantity !== original.quantity) {
-        this.orderItemService
-          .updateOrderItem({
-            id: item.orderItemId,
-            orderId: item.orderId,
-            inventoryId: item.inventoryId,
-            quantity: item.quantity,
-          })
-          .subscribe();
-      }
-    });
+  getTotal(items: any[]): number {
+    return items.reduce((sum, item) => sum + item.subtotal, 0);
   }
 
   removeItem(item: any) {
-    console.log(item.orderItemId, item.inventoryId);
     this.orderItemService
       .removeOrderItem({
         id: item.orderItemId,
@@ -90,13 +63,12 @@ export class NewCart implements OnDestroy {
       .subscribe({
         next: (res) => {
           if (res.rc) {
-            // Rimuove l'elemento dalla lista cartItems
-            this.cartItems = this.cartItems.filter((i) => i.orderItemId !== item.orderItemId);
             this._snackBar.open('Libro rimosso dal carrello', 'Chiudi', { duration: 3000 });
+            // ✅ Reload cart after removal
+            this.ngOnInit();
           }
         },
-        error: (err) => {
-          console.error(err);
+        error: () => {
           this._snackBar.open('Errore nella rimozione del libro dal carrello', 'Chiudi', {
             duration: 3000,
           });
@@ -106,31 +78,31 @@ export class NewCart implements OnDestroy {
 
   addQuantity(item: any) {
     if (item.quantity < item.stock) {
-      item.quantity = item.quantity + 1;
+      item.quantity++;
       item.subtotal = item.unitPrice * item.quantity;
     }
   }
 
   removeQuantity(item: any) {
     if (item.quantity > 0) {
-      item.quantity = item.quantity - 1;
+      item.quantity--;
       item.subtotal = item.unitPrice * item.quantity;
     }
   }
 
-  placeOrder(): void {
-    if (this.cartItems.length === 0) {
+  placeOrder(items: any[]): void {
+    if (items.length === 0) {
       alert('Your cart is empty');
       return;
     }
 
-    const outOfStockItems = this.cartItems.filter((item) => item.stock === 0);
+    const outOfStockItems = items.filter((item) => item.stock === 0);
     if (outOfStockItems.length > 0) {
       alert('Error: Out of stock items in your cart. Please remove them.');
       return;
     }
 
-    const invalidQuantityItems = this.cartItems.filter((item) => item.quantity > item.stock);
+    const invalidQuantityItems = items.filter((item) => item.quantity > item.stock);
     if (invalidQuantityItems.length > 0) {
       alert('Error: Not enough stock for some items. Please adjust quantities accordingly.');
       return;
