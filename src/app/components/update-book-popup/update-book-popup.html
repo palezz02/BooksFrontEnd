@@ -1,1 +1,150 @@
-<p>update-book-popup works!</p>
+<form [formGroup]="updateBookForm" (ngSubmit)="onSubmit()" class="book-form">
+  <h2 class="form-title">ADD NEW BOOK</h2>
+
+  <mat-card class="main-card">
+    <mat-card-content>
+      <div class="name-description-wrapper move-bottom">
+        <div class="name-description-container">
+          <div class="inside-card">
+            <mat-form-field appearance="outline" class="spaced-field">
+              <mat-label>Title</mat-label>
+              <input matInput formControlName="title" required />
+              <mat-error *ngIf="updateBookForm.get('title')?.invalid">Title is required</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="spaced-field">
+              <mat-label>ISBN</mat-label>
+              <input matInput formControlName="isbn" maxlength="13" required />
+              <mat-error *ngIf="updateBookForm.get('isbn')?.hasError('required')">
+                ISBN is required
+              </mat-error>
+              <mat-error *ngIf="updateBookForm.get('isbn')?.hasError('pattern')">
+                ISBN must be exactly 13 digits
+              </mat-error>
+              <mat-error *ngIf="updateBookForm.get('isbn')?.hasError('isbnTaken')">
+                This ISBN already exists
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="spaced-field">
+              <mat-label>Author</mat-label>
+              <input matInput formControlName="authors" required />
+              <mat-error *ngIf="updateBookForm.get('authors')?.invalid"
+                >Author is required</mat-error
+              >
+            </mat-form-field>
+            <div class="year-edition-language">
+              <mat-form-field appearance="outline" class="spaced-field-year">
+                <mat-label>Publication Date</mat-label>
+                <input matInput formControlName="publicationDate" maxlength="13" required />
+                <mat-error *ngIf="updateBookForm.get('publicationDate')?.hasError('required')">
+                  Year is required
+                </mat-error>
+                <mat-error *ngIf="updateBookForm.get('publicationDate')?.hasError('max')">
+                  Year cannot be after 2025
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="spaced-field-edition">
+                <mat-label>Edition</mat-label>
+                <input matInput formControlName="edition" required />
+                <mat-error *ngIf="updateBookForm.get('edition')?.invalid"
+                  >Edition is required</mat-error
+                >
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="spaced-field-language">
+                <mat-label>Language code</mat-label>
+                <input matInput formControlName="languageCode" required />
+                <mat-error *ngIf="updateBookForm.get('languageCode')?.hasError('pattern')">
+                  Language Code is exactly 2 letters
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <mat-form-field appearance="outline" class="description">
+              <mat-label>Description</mat-label>
+              <textarea matInput formControlName="description"></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <div class="name-description-wrapper move-bottom">
+        <div class="name-description-container">
+          <div class="inside-card">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Select category</mat-label>
+              <mat-select multiple [value]="updateBookForm.value.category">
+                <mat-option
+                  *ngFor="let category of ['Fantasy', 'Science Fiction', 'Romance']"
+                  [value]="category"
+                >
+                  {{ category }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="spaced-field">
+              <mat-label>Publisher</mat-label>
+              <input matInput formControlName="publisher" required />
+              <mat-error *ngIf="updateBookForm.get('publisher')?.invalid"
+                >Publisher is required</mat-error
+              >
+            </mat-form-field>
+            <div class="pages-stock">
+              <mat-form-field appearance="outline" class="number-field">
+                <mat-label>Pages</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="pageCount"
+                  min="0"
+                  step="1"
+                  required
+                />
+                <mat-error *ngIf="updateBookForm.get('pages')?.hasError('required')">
+                  Number of pages are required
+                </mat-error>
+                <mat-error *ngIf="updateBookForm.get('pages')?.hasError('min')">
+                  Number of pages cannot be negative
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="number-field">
+                <mat-label>Stock</mat-label>
+                <input matInput type="number" formControlName="stock" min="0" step="1" required />
+
+                <mat-error *ngIf="updateBookForm.get('stock')?.hasError('required')">
+                  Stock is required
+                </mat-error>
+                <mat-error *ngIf="updateBookForm.get('stock')?.hasError('min')">
+                  Stock cannot be negative
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="image-upload-section">
+              <div *ngIf="imageSrc" class="image-preview">
+                <img [src]="imageSrc" alt="Book cover" width="150" />
+              </div>
+              <label for="cover">Cover URL:</label>
+              <input type="url" id="cover" name="cover" required />
+            </div>
+            <div class="price-submit">
+              <mat-form-field appearance="outline" class="number-field-price">
+                <mat-label>Price</mat-label>
+                <input matInput type="number" formControlName="price" min="0" step="1" required />
+
+                <mat-error *ngIf="updateBookForm.get('price')?.hasError('required')">
+                  Price is required
+                </mat-error>
+                <mat-error *ngIf="updateBookForm.get('price')?.hasError('min')">
+                  Price cannot be negative
+                </mat-error>
+              </mat-form-field>
+              <div class="button-row">
+                <button color="primary" type="submit" [disabled]="updateBookForm.invalid">
+                  <span> Update</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</form>

@@ -13,6 +13,7 @@ import { BooksPage } from './components/books-page/books-page';
 import { CartInfo } from './components/cart/cart';
 import { NewBook } from './components/new-book/new-book';
 import { BookDelete } from './components/book-delete/book-delete';
+import { UpdateBookPopup } from './components/update-book-popup/update-book-popup';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
@@ -28,6 +29,7 @@ const routes: Routes = [
   { path: 'cart', component: CartInfo },
   { path: 'new', component: NewBook },
   { path: 'bookdelete', component: BookDelete },
+  { path: 'updateBook', component: UpdateBookPopup },
 ];
 
 @NgModule({
