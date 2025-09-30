@@ -46,4 +46,9 @@ export class BookService {
     return this.http.get<ResponseList<any>>(this.url + 'getBestByCategory', { params });
   }
 
+  getBookReviews(bookId: number): Observable<ResponseList<any>> {
+    let params = new HttpParams().set('bookId', bookId);
+    return this.http.get<ResponseList<any>>(this.url + 'getBookReviews', { params });
+  }
+
 }

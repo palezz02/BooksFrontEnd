@@ -2,15 +2,15 @@
   <span>Valutazione media: {{ averageRating | number : '1.1-2' }} / 5</span>
 </div>
 <div class="review-carousel">
-  <button mat-icon-button class="nav-btn" (click)="prev()" [disabled]="currentIndex === 0">
+  <button mat-icon-button class="nav-btn" (click)="prev()" [disabled]="currentIndex === 0" *ngIf="reviews.length > 3">
     <mat-icon>chevron_left</mat-icon>
   </button>
   <div class="reviews">
     <div class="review-card" *ngFor="let review of visibleReviews">
       <!-- Row 1: Avatar, Nome, Stelle -->
       <div class="review-row row1">
-        <div class="avatar">{{ review.reviewer.charAt(0) }}</div>
-        <div class="reviewer">{{ review.reviewer }}</div>
+        <div class="avatar">{{ review.firstName.charAt(0) }}</div>
+        <div class="reviewer">{{ review.firstName }} {{ review.lastName }}</div>
         <div class="rating">
           <span *ngFor="let star of [].constructor(review.rating)">★</span>
           <span *ngFor="let star of [].constructor(5 - review.rating)">☆</span>
@@ -18,22 +18,11 @@
       </div>
       <!-- Row 2: Titolo -->
       <div class="review-row row2">
-        <div class="title">{{ review.title || 'Titolo recensione' }}</div>
+        <div class="title">{{ review.reviewTitle || 'Titolo recensione' }}</div>
       </div>
       <!-- Row 3: Testo recensione -->
       <div class="review-row row3">
-        <div class="text">{{ review.text }}</div>
-      </div>
-      <!-- Row 4: Like/Dislike -->
-      <div class="review-row row4">
-        <div class="actions">
-          <button mat-icon-button class="like-btn" title="Like">
-            <mat-icon>thumb_up</mat-icon>
-          </button>
-          <button mat-icon-button class="dislike-btn" title="Dislike">
-            <mat-icon>thumb_down</mat-icon>
-          </button>
-        </div>
+        <div class="text">{{ review.body }}</div>
       </div>
     </div>
   </div>
@@ -42,6 +31,7 @@
     class="nav-btn"
     (click)="next()"
     [disabled]="currentIndex >= reviews.length - 3"
+    *ngIf="reviews.length > 3"
   >
     <mat-icon>chevron_right</mat-icon>
   </button>
