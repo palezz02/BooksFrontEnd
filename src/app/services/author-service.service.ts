@@ -4,7 +4,6 @@ import { ResponseList } from '../models/ResponseList';
 import { ResponseBase } from '../models/ResponseBase';
 import { ResponseObject } from '../models/ResponseObject';
 import { Observable } from 'rxjs';
-import { ResponseObject } from '../models/ResponseObject';
 
 @Injectable({
   providedIn: 'root',

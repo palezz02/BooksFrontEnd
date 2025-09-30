@@ -1,6 +1,14 @@
-<app-best-seller></app-best-seller>
+<app-best-seller 
+    *ngIf="bestCategoryBooks$ | async as books; else noBooks"
+    [books]="books">
+</app-best-seller> 
+
+<ng-template #noBooks>
+  <p class="loading">Loading books...</p>
+</ng-template>
+
 <app-best-book-carosel 
-    *ngIf="books$ | async as books"
+    *ngIf="books$ | async as books; else noBooks"
     [books]="books">>
 </app-best-book-carosel>
 
