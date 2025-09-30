@@ -15,6 +15,7 @@ import { Book, CompleteBook } from '../book-info/book-info';
 })
 export class Info implements OnInit {
   book$!: Observable<CompleteBook | null>;
+  reviews$!: Observable<any[]>;
 
   constructor(
     private route: ActivatedRoute,
@@ -51,58 +52,16 @@ export class Info implements OnInit {
           })
         );
       })
-    );
-  }
 
-  reviews: any[] = [
-    {
-      id: 1,
-      bookId: 1,
-      reviewer: 'Mario Rossi',
-      text: 'Un libro fantastico!',
-      rating: 5,
-    },
-    {
-      id: 2,
-      bookId: 1,
-      reviewer: 'Luigi Verdi',
-      text: 'Molto interessante e avvincente.',
-      rating: 4,
-    },
-    {
-      id: 3,
-      bookId: 1,
-      reviewer: 'Giulia Bianchi',
-      text: 'Mi ha emozionato tantissimo, consigliato!',
-      rating: 5,
-    },
-    {
-      id: 4,
-      bookId: 1,
-      reviewer: 'Marco Neri',
-      text: 'Alcuni capitoli sono un po’ lenti, ma nel complesso buono.',
-      rating: 3,
-    },
-    {
-      id: 5,
-      bookId: 1,
-      reviewer: 'Sara Blu',
-      text: 'Personaggi ben scritti e storia coinvolgente.',
-      rating: 4,
-    },
-    {
-      id: 6,
-      bookId: 1,
-      reviewer: 'Luca Gialli',
-      text: 'Non sono riuscito a finirlo, troppo lento.',
-      rating: 2,
-    },
-    {
-      id: 7,
-      bookId: 1,
-      reviewer: 'Marta Viola',
-      text: 'Uno dei migliori libri letti quest’anno!',
-      rating: 5,
-    },
-  ];
+    );
+
+    this.reviews$ = this.book$.pipe(
+      switchMap(book => {
+        return this.bookService.getBookReviews(book!.id).pipe(
+          map((response: ResponseObject<any>) => response.dati || []),
+        );
+      })
+    );
+
+  }
 }

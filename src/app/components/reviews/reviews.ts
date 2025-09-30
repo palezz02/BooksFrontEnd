@@ -1,12 +1,5 @@
 import { Component, Input } from '@angular/core';
 
-interface Review {
-  reviewer: string;
-  rating: number;
-  title: string;
-  text: string;
-  // like/dislike counts can be added here if needed
-}
 
 @Component({
   selector: 'app-reviews',
@@ -15,7 +8,7 @@ interface Review {
   styleUrl: './reviews.css',
 })
 export class Reviews {
-  @Input() reviews: Review[] = [];
+  @Input() reviews: any[] = [];
 
   currentIndex = 0;
 
@@ -24,7 +17,7 @@ export class Reviews {
     return this.reviews.reduce((sum, r) => sum + r.rating, 0) / this.reviews.length;
   }
 
-  get visibleReviews(): Review[] {
+  get visibleReviews(): any[] {
     return this.reviews.slice(this.currentIndex, this.currentIndex + 3);
   }
 
