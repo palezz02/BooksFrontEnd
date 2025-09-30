@@ -4,7 +4,7 @@ import { BookService } from '../../services/book-service';
 import { AuthorServiceService } from '../../services/author-service.service';
 import { PublisherService } from '../../services/publisher-service';
 import { forkJoin, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 
 
 interface BookDTO {
@@ -47,66 +47,54 @@ export class BooksPage implements OnInit {
   selectedCategory: string = '';
   selectedLanguage: string = '';
 
-  categories: string[] = ['Fantasy', 'Science Fiction', 'Mystery', 'Romance'];
-  languages: string[] = ['EN', 'IT', 'FR', 'DE'];
+  categories: string[] = [];
+  languages: string[] = [];
 
 
 
   pageSize = 10;
   currentPage = 0;
 
-ngOnInit() {
-  this.bookService.getAll().subscribe((res: any) => {
-    const bookDTOs: BookDTO[] = res.dati;
+  books$!: Observable<any[]>;
 
-    const observables = bookDTOs.map(book => {
-      const authorRequests = book.authors.map(id =>
-        this.authorService.getById(id)
-      );
-      const publisherRequest = this.publisherService.getPublisher(book.publisher);
+  ngOnInit() {
+    this.books$ = this.bookService.getAll().pipe(
+      switchMap((res: any) => {
+        const bookDTOs: BookDTO[] = res.dati;
 
-      return forkJoin([...authorRequests, publisherRequest]).pipe(
-        map((results: any[]) => {
-          const authors = results.slice(0, book.authors.length).map(a => ({
-            id: a.dati.id,
-            fullName: a.dati.fullName
-          }));
+        const observables = bookDTOs.map(book => {
+          const authorRequests = book.authors.map(id =>
+            this.authorService.getById(id)
+          );
+          const publisherRequest = this.publisherService.getPublisher(book.publisher);
 
-          const publisher = {
-            id: results[results.length - 1].dati.id,
-            name: results[results.length - 1].dati.name
-          };
+          return forkJoin([...authorRequests, publisherRequest]).pipe(
+            map((results: any[]) => {
+              const authors = results.slice(0, book.authors.length).map(a => ({
+                id: a.dati.id,
+                fullName: a.dati.fullName,
+              }));
+              const publisher = {
+                id: results[results.length - 1].dati.id,
+                name: results[results.length - 1].dati.name,
+              };
+              return { ...book, authors, publisher };
+            })
+          );
+        });
 
-          return {
-            ...book,
-            authors,
-            publisher
-          };
-        })
-      );
-    });
+        return forkJoin(observables);
+      }),
+      tap(books => {
+        this.books = books;
+        this.filteredBooks = books;
+        this.categories = Array.from(new Set(books.flatMap(b => b.categories.map((c: any) => c.name))));
+        this.languages = Array.from(new Set(books.map(b => b.languageCode.toUpperCase())));
+        this.updatePagedBooks();
+      })
+    );
+  }
 
-    forkJoin(observables).subscribe((booksWithNames: any[]) => {
-      this.books = booksWithNames;
-      this.filteredBooks = this.books;
-
-
-      this.categories = Array.from(
-        new Set(
-          this.books.flatMap(b => b.categories.map((c: any) => c.name))
-        )
-      );
-
-
-      this.languages = Array.from(
-        new Set(this.books.map(b => b.languageCode.toUpperCase()))
-      );
-
-
-      this.updatePagedBooks();
-    });
-  });
-}
 
 
 

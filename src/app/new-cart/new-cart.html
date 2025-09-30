@@ -1,29 +1,15 @@
-<div class="cart-page">
-  <div *ngIf="isLoading" class="loading-container">
-    <mat-spinner></mat-spinner>
-    <p>Loading cart...</p>
-  </div>
-
-  <div *ngIf="!isLoading && cartItems.length === 0" class="empty-cart">
+<div class="cart-page" *ngIf="cartItems$ | async as cartItems">
+  <!-- Empty cart -->
+  <div *ngIf="cartItems.length === 0" class="empty-cart">
     <mat-icon class="empty-icon">shopping_cart</mat-icon>
     <h2>Your cart is empty</h2>
     <p>Add some books to get started!</p>
   </div>
 
+  <!-- Cart items -->
   <mat-card *ngIf="cartItems.length > 0" class="cart-card">
-    <div
-      class="cart-header"
-      style="
-        padding: 16px 24px;
-        border-bottom: 1px solid #e0e0e0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      "
-    >
-      <h3 style="margin: 0; font-size: 18px; font-weight: 600">
-        Your Cart ({{ getQuantity() }} items)
-      </h3>
+    <div class="cart-header">
+      <h3>Your Cart ({{ getQuantity(cartItems) }} items)</h3>
     </div>
 
     <div class="cart-items" *ngFor="let item of cartItems">
@@ -45,18 +31,11 @@
               <span> • {{ item.languageCode }}</span>
             </p>
             <p class="book-description">{{ item.description }}</p>
-            <p class="stock-info">
-              <span>{{ item.stock }} in stock</span>
-            </p>
+            <p class="stock-info"><span>{{ item.stock }} in stock</span></p>
           </div>
           <div>
-            <button
-              mat-icon-button
-              color="warn"
-              matTooltip="Remove item"
-              (click)="removeItem(item)"
-            >
-              <mat-icon (click)="removeItem(item)">close</mat-icon>
+            <button mat-icon-button color="warn" (click)="removeItem(item)">
+              <mat-icon>close</mat-icon>
             </button>
           </div>
         </div>
@@ -77,6 +56,7 @@
     </div>
   </mat-card>
 
+  <!-- Price details -->
   <mat-card *ngIf="cartItems.length > 0" class="price-details-card">
     <mat-card-header>
       <mat-card-title>Price Details</mat-card-title>
@@ -84,7 +64,7 @@
     <mat-card-content>
       <mat-list>
         <mat-list-item>
-          <div class="item-title">{{ getQuantity() }} items</div>
+          <div class="item-title">{{ getQuantity(cartItems) }} items</div>
         </mat-list-item>
         <mat-list-item *ngFor="let item of cartItems">
           <div class="list-item-content">
@@ -97,10 +77,10 @@
       </mat-list>
       <div class="total-amount-row">
         <div class="total-amount-label">Total Amount</div>
-        <div class="total-amount-price">{{ getTotal() | currency : 'EUR' }}</div>
+        <div class="total-amount-price">{{ getTotal(cartItems) | currency : 'EUR' }}</div>
       </div>
     </mat-card-content>
-    <button mat-flat-button color="accent" class="place-order-button" (click)="placeOrder()">
+    <button mat-flat-button color="accent" class="place-order-button" (click)="placeOrder(cartItems)">
       <p>
         <span>Place order</span>
         <mat-icon>arrow_forward</mat-icon>
