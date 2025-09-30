@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ResponseList } from '../models/ResponseList';
 import { ResponseBase } from '../models/ResponseBase';
+import { ResponseObject } from '../models/ResponseObject';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +14,11 @@ export class AddressServiceService {
 
   listAddress(): Observable<ResponseList<any>> {
     return this.http.get<ResponseList<any>>(this.url + 'listAll');
+  }
+
+  getById(id: number): Observable<ResponseObject<any>> {
+    const params = new HttpParams().set('id', id);
+    return this.http.get<ResponseObject<any>>(this.url + 'getById', { params });
   }
 
   insertAddress(body: {}): Observable<ResponseBase> {

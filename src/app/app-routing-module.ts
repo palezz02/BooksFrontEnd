@@ -14,6 +14,7 @@ import { ErrorPage } from './components/error-page/error-page';
 import { CheckoutComponent } from './components/checkout/checkout';
 import { NewCart } from './new-cart/new-cart';
 import { Info } from './components/info/info';
+import { AddressSetting } from './components/address-setting/address-setting';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
@@ -30,6 +31,7 @@ const routes: Routes = [
   { path: 'bookdelete', component: BookDelete },
   { path: 'error', component: ErrorPage },
   { path: 'checkout', component: CheckoutComponent },
+  { path: 'address', component: AddressSetting },
 ];
 
 @NgModule({
