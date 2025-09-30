@@ -1,8 +1,7 @@
-import { Component } from '@angular/core';
-
+import { Component, Inject } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AuthorServiceService } from '../../services/author-service.service';
 
 @Component({
   selector: 'app-update-book-popup',
@@ -11,27 +10,33 @@ import { Router } from '@angular/router';
   styleUrl: './update-book-popup.css',
 })
 export class UpdateBookPopup {
-  private formBuilder = new FormBuilder();
+  updateBookForm;
+  book: any;
 
-  updateBookForm = this.formBuilder.group({
-    isbn: ['4231423142314231', [Validators.required, Validators.minLength(4)]],
-    title: ['', [Validators.required, Validators.minLength(4)]],
-    description: ['', [Validators.required, Validators.minLength(4)]],
-    authors: [ [
-      0
-    ], [Validators.required]],
-    category: [ [
-      0
-    ], [Validators.required]],
-    publisher: ['', [Validators.required, Validators.minLength(4)]],
-    publicationDate: ['', [Validators.required]],
-    pageCount: [0, [Validators.required, Validators.min(0)]],
-    languageCode: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(2)]],
-    edition: ['', [Validators.required]],
-    price: [0, [Validators.required, Validators.min(0)]],
-    stock: [0, [Validators.required, Validators.min(0)]],
-    coverImage: ['', [Validators.required, Validators.minLength(4)]],
-  });
+  constructor(
+    private authorService: AuthorServiceService,
+    private formBuilder: FormBuilder,
+    @Inject(MAT_DIALOG_DATA) public data: { book: any }
+  ) {
+    this.book = data.book;
+
+    this.updateBookForm = this.formBuilder.group({
+      isbn: [this.book?.isbn || '', [Validators.required, Validators.minLength(4)]],
+      title: [this.book?.title || '', [Validators.required, Validators.minLength(4)]],
+      description: [this.book?.description || '', [Validators.required, Validators.minLength(4)]],
+      authors: [ this.book?.authors || [], [Validators.required]],
+      category: [this.book?.category || [], [Validators.required]],
+      publisher: [this.book?.publisher || '', [Validators.required, Validators.minLength(4)]],
+      publicationDate: [this.book?.publicationDate || '', [Validators.required]],
+      pageCount: [this.book?.pageCount || 0, [Validators.required, Validators.min(0)]],
+      languageCode: [this.book?.languageCode || '', [Validators.required, Validators.minLength(2), Validators.maxLength(2)]],
+      edition: [this.book?.edition || '', [Validators.required]],
+      price: [this.book?.price || 0, [Validators.required, Validators.min(0)]],
+      stock: [this.book?.stock || 0, [Validators.required, Validators.min(0)]],
+      coverImage: [this.book?.coverImage || '', [Validators.required, Validators.minLength(4)]],
+    });
+  }
+
 
   imageSrc: string | ArrayBuffer | null = null;
 

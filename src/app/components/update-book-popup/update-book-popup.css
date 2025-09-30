@@ -1,133 +1,47 @@
-.book-form {
-  max-width: 1200px;
-  margin: 30px auto;
-  padding: 20px;
-  background: transparent;
-  border-radius: 12px;
-}
-
-.form-title {
-  font-size: 28px;
-  font-weight: bold;
-  margin-bottom: 1%;
-  margin-inline: auto;
-  text-align: center;
-}
+/* La card fa da contenitore flessibile */
 .main-card {
-  padding: 20px;
-  border-radius: 10px;
-  background-color: transparent;
-  box-shadow: none;
-}
-mat-card-content {
-  display: flex;
-  flex-direction: row;
-  gap: 5%;
-}
-.name-description-wrapper {
-  gap: 20px;
-  margin-bottom: 20px;
-  width: 45%;
-}
-p {
-  border-top-right-radius: 10px;
-  border-top-left-radius: 10px;
-  padding: 2%;
-  font-weight: medium;
-  margin: 0;
-}
-.name-description-container {
   display: flex;
   flex-direction: column;
-  margin-bottom: 2rem;
+  max-height: min(80vh, 100%); /* limite prudente per popup/pagina */
 }
+
+/* Solo il contenuto scorre */
+.main-card .scrollable {
+  overflow: auto;
+  max-height: calc(80vh - 70px); /* 70px ≈ spazio per titolo/margini */
+  padding-right: 8px;             /* evita che lo scrollbar copra il testo */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* (opzionale) migliore resa grid in responsive */
 .inside-card {
-  border-top: none;
-  border-bottom-right-radius: 10px;
-  border-bottom-left-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
-.pages-stock {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-  margin-inline: auto !important;
+.description,
+.full-width {
+  grid-column: 1 / -1;
 }
-.number-field {
-  width: 43% !important;
-  margin-top: 4% !important;
-}
-.year-edition-language {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-  margin-inline: auto !important;
-}
-.spaced-field-year {
-  width: 15% !important;
-  margin-top: 4% !important;
-}
-.spaced-field-edition {
-  width: 35% !important;
-  margin-top: 4% !important;
-}
-.spaced-field-language {
-  width: 30% !important;
-  margin-top: 4% !important;
-}
-
-.image-upload-section {
-  display: flex;
-  width: 90% !important;
-  margin-top: 4% !important;
-  margin-inline: auto !important;
-}
-#cover {
-  width: 100%;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-mat-form-field {
-  width: 90%;
-  margin-top: 4%;
-  display: flex;
-}
+.year-edition-language,
+.pages-stock,
 .price-submit {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 4% !important;
-  width: 90%;
+  display: contents; /* lascia i figli gestire la griglia */
 }
-.number-field-price {
-  width: 50%;
-}
-.button-row button {
-  padding: 10px 15px;
-  font-size: 16px;
-  border-radius: 8px;
-  align-items: center;
-  display: flex;
-  gap: 10px;
+.number-field,
+.number-field-price,
+.spaced-field,
+.spaced-field-year,
+.spaced-field-edition,
+.spaced-field-language {
+  min-width: 0; /* prevenire overflow in griglia */
 }
 
-@media screen and (max-width: 768px) {
-  .book-form mat-card-content {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .book-form .name-description-wrapper.move-bottom {
-    order: 99;
-  }
-
-  .name-description-wrapper {
-    width: 100%;
+@media (max-width: 900px) {
+  .inside-card {
+    grid-template-columns: 1fr;
   }
 }
+
+/* (opzionale) se il form è dentro un POPUP con header/footer fissi:
+   assegna una classe al wrapper centrale (es. .scroll-content) e usa max-height 90vh */

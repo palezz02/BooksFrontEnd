@@ -3,7 +3,7 @@
     <ng-container matColumnDef="title">
       <th mat-header-cell *matHeaderCellDef>Titolo</th>
       <td mat-cell *matCellDef="let book">
-        <span class="clickable-title" (click)="goToBookInfo(book.id)">
+        <span>
           {{ book.title }}
         </span>
       </td>
@@ -54,6 +54,7 @@
           aria-label="Edit book"
           matTooltip="Edit book"
           matTooltipPosition="above"
+          (click)="openUpdateBookPopup(book)"
         >
           <mat-icon>edit</mat-icon>
         </button>
