@@ -18,8 +18,7 @@
     </select>
   </div>
 
-  <div class="books-grid">
-    
+  <div class="books-grid" *ngIf="filteredBooks.length > 0; else skeletonBooks">
     <div class="book-card" *ngFor="let book of pagedBooks">
       <a [routerLink]="['/info', book.id]">
         <img
@@ -32,8 +31,19 @@
         <p class="desc">{{ book.description | slice : 0 : 100 }}...</p>
       </a>
     </div>
-    
   </div>
+
+  <ng-template #skeletonBooks>
+    <div class="books-grid">
+      <div class="skeleton-book-card" *ngFor="let i of [1, 2, 3, 4, 5]">
+        <div class="skeleton-img"></div>
+        <div class="skeleton-title"></div>
+        <div class="skeleton-author"></div>
+        <div class="skeleton-publisher"></div>
+        <div class="skeleton-desc"></div>
+      </div>
+    </div>
+  </ng-template>
 
   <mat-paginator
     [length]="filteredBooks.length"
