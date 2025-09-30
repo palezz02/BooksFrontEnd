@@ -31,36 +31,36 @@ export class CartInfo implements OnInit {
     if (isPlatformBrowser(this.platformId)) {
       // localStorage.setItem('userId', '3')
       const userIdStr = localStorage.getItem('userId');
-      console.log('UserId from localStorage:', userIdStr);
+      // console.log('UserId from localStorage:', userIdStr);
       
       if (userIdStr) {
         this.userId = parseInt(userIdStr, 10);
-        console.log('Parsed userId:', this.userId);
+        // console.log('Parsed userId:', this.userId);
         this.loadCartFromOrder();
       } else {
-        console.error('No user ID found in localStorage.');
+        // console.error('No user ID found in localStorage.');
         this.isLoading = false;
       }
     } else {
-      console.log('Not running in browser — skipping localStorage');
+      // console.log('Not running in browser — skipping localStorage');
       this.isLoading = false;
     }
   }
 
   loadCartFromOrder(): void {
     if (!this.userId) {
-      console.error('User ID is missing');
+      // console.error('User ID is missing');
       this.isLoading = false;
       this.cdr.detectChanges();
       return;
     }
 
     this.isLoading = true;
-    console.log('Loading cart for user:', this.userId);
+    // console.log('Loading cart for user:', this.userId);
     
     setTimeout(() => {
       if (this.isLoading) {
-        console.error('Loading timeout - forcing stop');
+        // console.error('Loading timeout - forcing stop');
         this.isLoading = false;
         this.cdr.detectChanges();
       }
@@ -69,7 +69,7 @@ export class CartInfo implements OnInit {
     this.userService.getById(this.userId).pipe(
       switchMap((userResp: any) => {
         if (!userResp.rc || !userResp.dati || !userResp.dati.orders || userResp.dati.orders.length === 0) {
-          console.warn('No orders found for user');
+          // console.warn('No orders found for user');
           this.cartItems = [];
           this.isLoading = false;
           this.cdr.detectChanges();
@@ -77,7 +77,7 @@ export class CartInfo implements OnInit {
         }
         
         const userOrderIds = userResp.dati.orders;
-        console.log('User order IDs:', userOrderIds);
+        // console.log('User order IDs:', userOrderIds);
         
         return this.http.get<any>('http://localhost:8080/rest/order/getAll').pipe(
           switchMap((ordersResponse: any) => {
@@ -94,7 +94,7 @@ export class CartInfo implements OnInit {
             );
             
             if (userOrders.length === 0) {
-              console.warn('No cart orders found');
+              // console.warn('No cart orders found');
               this.cartItems = [];
               this.isLoading = false;
               this.cdr.detectChanges();
@@ -105,7 +105,7 @@ export class CartInfo implements OnInit {
             const orderItemIds = cartOrder.orderItem || [];
             
             if (orderItemIds.length === 0) {
-              console.warn('Cart is empty');
+              // console.warn('Cart is empty');
               this.cartItems = [];
               this.isLoading = false;
               this.cdr.detectChanges();
@@ -115,7 +115,7 @@ export class CartInfo implements OnInit {
             const itemRequests = orderItemIds.map((itemId: number) => 
               this.orderItemService.getOrderItem(itemId).pipe(
                 catchError(err => {
-                  console.error(`Error loading order item ${itemId}:`, err);
+                  // console.error(`Error loading order item ${itemId}:`, err);
                   return of(null);
                 })
               )
@@ -134,14 +134,14 @@ export class CartInfo implements OnInit {
         
         const [itemResponses, booksResponse] = data;
         
-        console.log('Full books response:', booksResponse);
-        console.log('Books array:', booksResponse.dati);
+        // console.log('Full books response:', booksResponse);
+        // console.log('Books array:', booksResponse.dati);
         if (booksResponse.dati && booksResponse.dati.length > 0) {
-          console.log('First book structure:', booksResponse.dati[0]);
+          // console.log('First book structure:', booksResponse.dati[0]);
         }
         
         if (!booksResponse.rc || !booksResponse.dati) {
-          console.error('Failed to load books');
+          // console.error('Failed to load books');
           this.cartItems = [];
           this.isLoading = false;
           this.cdr.detectChanges();
@@ -151,28 +151,28 @@ export class CartInfo implements OnInit {
         const allBooks = booksResponse.dati;
         
         const validItems = itemResponses.filter((resp: any) => resp && resp.rc && resp.dati);
-        console.log('Valid order items:', validItems);
-        console.log('Inventory IDs we need:', validItems.map((item: any) => item.dati.inventory));
+        // console.log('Valid order items:', validItems);
+        // console.log('Inventory IDs we need:', validItems.map((item: any) => item.dati.inventory));
         
         this.cartItems = validItems.map((itemResp: any) => {
           const orderItem = itemResp.dati;
           const inventoryId = orderItem.inventory;
           
-          console.log('Looking for book with inventory:', inventoryId);
+          // console.log('Looking for book with inventory:', inventoryId);
           
           const book = allBooks.find((b: any) => {
-            console.log('Checking book:', b.id, 'fields:', Object.keys(b));
+            // console.log('Checking book:', b.id, 'fields:', Object.keys(b));
             return b.id === inventoryId || 
                    (b.inventory && b.inventory === inventoryId) ||
                    (b.inventoryId && b.inventoryId === inventoryId);
           });
           
           if (!book) {
-            console.warn(`No book found for inventory ${inventoryId}`);
+            // console.warn(`No book found for inventory ${inventoryId}`);
             return null;
           }
           
-          console.log('Found book:', book);
+          // console.log('Found book:', book);
           
           return {
             orderItem: {
@@ -201,12 +201,12 @@ export class CartInfo implements OnInit {
           };
         }).filter((item: any) => item !== null);
         
-        console.log('Final cart items:', this.cartItems);
+        // console.log('Final cart items:', this.cartItems);
         this.isLoading = false;
         this.cdr.detectChanges();
       },
       error: (error: any) => {
-        console.error('Error loading cart:', error);
+        // console.error('Error loading cart:', error);
         this.cartItems = [];
         this.isLoading = false;
         this.cdr.detectChanges();
@@ -259,7 +259,7 @@ export class CartInfo implements OnInit {
         cartItem.orderItem.quantity = originalQuantity;
         cartItem.orderItem.subtotal = originalSubtotal;
         this.cdr.detectChanges();
-        console.error('Error updating quantity:', error);
+        // console.error('Error updating quantity:', error);
         alert('Error updating quantity');
       }
     });
@@ -308,7 +308,7 @@ export class CartInfo implements OnInit {
         cartItem.orderItem.quantity = originalQuantity;
         cartItem.orderItem.subtotal = originalSubtotal;
         this.cdr.detectChanges();
-        console.error('Error updating quantity:', error);
+        // console.error('Error updating quantity:', error);
         alert('Error updating quantity');
       }
     });
@@ -348,7 +348,7 @@ export class CartInfo implements OnInit {
           this.cartItems = [...this.cartItems];
           this.cdr.detectChanges();
         }
-        console.error('Error removing item:', error);
+        // console.error('Error removing item:', error);
         alert('Error removing item');
       }
     });
