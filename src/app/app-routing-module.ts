@@ -13,14 +13,14 @@ import { BookDelete } from './components/book-delete/book-delete';
 import { ErrorPage } from './components/error-page/error-page';
 import { CheckoutComponent } from './components/checkout/checkout';
 import { NewCart } from './new-cart/new-cart';
+import { Info } from './components/info/info';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
   { path: 'login', component: Login },
   { path: 'register', component: Register },
   // { path: 'raccomandation', component: BestBookCarosel }, // , canActivate:[authGuard]
-  { path: 'info', component: BookInfo },
-  { path: 'books/:id', component: BookInfo },
+  { path: 'info/:bookId', component: Info },
   { path: 'books', component: BestSeller },
   { path: 'setting', component: UserSetting },
   { path: 'home', component: Home },
