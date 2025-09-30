@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 
 
 export type Author = {
@@ -61,6 +62,8 @@ export class BookInfo {
 
   quantity: number = 1;
 
+  constructor(private router: Router) {}
+
   openPublisherPopup() {
     if (!this.book) return;
     this.publisherData = this.book.publisher;
@@ -89,10 +92,12 @@ export class BookInfo {
   addToCart() {
     if (!this.book) return;
     console.log(`Aggiunto ${this.quantity} x ${this.book.title} al carrello!`);
+    
   }
 
   buyNow() {
     if (!this.book) return;
     console.log(`Acquisto immediato: ${this.quantity} x ${this.book.title}`);
+    this.router.navigate(['/cart']);
   }
 }
