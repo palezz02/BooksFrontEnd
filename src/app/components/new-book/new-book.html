@@ -37,8 +37,30 @@
                   formControlName="selectedAuthors"
                   (selectionChange)="onAuthorSelectionChange($event.value)"
                 >
-                  <mat-option *ngFor="let author of authors" [value]="author">
-                    {{ author.fullName }}
+                  <mat-option *ngFor="let author of authors" [value]="author"  class="custom-option">
+                    <div  class="author-remove">
+                    <span class="author-name">{{ author.fullName }}</span>
+                    
+                      <button
+                        mat-icon-button
+                        class="delete-btn"
+                        (click)="deleteAuthor($event, author)"
+                        type="button"
+                        aria-label="Delete author"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          height="24px"
+                          viewBox="0 -960 960 960"
+                          width="24px"
+                          fill="#1f1f1f"
+                        >
+                          <path
+                            d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"
+                          />
+                        </svg>
+                      </button>
+                    </div>
                   </mat-option>
                   <div class="select-footer">
                     <a href="#" (click)="openNewAuthorInput($event)">Add new author</a>
@@ -130,7 +152,12 @@
 
           <mat-form-field appearance="outline" class="full-width description">
             <mat-label>Description</mat-label>
-            <textarea matInput formControlName="description" rows="4" class="description"></textarea>
+            <textarea
+              matInput
+              formControlName="description"
+              rows="4"
+              class="description"
+            ></textarea>
           </mat-form-field>
         </div>
       </div>
@@ -146,8 +173,30 @@
                   formControlName="selectedCategories"
                   (selectionChange)="onCategorySelectionChange($event.value)"
                 >
-                  <mat-option *ngFor="let category of categories" [value]="category">
-                    {{ category.name }}
+               
+                  <mat-option *ngFor="let category of categories" [value]="category" class="custom-option">
+                   <div  class="category-remove">
+                    <span class="category-name"> {{ category.name }}</span>
+                    <button
+                        mat-icon-button
+                        class="delete-btn"
+                        (click)="deleteCategory($event, category)"
+                        type="button"
+                        aria-label="Delete category"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          height="24px"
+                          viewBox="0 -960 960 960"
+                          width="24px"
+                          fill="#1f1f1f"
+                        >
+                          <path
+                            d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"
+                          />
+                        </svg>
+                      </button>
+                    </div>
                   </mat-option>
                   <div class="select-footer">
                     <a href="#" (click)="openNewCategoryInput($event)">Add new category</a>
@@ -196,8 +245,56 @@
                   formControlName="selectedPublisher"
                   (selectionChange)="onPublisherSelectionChange($event.value)"
                 >
-                  <mat-option *ngFor="let publisher of publishers" [value]="publisher">
-                    {{ publisher.name }}
+                 <!-- 
+                 <mat-option *ngFor="let author of authors" [value]="author"  class="custom-option">
+                    <div  class="author-remove">
+                    <span class="author-name">{{ author.fullName }}</span>
+                    
+                      <button
+                        mat-icon-button
+                        class="delete-btn"
+                        (click)="deleteAuthor($event, author)"
+                        type="button"
+                        aria-label="Delete author"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          height="24px"
+                          viewBox="0 -960 960 960"
+                          width="24px"
+                          fill="#1f1f1f"
+                        >
+                          <path
+                            d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </mat-option> -->
+                  <mat-option *ngFor="let publisher of publishers" [value]="publisher" class="custom-option">
+                   <div  class="publisher-remove">
+                   <span class="publisher-name">{{ publisher.name }}</span> 
+                   
+                      <button
+                        mat-icon-button
+                        class="delete-btn"
+                        (click)="deletePublisher($event, publisher)"
+                        type="button"
+                        aria-label="Delete publisher"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          height="24px"
+                          viewBox="0 -960 960 960"
+                          width="24px"
+                          fill="#1f1f1f"
+                        >
+                          <path
+                            d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"
+                          />
+                        </svg>
+                      </button>
+                    </div>
                   </mat-option>
                   <div class="select-footer">
                     <a href="#" (click)="openNewPublisherInput($event)">Add new publisher</a>
