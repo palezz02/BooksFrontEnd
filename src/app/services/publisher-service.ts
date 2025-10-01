@@ -24,7 +24,7 @@ export class PublisherService {
     return this.http.post<ResponseBase>(this.url + 'create', body);
   }
   removePublisher(body: {}): Observable<ResponseBase> {
-    return this.http.post<ResponseBase>(this.url + 'delete', { body });
+    return this.http.delete<ResponseBase>(this.url + 'delete', { body });
   }
 
   updatePublisher(body: {}): Observable<ResponseBase> {
