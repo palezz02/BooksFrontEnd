@@ -26,7 +26,10 @@ export class BookService {
 
   getById(id: number): Observable<ResponseObject<any>> {
     let params = new HttpParams().set('id', id);
-    return this.http.get<ResponseObject<any>>(this.url + 'getById', { params });
+    return this.http.get<ResponseObject<any>>(this.url + 'getById', {
+      params,
+      withCredentials: true,
+    });
   }
 
   getAll(): Observable<ResponseList<any>> {

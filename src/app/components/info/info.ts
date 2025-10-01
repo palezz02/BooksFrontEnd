@@ -57,10 +57,11 @@ export class Info implements OnInit {
       })
     );
 
-    this.reviews$ = this.book$.pipe(
-      switchMap((book) => {
+    this.reviews$ = this.route.paramMap.pipe(
+      switchMap((params) => {
+        const idString = params.get('bookId');
         return this.bookService
-          .getBookReviews(book!.id)
+          .getBookReviews(Number(idString))
           .pipe(map((response: ResponseObject<any>) => response.dati || []));
       })
     );

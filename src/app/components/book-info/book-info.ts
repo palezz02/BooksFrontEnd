@@ -112,12 +112,14 @@ export class BookInfo {
           const orderId = Number(localStorage.getItem('orderId')) || -1;
           if (orderId !== -1 && orderId !== undefined && orderId !== null) {
             // console.log(orderId);
+
             let orderItem = {
               id: 0,
               orderId: orderId,
               inventoryId: this.book!.inventoryId,
               quantity: this.quantity,
             };
+            console.log(orderItem);
             this.orderItem.insertOrderItem(orderItem).subscribe((res) => {
               if (res.rc) {
                 console.log(res);
@@ -139,10 +141,11 @@ export class BookInfo {
               updatedAt: formattedDate.toString(),
               user: Number(localStorage.getItem('userId')),
             };
+            console.log(newOrder);
             this.order.create(newOrder).subscribe((res) => {
               if (res.rc) {
-                // console.log(res);
                 // console.log(this.book!.inventoryId);
+                console.log(res);
                 localStorage.setItem('orderId', res.dati.id);
                 let orderItem = {
                   id: 0,
@@ -151,7 +154,7 @@ export class BookInfo {
                   quantity: this.quantity,
                 };
                 this.orderItem.insertOrderItem(orderItem).subscribe((res) => {
-                  // console.log(res);
+                  console.log(res);
                 });
               }
             });

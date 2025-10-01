@@ -44,10 +44,12 @@ export class Login {
         })
         .subscribe((resp: any) => {
           console.log(resp);
-          localStorage.setItem('userId', resp.id);
           if (resp.logged) {
-            console.log('utente logged.. role:' + resp.role);
-            localStorage.setItem('token', resp.token);
+            // Salva il token nei cookie (esempio: valido per 1 giorno, path root)
+            document.cookie = `token=${encodeURIComponent(
+              resp.token
+            )}; path=/; max-age=86400; SameSite=Strict`;
+            localStorage.setItem('userId', resp.id);
             this.auth.setAuthentificated();
             this.msg = 'Login avvenuto con successo!';
             if (resp.role == 'ADMIN') {
