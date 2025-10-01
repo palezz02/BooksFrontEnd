@@ -1,6 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { UserService } from '../../services/user-service';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { OrderService } from '../../services/order-service';
+import { OrderItemServiceService } from '../../services/order-item-service.service';
 
 export type Author = {
   id: number;
@@ -38,11 +43,13 @@ export type Book = {
   authors: number[];
   categories: CategoryDTO[];
   averageRating: number;
+  inventoryId: number;
 };
 
 export type CompleteBook = Omit<Book, 'publisher' | 'authors'> & {
   publisher: Publisher;
   authors: Author[];
+  publisherId: number;
 };
 
 @Component({
@@ -52,6 +59,8 @@ export type CompleteBook = Omit<Book, 'publisher' | 'authors'> & {
   styleUrl: './book-info.css',
 })
 export class BookInfo {
+  private _snackBar = inject(MatSnackBar);
+
   @Input() book: CompleteBook | null = null;
 
   showPublisherPopup: boolean = false;
@@ -62,7 +71,12 @@ export class BookInfo {
 
   quantity: number = 1;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private userService: UserService,
+    private order: OrderService,
+    private orderItem: OrderItemServiceService
+  ) {}
 
   openPublisherPopup() {
     if (!this.book) return;
@@ -76,7 +90,7 @@ export class BookInfo {
 
   openAuthorPopup(authorId: number) {
     if (!this.book) return;
-    const selectedAuthor = this.book.authors.find(a => a.id === authorId);
+    const selectedAuthor = this.book.authors.find((a) => a.id === authorId);
     if (selectedAuthor) {
       this.authorData = selectedAuthor;
       this.showAuthorPopup = true;
@@ -91,13 +105,179 @@ export class BookInfo {
 
   addToCart() {
     if (!this.book) return;
-    console.log(`Aggiunto ${this.quantity} x ${this.book.title} al carrello!`);
-    
+    this.checkUserAddressExist().subscribe((hasAddress) => {
+      if (hasAddress) {
+        this._snackBar.open('Aggiungendo al carrello...', 'Chiudi', { duration: 3000 });
+        try {
+          const orderId = Number(localStorage.getItem('orderId')) || -1;
+          if (orderId !== -1 && orderId !== undefined && orderId !== null) {
+            // console.log(orderId);
+            let orderItem = {
+              id: 0,
+              orderId: orderId,
+              inventoryId: this.book!.inventoryId,
+              quantity: this.quantity,
+            };
+            this.orderItem.insertOrderItem(orderItem).subscribe((res) => {
+              if (res.rc) {
+                console.log(res);
+              }
+            });
+          } else {
+            // console.log('Creazione nuovo ordine');
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0'); // Mese da 1 a 12
+            const dd = String(today.getDate()).padStart(2, '0');
+            const formattedDate = `${yyyy}-${mm}-${dd}`;
+            let newOrder = {
+              id: 0,
+              status: 'PROCESSING',
+              total: this.book!.price * this.quantity,
+              orderNumber: Math.floor(Math.random() * 2147483645) + 1,
+              shippingAddress: Number(localStorage.getItem('userAddressId')),
+              updatedAt: formattedDate.toString(),
+              user: Number(localStorage.getItem('userId')),
+            };
+            this.order.create(newOrder).subscribe((res) => {
+              if (res.rc) {
+                // console.log(res);
+                // console.log(this.book!.inventoryId);
+                localStorage.setItem('orderId', res.dati.id);
+                let orderItem = {
+                  id: 0,
+                  orderId: res.dati.id,
+                  inventoryId: this.book!.inventoryId,
+                  quantity: this.quantity,
+                };
+                this.orderItem.insertOrderItem(orderItem).subscribe((res) => {
+                  // console.log(res);
+                });
+              }
+            });
+          }
+          this._snackBar.open(
+            `Aggiunto ${this.quantity} x ${this.book!.title} al carrello!`,
+            'Chiudi',
+            {
+              duration: 3000,
+            }
+          );
+        } catch (error) {
+          this._snackBar.open(`Errore durante l'aggiunta dell'articolo al carrello.`, 'Chiudi', {
+            duration: 3000,
+          });
+        }
+      } else {
+        this._snackBar.open(
+          'Aggiungi un indirizzo al tuo profilo (setting page) prima di aggiungere al carrello.',
+          'Chiudi',
+          {
+            duration: 3000,
+          }
+        );
+      }
+    });
   }
 
   buyNow() {
     if (!this.book) return;
-    console.log(`Acquisto immediato: ${this.quantity} x ${this.book.title}`);
-    this.router.navigate(['/cart']);
+    this.checkUserAddressExist().subscribe((hasAddress) => {
+      if (hasAddress) {
+        this._snackBar.open(
+          'Aggiungendo al carrello e reindirizzando alla pagina del carrello...',
+          'Chiudi',
+          { duration: 3000 }
+        );
+        try {
+          const orderId = Number(localStorage.getItem('orderId')) || -1;
+          if (orderId !== -1 && orderId !== undefined && orderId !== null) {
+            let orderItem = {
+              id: 0,
+              orderId: orderId,
+              inventoryId: this.book!.inventoryId,
+              quantity: this.quantity,
+            };
+            this.orderItem.insertOrderItem(orderItem).subscribe((res) => {
+              if (res.rc) {
+                this._snackBar.open(
+                  `Aggiunto ${this.quantity} x ${this.book!.title} al carrello!`,
+                  'Chiudi',
+                  { duration: 3000 }
+                );
+                this.router.navigate(['/cart']);
+              }
+            });
+          } else {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            const formattedDate = `${yyyy}-${mm}-${dd}`;
+            let newOrder = {
+              id: 0,
+              status: 'PROCESSING',
+              total: this.book!.price * this.quantity,
+              orderNumber: Math.floor(Math.random() * 2147483645) + 1,
+              shippingAddress: Number(localStorage.getItem('userAddressId')),
+              updatedAt: formattedDate.toString(),
+              user: Number(localStorage.getItem('userId')),
+            };
+            this.order.create(newOrder).subscribe((res) => {
+              if (res.rc) {
+                localStorage.setItem('orderId', res.dati.id);
+                let orderItem = {
+                  id: 0,
+                  orderId: res.dati.id,
+                  inventoryId: this.book!.inventoryId,
+                  quantity: this.quantity,
+                };
+                this.orderItem.insertOrderItem(orderItem).subscribe((res) => {
+                  this._snackBar.open(
+                    `Aggiunto ${this.quantity} x ${this.book!.title} al carrello!`,
+                    'Chiudi',
+                    { duration: 3000 }
+                  );
+                  this.router.navigate(['/cart']);
+                });
+              }
+            });
+          }
+        } catch (error) {
+          this._snackBar.open(`Errore durante l'aggiunta dell'articolo al carrello.`, 'Chiudi', {
+            duration: 3000,
+          });
+        }
+      } else {
+        this._snackBar.open(
+          'Aggiungi un indirizzo al tuo profilo (setting page) prima di aggiungere al carrello.',
+          'Chiudi',
+          { duration: 3000 }
+        );
+      }
+    });
+  }
+
+  checkUserAddressExist(): Observable<boolean> {
+    const userId = Number(localStorage.getItem('userId'));
+    return this.userService.getById(userId).pipe(
+      map((res) => {
+        if (res.rc) {
+          const user = res.dati;
+          if (
+            user.addresses[0] !== undefined &&
+            user.addresses[0] !== null &&
+            user.addresses[0] !== '' &&
+            user.addresses[0] !== 0
+          ) {
+            localStorage.setItem('userAddressId', user.addresses[0]);
+            return true;
+          }
+          return false;
+        }
+        return false;
+      }),
+      catchError(() => of(false))
+    );
   }
 }

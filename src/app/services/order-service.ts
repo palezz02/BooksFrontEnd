@@ -12,8 +12,8 @@ export class OrderService {
   url = 'http://localhost:8080/rest/order/';
   constructor(private http: HttpClient) {}
 
-  create(body: {}): Observable<ResponseBase> {
-    return this.http.post<ResponseBase>(this.url + 'create', body);
+  create(body: {}): Observable<ResponseObject<any>> {
+    return this.http.post<ResponseObject<any>>(this.url + 'create', body);
   }
 
   update(body: {}): Observable<ResponseBase> {
