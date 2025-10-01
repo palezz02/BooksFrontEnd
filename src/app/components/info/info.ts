@@ -27,7 +27,7 @@ export class Info implements OnInit {
 
   ngOnInit(): void {
     this.book$ = this.route.paramMap.pipe(
-      switchMap(params => {
+      switchMap((params) => {
         const idString = params.get('bookId');
         const bookId = idString ? Number(idString) : null;
         if (!bookId) {
@@ -38,13 +38,16 @@ export class Info implements OnInit {
           switchMap((response: ResponseObject<Book>) => {
             const partialBook = response.dati;
             const publisher$ = this.publisherService.getPublisher(partialBook.publisher);
-            const authors$ = partialBook.authors.map(authorId => this.authorService.getById(authorId));
+            const authors$ = partialBook.authors.map((authorId) =>
+              this.authorService.getById(authorId)
+            );
             return forkJoin([publisher$, ...authors$]).pipe(
               map(([publisher, ...authors]: any[]) => {
                 const completeBook: CompleteBook = {
                   ...partialBook,
                   publisher: publisher.dati,
                   authors: authors.map((a: any) => a.dati),
+                  publisherId: partialBook.inventoryId,
                 };
                 return completeBook;
               })
@@ -52,16 +55,14 @@ export class Info implements OnInit {
           })
         );
       })
-
     );
 
     this.reviews$ = this.book$.pipe(
-      switchMap(book => {
-        return this.bookService.getBookReviews(book!.id).pipe(
-          map((response: ResponseObject<any>) => response.dati || []),
-        );
+      switchMap((book) => {
+        return this.bookService
+          .getBookReviews(book!.id)
+          .pipe(map((response: ResponseObject<any>) => response.dati || []));
       })
     );
-
   }
 }
