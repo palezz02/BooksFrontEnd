@@ -46,7 +46,7 @@ export class BookDelete implements AfterViewInit, OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.bookService.getAll().subscribe((response) => {
+    this.bookService.getBooksOrderedByName().subscribe((response) => {
       if (!response?.rc) {
         console.error(response?.msg ?? 'Errore nel recupero libri');
         return;

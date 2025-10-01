@@ -42,8 +42,11 @@ export class BookService {
     let params = new HttpParams()
       .set('limit', limit)
       .set('offset', offset);
-
     return this.http.get<ResponseList<any>>(this.url + 'getBestByCategory', { params });
+  }
+
+  getBooksOrderedByName(): Observable<ResponseList<any>> {
+    return this.http.get<ResponseList<any>>(this.url + 'getBooksOrderedByName');
   }
 
 }
