@@ -10,6 +10,7 @@ import { BooksPage } from './components/books-page/books-page';
 import { CartInfo } from './components/cart/cart';
 import { NewBook } from './components/new-book/new-book';
 import { BookDelete } from './components/book-delete/book-delete';
+import { UpdateBookPopup } from './components/update-book-popup/update-book-popup';
 import { ErrorPage } from './components/error-page/error-page';
 import { CheckoutComponent } from './components/checkout/checkout';
 import { NewCart } from './new-cart/new-cart';
@@ -29,6 +30,7 @@ const routes: Routes = [
   { path: 'cart', component: NewCart },
   { path: 'new', component: NewBook },
   { path: 'bookdelete', component: BookDelete },
+  { path: 'updateBook', component: UpdateBookPopup },
   { path: 'error', component: ErrorPage },
   { path: 'checkout', component: CheckoutComponent },
   { path: 'address', component: AddressSetting },

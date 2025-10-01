@@ -1,0 +1,111 @@
+<div class="overlay" [class.show]="true" role="dialog" aria-modal="true">
+  <div class="popup">
+    <div class="popup-header">
+      <h3>Aggiorna libro</h3>
+      <button class="icon-btn" type="button" aria-label="Chiudi" (click)="cancel()">✕</button>
+    </div>
+
+    <div class="scroll-content">
+      <form [formGroup]="updateBookForm" (ngSubmit)="onSubmit()" class="book-form" id="updateBookFormEl">
+        <h2 class="form-title">ADD NEW BOOK</h2>
+
+        <mat-card class="main-card">
+          <mat-card-content>
+            <div class="inside-card">
+              <input type="hidden" formControlName="id" />
+
+              <mat-form-field appearance="outline" class="spaced-field">
+                <mat-label>Title</mat-label>
+                <input matInput formControlName="title" />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="spaced-field">
+                <mat-label>ISBN</mat-label>
+                <input matInput formControlName="isbn" maxlength="13" />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="spaced-field">
+                <mat-label>Authors</mat-label>
+                <mat-select multiple formControlName="authorIds">
+                  <mat-option *ngFor="let a of authorsList" [value]="a.id">{{ a.fullName }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <div class="year-edition-language">
+                <mat-form-field appearance="outline" class="spaced-field-year">
+                  <mat-label>Publication Date</mat-label>
+                  <input matInput formControlName="publicationDate" />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="spaced-field-edition">
+                  <mat-label>Edition</mat-label>
+                  <input matInput formControlName="edition" />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="spaced-field-language">
+                  <mat-label>Language code</mat-label>
+                  <input matInput formControlName="languageCode" />
+                </mat-form-field>
+              </div>
+
+              <mat-form-field appearance="outline" class="description">
+                <mat-label>Description</mat-label>
+                <textarea matInput formControlName="description"></textarea>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="spaced-field">
+                <mat-label>Categories</mat-label>
+                <mat-select multiple formControlName="categoryIds">
+                  <mat-option *ngFor="let c of cat" [value]="c.id">{{ c.name }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="spaced-field">
+                <mat-label>Publisher</mat-label>
+                <mat-select formControlName="publisherId">
+                  <mat-option *ngFor="let p of publishersList" [value]="p.id">{{ p.name }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <div class="pages-stock">
+                <mat-form-field appearance="outline" class="number-field">
+                  <mat-label>Pages</mat-label>
+                  <input matInput type="number" formControlName="pageCount" />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="number-field">
+                  <mat-label>Stock</mat-label>
+                  <input matInput type="number" formControlName="stock" />
+                </mat-form-field>
+              </div>
+
+              <div class="image-upload-section">
+                <div *ngIf="imageSrc" class="image-preview"><img [src]="imageSrc" alt="Book cover" width="150" /></div>
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Cover URL</mat-label>
+                  <input matInput formControlName="coverImage" (input)="onCoverUrlInput(updateBookForm.get('coverImage')?.value || '')" placeholder="https://..." />
+                </mat-form-field>
+              </div>
+
+              <div class="price-submit">
+                <mat-form-field appearance="outline" class="number-field-price">
+                  <mat-label>Price</mat-label>
+                  <input matInput type="number" formControlName="price" />
+                </mat-form-field>
+
+                <div class="button-row">
+                  <button mat-raised-button color="primary" type="submit">Update</button>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </form>
+    </div>
+
+    <div class="actions">
+      <button mat-stroked-button type="button" (click)="cancel()">Annulla</button>
+      <button mat-raised-button color="primary" type="submit" form="updateBookFormEl">Salva</button>
+    </div>
+  </div>
+</div>
