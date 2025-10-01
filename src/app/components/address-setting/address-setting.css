@@ -1,0 +1,39 @@
+.user-setting-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 40px;
+}
+
+.user-setting-card {
+  width: 500px;
+  padding: 24px;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.form-field {
+  flex: 1;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.button-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+mat-card-header {
+  margin-bottom: 1rem;
+}
+
+.cancel-btn {
+  color: #d32f2f;
+}

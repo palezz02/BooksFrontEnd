@@ -27,7 +27,12 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { LayoutModule } from '@angular/cdk/layout';
 import { BookInfo } from './components/book-info/book-info';
 import { BestSeller } from './components/best-seller/best-seller';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  provideHttpClient,
+  withFetch,
+  withInterceptors,
+} from '@angular/common/http';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { Register } from './components/register/register';
@@ -49,8 +54,11 @@ import { Info } from './components/info/info';
 import { MatDialogContent } from '@angular/material/dialog';
 import { MatDialogActions } from '@angular/material/dialog';
 import { DeleteAccountConfirmDialog } from './components/delete-account-confirm-dialog/delete-account-confirm-dialog';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CheckoutComponent } from './components/checkout/checkout';
+import { jwtInterceptor } from './Utils/JwtIterceptor';
+import { NewCart } from './new-cart/new-cart';
+import { AddressSetting } from './components/address-setting/address-setting';
 @NgModule({
   declarations: [
     App,
@@ -75,6 +83,8 @@ import { CheckoutComponent } from './components/checkout/checkout';
     Info,
     DeleteAccountConfirmDialog,
     CheckoutComponent,
+    NewCart,
+    AddressSetting,
   ],
   imports: [
     BrowserModule,
@@ -108,7 +118,7 @@ import { CheckoutComponent } from './components/checkout/checkout';
     MatProgressSpinnerModule,
   ],
   providers: [
-    provideHttpClient(withFetch()),
+    provideHttpClient(withFetch(), withInterceptors([jwtInterceptor])),
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideClientHydration(withEventReplay()),

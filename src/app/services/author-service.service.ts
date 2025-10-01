@@ -28,8 +28,7 @@ export class AuthorServiceService {
   }
 
   getById(id: number): Observable<ResponseObject<any>> {
-  const params = new HttpParams().set('id', id);
-  return this.http.get<ResponseObject<any>>(this.url + 'getById', { params });
-}
-
+    const params = new HttpParams().set('id', id);
+    return this.http.get<ResponseObject<any>>(this.url + 'getById', { params });
+  }
 }

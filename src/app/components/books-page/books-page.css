@@ -31,19 +31,15 @@
   font-style: italic;
 }
 
-/* Optional: add a subtle hover effect for selects */
 .filters select:hover {
   border-color: #999;
 }
-
 
 .books-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 1.5rem;
 }
-
-
 
 .book-card {
   background: #fff;
@@ -75,4 +71,60 @@
 .book-card .desc {
   font-size: 0.9rem;
   color: #555;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.skeleton-book-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.skeleton-img,
+.skeleton-title,
+.skeleton-author,
+.skeleton-publisher,
+.skeleton-desc {
+  width: 150px;
+  height: 220px;
+  background: linear-gradient(90deg, #eee 25%, #ddd 50%, #eee 75%);
+  border-radius: 6px;
+  background-size: 600px 100%;
+  animation: skeleton-loading 2.2s linear infinite;
+  margin-bottom: 1rem;
+}
+
+.skeleton-title {
+  width: 80%;
+  height: 1.2rem;
+}
+
+.skeleton-author,
+.skeleton-publisher {
+  width: 60%;
+  height: 1rem;
+}
+
+.skeleton-desc {
+  width: 90%;
+  height: 0.9rem;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: -600px 0;
+  }
+  100% {
+    background-position: 600px 0;
+  }
 }

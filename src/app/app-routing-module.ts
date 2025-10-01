@@ -13,24 +13,27 @@ import { BookDelete } from './components/book-delete/book-delete';
 import { UpdateBookPopup } from './components/update-book-popup/update-book-popup';
 import { ErrorPage } from './components/error-page/error-page';
 import { CheckoutComponent } from './components/checkout/checkout';
+import { NewCart } from './new-cart/new-cart';
+import { Info } from './components/info/info';
+import { AddressSetting } from './components/address-setting/address-setting';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
   { path: 'login', component: Login },
   { path: 'register', component: Register },
   // { path: 'raccomandation', component: BestBookCarosel }, // , canActivate:[authGuard]
-  { path: 'info', component: BookInfo },
-  { path: 'books/:id', component: BookInfo },
+  { path: 'info/:bookId', component: Info },
   { path: 'books', component: BestSeller },
   { path: 'setting', component: UserSetting },
   { path: 'home', component: Home },
   { path: 'allBooks', component: BooksPage },
-  { path: 'cart', component: CartInfo },
+  { path: 'cart', component: NewCart },
   { path: 'new', component: NewBook },
   { path: 'bookdelete', component: BookDelete },
   { path: 'updateBook', component: UpdateBookPopup },
   { path: 'error', component: ErrorPage },
-  {path: 'checkout', component: CheckoutComponent},
+  { path: 'checkout', component: CheckoutComponent },
+  { path: 'address', component: AddressSetting },
 ];
 
 @NgModule({
