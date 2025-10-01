@@ -8,7 +8,6 @@ import { forkJoin } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { UpdateBookPopup } from '../update-book-popup/update-book-popup';
 
-
 @Component({
   selector: 'app-book-delete',
   standalone: false,
@@ -83,7 +82,6 @@ export class BookDelete implements AfterViewInit, OnInit {
     });
   }
 
-
   openAuthorPopup(authorId: number): void {
     this.authorService.getById(authorId).subscribe((resp) => {
       if (resp?.rc) {
@@ -100,7 +98,7 @@ export class BookDelete implements AfterViewInit, OnInit {
 
   openUpdateBookPopup(book: Book): void {
     this.dialog.open(UpdateBookPopup, {
-      data: { book }
+      data: { book },
     });
   }
 
@@ -108,7 +106,6 @@ export class BookDelete implements AfterViewInit, OnInit {
     // No specific action needed on close for navigation-based popup
   }
 
- 
   openPublisherPopup(publisherId: number): void {
     this.publisherService.getById(publisherId).subscribe((resp) => {
       if (resp?.rc) {
@@ -126,44 +123,40 @@ export class BookDelete implements AfterViewInit, OnInit {
   showDeletePopup = false;
   bookToDelete: Book | null = null;
 
-
   confirmDelete(book: Book): void {
     this.bookToDelete = book;
     this.showDeletePopup = true;
   }
-
 
   cancelDelete(): void {
     this.bookToDelete = null;
     this.showDeletePopup = false;
   }
 
-deleteBook(): void {
-  if (!this.bookToDelete) return;
+  deleteBook(): void {
+    if (!this.bookToDelete) return;
 
-  const id = this.bookToDelete.id;
+    const id = this.bookToDelete.id;
 
-  this.bookService.delete({ id }).subscribe({
-    next: (resp) => {
-      if (resp.rc) {
-        this.dataSource.data = this.dataSource.data.filter(b => b.id !== id);
+    this.bookService.delete({ id }).subscribe({
+      next: (resp) => {
+        if (resp.rc) {
+          this.dataSource.data = this.dataSource.data.filter((b) => b.id !== id);
 
-        alert(`Libro "${this.bookToDelete?.title}" cancellato con successo`);
-      } else {
-        console.error(resp.msg);
-        alert('Errore durante l\'eliminazione: ' + (resp.msg || 'sconosciuto'));
-      }
-      this.cancelDelete();
-    },
-    error: (err) => {
-      console.error('Errore eliminazione', err);
-      alert('Errore di comunicazione con il server durante l\'eliminazione');
-      this.cancelDelete();
-    },
-  });
-}
-
-
+          alert(`Libro "${this.bookToDelete?.title}" cancellato con successo`);
+        } else {
+          console.error(resp.msg);
+          alert("Errore durante l'eliminazione: " + (resp.msg || 'sconosciuto'));
+        }
+        this.cancelDelete();
+      },
+      error: (err) => {
+        console.error('Errore eliminazione', err);
+        alert("Errore di comunicazione con il server durante l'eliminazione");
+        this.cancelDelete();
+      },
+    });
+  }
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
@@ -173,7 +166,7 @@ deleteBook(): void {
 export interface Book {
   id: number;
   title: string;
-  authors: number[]; 
+  authors: number[];
   publisher: number;
   category?: any[];
   publicationDate: string;

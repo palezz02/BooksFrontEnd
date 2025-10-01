@@ -17,7 +17,7 @@ import { map, catchError } from 'rxjs/operators';
 export class NewCart {
   private _snackBar = inject(MatSnackBar);
 
-  cartItems$!: Observable<any[]>; // ✅ observable for async pipe
+  cartItems$!: Observable<any[]>;
 
   constructor(
     private userService: UserService,
@@ -37,7 +37,7 @@ export class NewCart {
             subtotal: item.unitPrice * item.quantity,
           }))
         ),
-        catchError(() => of([])) // in case of error, return empty cart
+        catchError(() => of([]))
       );
     } else {
       this.cartItems$ = of([]);
@@ -64,7 +64,6 @@ export class NewCart {
         next: (res) => {
           if (res.rc) {
             this._snackBar.open('Libro rimosso dal carrello', 'Chiudi', { duration: 3000 });
-            // ✅ Reload cart after removal
             this.ngOnInit();
           }
         },
