@@ -17,7 +17,7 @@ export class BookService {
   }
 
   update(body: {}): Observable<ResponseBase> {
-    return this.http.put<ResponseBase>(this.url + 'update', { body });
+    return this.http.put<ResponseBase>(this.url + 'update',  body );
   }
 
   delete(body: {}): Observable<ResponseBase> {
@@ -42,10 +42,12 @@ export class BookService {
     let params = new HttpParams()
       .set('limit', limit)
       .set('offset', offset);
-
     return this.http.get<ResponseList<any>>(this.url + 'getBestByCategory', { params });
   }
 
+  getBooksOrderedByName(): Observable<ResponseList<any>> {
+    return this.http.get<ResponseList<any>>(this.url + 'getBooksOrderedByName');
+    
   getBookReviews(bookId: number): Observable<ResponseList<any>> {
     let params = new HttpParams().set('bookId', bookId);
     return this.http.get<ResponseList<any>>(this.url + 'getBookReviews', { params });

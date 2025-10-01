@@ -5,7 +5,9 @@ import { BookService } from '../../services/book-service';
 import { AuthorServiceService } from '../../services/author-service.service';
 import { PublisherService } from '../../services/publisher-service';
 import { forkJoin } from 'rxjs';
-import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { UpdateBookPopup } from '../update-book-popup/update-book-popup';
+
 
 @Component({
   selector: 'app-book-delete',
@@ -40,11 +42,11 @@ export class BookDelete implements AfterViewInit, OnInit {
     private authorService: AuthorServiceService,
     private publisherService: PublisherService,
     private cdr: ChangeDetectorRef,
-    private router: Router
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
-    this.bookService.getAll().subscribe((response) => {
+    this.bookService.getBooksOrderedByName().subscribe((response) => {
       if (!response?.rc) {
         console.error(response?.msg ?? 'Errore nel recupero libri');
         return;
@@ -81,11 +83,7 @@ export class BookDelete implements AfterViewInit, OnInit {
     });
   }
 
-  goToBookInfo(bookId: number): void {
-    this.router.navigate(['/books', bookId]);
-  }
 
-  
   openAuthorPopup(authorId: number): void {
     this.authorService.getById(authorId).subscribe((resp) => {
       if (resp?.rc) {
@@ -98,6 +96,16 @@ export class BookDelete implements AfterViewInit, OnInit {
   closeAuthorPopup(): void {
     this.showAuthorPopup = false;
     this.authorData = null;
+  }
+
+  openUpdateBookPopup(book: Book): void {
+    this.dialog.open(UpdateBookPopup, {
+      data: { book }
+    });
+  }
+
+  closeUpdateBookPopup(): void {
+    // No specific action needed on close for navigation-based popup
   }
 
  

@@ -52,7 +52,7 @@ export class NewBook implements OnInit {
       // For UI binding
       selectedAuthors: [[]],
       selectedCategories: [[]],
-      selectedPublisher: [null]
+      selectedPublisher: [null],
     });
   }
 
@@ -73,7 +73,7 @@ export class NewBook implements OnInit {
           this.authors = res.dati;
         }
       },
-      error: (err) => console.error('Error loading authors:', err)
+      error: (err) => console.error('Error loading authors:', err),
     });
   }
 
@@ -84,7 +84,7 @@ export class NewBook implements OnInit {
           this.publishers = res.dati;
         }
       },
-      error: (err) => console.error('Error loading publishers:', err)
+      error: (err) => console.error('Error loading publishers:', err),
     });
   }
 
@@ -95,19 +95,19 @@ export class NewBook implements OnInit {
           this.categories = res.dati;
         }
       },
-      error: (err) => console.error('Error loading categories:', err)
+      error: (err) => console.error('Error loading categories:', err),
     });
   }
 
   // Handle author selection changes
   onAuthorSelectionChange(selectedAuthors: any[]): void {
-    const authorIds = selectedAuthors.map(author => author.id);
+    const authorIds = selectedAuthors.map((author) => author.id);
     this.bookForm.get('authorIds')?.setValue(authorIds);
   }
 
   // Handle category selection changes
   onCategorySelectionChange(selectedCategories: any[]): void {
-    const categoryIds = selectedCategories.map(category => category.id);
+    const categoryIds = selectedCategories.map((category) => category.id);
     this.bookForm.get('categoryIds')?.setValue(categoryIds);
   }
 
@@ -123,14 +123,14 @@ export class NewBook implements OnInit {
 
   addAuthor(): void {
     const newAuthorName = this.bookForm.get('newAuthor')?.value?.trim();
-    
+
     if (newAuthorName) {
       const authorReq = {
         fullName: newAuthorName,
         biography: '',
         birthDate: null,
         deathDate: null,
-        coverImageUrl: ''
+        coverImageUrl: '',
       };
 
       this.authorService.insertAuthor(authorReq).subscribe({
@@ -147,11 +147,38 @@ export class NewBook implements OnInit {
         error: (err) => {
           // console.error('Error creating author:', err);
           alert('Error creating author');
-        }
+        },
       });
     }
   }
+  deleteAuthor(event: Event, author: any): void {
+    event.stopPropagation();
 
+    if (confirm(`Are you sure you want to delete "${author.fullName}"?`)) {
+      this.authorService.removeAuthor({ id: author.id }).subscribe({
+        next: (response) => {
+          if (response.rc) {
+            alert('Author deleted successfully');
+
+            const selectedAuthors = this.bookForm.get('selectedAuthors')?.value || [];
+            const updatedAuthors = selectedAuthors.filter((a: any) => a.id !== author.id);
+            this.bookForm.get('selectedAuthors')?.setValue(updatedAuthors);
+
+            const authorIds = updatedAuthors.map((a: any) => a.id);
+            this.bookForm.get('authorIds')?.setValue(authorIds);
+
+            this.loadAuthors();
+          } else {
+            alert('Error deleting author: ' + response.msg);
+          }
+        },
+        error: (err) => {
+          console.error('Error deleting author:', err);
+          alert(err.error?.msg || 'Error deleting author');
+        },
+      });
+    }
+  }
   openNewCategoryInput(event: Event): void {
     event.preventDefault();
     this.showNewCategoryInput = true;
@@ -159,10 +186,10 @@ export class NewBook implements OnInit {
 
   addCategory(): void {
     const newCategoryName = this.bookForm.get('newCategory')?.value?.trim();
-    
+
     if (newCategoryName) {
       const categoryReq = {
-        name: newCategoryName
+        name: newCategoryName,
       };
 
       this.categoryService.create(categoryReq).subscribe({
@@ -179,7 +206,35 @@ export class NewBook implements OnInit {
         error: (err) => {
           // console.error('Error creating category:', err);
           alert('Error creating category');
-        }
+        },
+      });
+    }
+  }
+  deleteCategory(event: Event, category: any): void {
+    event.stopPropagation();
+
+    if (confirm(`Are you sure you want to delete "${category.name}"?`)) {
+      this.categoryService.delete({ id: category.id }).subscribe({
+        next: (response) => {
+          if (response.rc) {
+            alert('Category deleted successfully');
+
+            const selectedCategories = this.bookForm.get('selectedCategories')?.value || [];
+            const updatedCategories = selectedCategories.filter((c: any) => c.id !== category.id);
+            this.bookForm.get('selectedCategories')?.setValue(updatedCategories);
+
+            const categoryIds = updatedCategories.map((c: any) => c.id);
+            this.bookForm.get('categoryIds')?.setValue(categoryIds);
+
+            this.loadCategories();
+          } else {
+            alert('Error deleting category: ' + response.msg);
+          }
+        },
+        error: (err) => {
+          console.error('Error deleting category:', err);
+          alert(err.error?.msg || 'Error deleting category');
+        },
       });
     }
   }
@@ -191,11 +246,11 @@ export class NewBook implements OnInit {
 
   addPublisher(): void {
     const newPublisherName = this.bookForm.get('newPublisher')?.value?.trim();
-    
+
     if (newPublisherName) {
       const publisherReq = {
         name: newPublisherName,
-        description: ''
+        description: '',
       };
 
       this.publisherService.insertPublisher(publisherReq).subscribe({
@@ -212,7 +267,35 @@ export class NewBook implements OnInit {
         error: (err) => {
           // console.error('Error creating publisher:', err);
           alert('Error creating publisher');
-        }
+        },
+      });
+    }
+  }
+  deletePublisher(event: Event, publisher: any): void {
+    event.stopPropagation();
+
+    if (confirm(`Are you sure you want to delete "${publisher.name}"?`)) {
+      this.publisherService.removePublisher({ id: publisher.id }).subscribe({
+        next: (response) => {
+          if (response.rc) {
+            alert('Publisher deleted successfully');
+
+            const selectedPublishers = this.bookForm.get('selectedPublishers')?.value || [];
+            const updatedPublishers = selectedPublishers.filter((p: any) => p.id !== publisher.id);
+            this.bookForm.get('selectedPublishers')?.setValue(updatedPublishers);
+
+            const publisherId = updatedPublishers.map((p: any) => p.id);
+            this.bookForm.get('publisherId')?.setValue(publisherId);
+
+            this.loadPublishers();
+          } else {
+            alert('Error deleting publisher: ' + response.msg);
+          }
+        },
+        error: (err) => {
+          console.error('Error deleting publisher:', err);
+          alert(err.error?.msg || 'Error deleting publisher');
+        },
       });
     }
   }
@@ -258,7 +341,7 @@ export class NewBook implements OnInit {
       stock: this.bookForm.value.stock,
       price: this.bookForm.value.price,
       authorIds: this.bookForm.value.authorIds,
-      categoryIds: this.bookForm.value.categoryIds
+      categoryIds: this.bookForm.value.categoryIds,
     };
 
     // console.log('Sending book request:', bookReq);
@@ -281,12 +364,12 @@ export class NewBook implements OnInit {
           errorMessage = 'Error: ' + err.error.msg;
         }
         alert(errorMessage);
-      }
+      },
     });
   }
 
   private markFormGroupTouched(): void {
-    Object.keys(this.bookForm.controls).forEach(key => {
+    Object.keys(this.bookForm.controls).forEach((key) => {
       const control = this.bookForm.get(key);
       control?.markAsTouched();
     });

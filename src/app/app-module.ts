@@ -47,6 +47,7 @@ import { CartInfo } from './components/cart/cart';
 import { NewBook } from './components/new-book/new-book';
 import { UserPage } from './components/user-page/user-page';
 import { BookDelete } from './components/book-delete/book-delete';
+import { UpdateBookPopup } from './components/update-book-popup/update-book-popup';
 import { ErrorPage } from './components/error-page/error-page';
 import { Reviews } from './components/reviews/reviews';
 import { Info } from './components/info/info';
@@ -76,6 +77,7 @@ import { AddressSetting } from './components/address-setting/address-setting';
     NewBook,
     BookDelete,
     UserPage,
+    UpdateBookPopup,
     ErrorPage,
     Reviews,
     Info,
