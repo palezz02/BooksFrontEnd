@@ -36,3 +36,10 @@
     <mat-icon>chevron_right</mat-icon>
   </button>
 </div>
+
+<div class="average-rating review-btn"
+    (mouseenter)="hover=true" 
+    (mouseleave)="hover=false" 
+    [class.hovered]="hover">
+  <span>Scrivi una recensione</span>
+</div>

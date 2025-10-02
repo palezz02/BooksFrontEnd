@@ -11,6 +11,7 @@ export class Reviews {
   @Input() reviews: any[] = [];
 
   currentIndex = 0;
+  hover = false;
 
   get averageRating(): number {
     if (!this.reviews.length) return 0;
