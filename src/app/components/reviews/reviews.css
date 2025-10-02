@@ -255,6 +255,43 @@
   color: #1976d2;
 }
 
+.star-rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.stars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.star {
+  font-size: 28px;
+  color: #bdbdbd;
+  cursor: pointer;
+  transition: color 0.2s;
+  user-select: none;
+}
+
+.star.selected {
+  color: #ffb300;
+}
+
+/* Colora anche le star vuote (solo il bordo) */
+.star:not(.selected) {
+  color: #ffb300;
+  opacity: 0.5;
+}
+
+/* Corretto effetto hover: colora tutte le stelle a sinistra di quella sotto il mouse */
+.stars .star:hover,
+.stars .star:hover ~ .star {
+  color: #ffb300;
+}
+
 /* Responsive styles */
 @media (max-width: 900px) {
   .reviews {

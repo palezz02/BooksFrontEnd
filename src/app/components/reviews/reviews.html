@@ -63,6 +63,19 @@
       <mat-label>Recensione</mat-label>
       <textarea matInput formControlName="body" rows="3" required></textarea>
     </mat-form-field>
+    <div class="review-form-field star-rating">
+      <label>Valutazione:</label>
+      <span class="stars">
+        <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
+          <mat-icon
+            class="star"
+            [class.selected]="reviewForm.get('rating')?.value >= star"
+            (click)="reviewForm.get('rating')?.setValue(star)"
+            >{{ reviewForm.get('rating')?.value >= star ? 'star' : 'star_border' }}</mat-icon
+          >
+        </ng-container>
+      </span>
+    </div>
     <button mat-raised-button color="primary" type="submit" [disabled]="reviewForm.invalid">
       Invia
     </button>
