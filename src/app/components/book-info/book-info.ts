@@ -39,18 +39,17 @@ export type Book = {
   edition: string;
   stock: number;
   price: number;
-  publisher: number;
-  authors: number[];
-  categories: CategoryDTO[];
+  publisherName: string;
+  publisherDescription: string;
+  authors: string[]; // array di nomi autori
+  authorsFull: Author[]; // array di oggetti autore completi
+  cat: string[]; // array di nomi categorie
+  reviews: any[];
   averageRating: number;
   inventoryId: number;
 };
 
-export type CompleteBook = Omit<Book, 'publisher' | 'authors'> & {
-  publisher: Publisher;
-  authors: Author[];
-  publisherId: number;
-};
+export type CompleteBook = Book; // ora CompleteBook è uguale a Book
 
 @Component({
   selector: 'app-book-info',
@@ -80,7 +79,12 @@ export class BookInfo {
 
   openPublisherPopup() {
     if (!this.book) return;
-    this.publisherData = this.book.publisher;
+    // Adatta per mostrare nome e descrizione editore
+    this.publisherData = {
+      id: 0,
+      name: this.book.publisherName,
+      description: this.book.publisherDescription,
+    };
     this.showPublisherPopup = true;
   }
 
@@ -88,14 +92,15 @@ export class BookInfo {
     this.showPublisherPopup = false;
   }
 
-  openAuthorPopup(authorId: number) {
+  openAuthorPopup(authorName: string) {
     if (!this.book) return;
-    const selectedAuthor = this.book.authors.find((a) => a.id === authorId);
+    // Cerca autore per nome tra authorsFull
+    const selectedAuthor = this.book.authorsFull?.find((a) => a.fullName === authorName);
     if (selectedAuthor) {
       this.authorData = selectedAuthor;
       this.showAuthorPopup = true;
     } else {
-      console.warn(`Autore con ID ${authorId} non trovato.`);
+      console.warn(`Autore con nome ${authorName} non trovato.`);
     }
   }
 

@@ -4,24 +4,28 @@
   </div>
   <div class="book-details">
     <h2>{{ book.title }}</h2>
-    <h4 *ngFor="let author of book.authors" (click)="openAuthorPopup(author.id)" class="clickable-author">
-      {{ author.fullName }}
+    <h4
+      *ngFor="let author of book.authors"
+      (click)="openAuthorPopup(author)"
+      class="clickable-author"
+    >
+      {{ author }}
     </h4>
-    <h4 (click)="openPublisherPopup()" class="clickable-publisher">{{ book.publisher.name }}</h4>
+    <h4 (click)="openPublisherPopup()" class="clickable-publisher">{{ book.publisherName }}</h4>
     <div class="categories">
       <strong>Categorie:</strong>
-      <ng-container *ngFor="let cat of book.categories">
-        <span class="category-tag">{{ cat.name }}</span>
+      <ng-container *ngFor="let cat of book.cat">
+        <span class="category-tag">{{ cat }}</span>
       </ng-container>
     </div>
-    <p><strong>Anno:</strong> {{ book.publicationDate | date: 'dd/MM/yyyy'}}</p>
+    <p><strong>Anno:</strong> {{ book.publicationDate | date : 'dd/MM/yyyy' }}</p>
     <p><strong>Descrizione:</strong> {{ book.description }}</p>
   </div>
   <div class="book-buy">
     <mat-card>
       <mat-card-content>
         <div class="price">
-          Prezzo: <strong>{{ book.price| currency : 'EUR' }}</strong>
+          Prezzo: <strong>{{ book.price | currency : 'EUR' }}</strong>
         </div>
         <mat-form-field appearance="outline" class="quantity-field" subscriptSizing="dynamic">
           <mat-label>Quantità</mat-label>
@@ -36,8 +40,16 @@
       </mat-card-content>
     </mat-card>
   </div>
-  <app-publisher-popup [publisher]="publisherData" [isVisible]="showPublisherPopup" (close)="closePublisherPopup()">
+  <app-publisher-popup
+    [publisher]="publisherData"
+    [isVisible]="showPublisherPopup"
+    (close)="closePublisherPopup()"
+  >
   </app-publisher-popup>
-  <app-author-popup [author]="authorData" [isVisible]="showAuthorPopup" (close)="closeAuthorPopup()">
+  <app-author-popup
+    [author]="authorData"
+    [isVisible]="showAuthorPopup"
+    (close)="closeAuthorPopup()"
+  >
   </app-author-popup>
 </div>

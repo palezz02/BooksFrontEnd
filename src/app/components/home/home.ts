@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { BookService } from '../../services/book-service';
 import { ResponseList } from '../../models/ResponseList';
-import { forkJoin, map, Observable, switchMap } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { BookDTO } from '../best-seller/best-seller';
 import { AuthorServiceService } from '../../services/author-service.service';
 import { PublisherService } from '../../services/publisher-service';
-import { of } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -31,27 +30,25 @@ export class Home {
   }
 
   loadBooks() {
-    this.bestCategoryBooks$ = this.bookService.getBestByCategory(50, 0).pipe(
+    this.bestCategoryBooks$ = this.bookService.getBestByCategory(5, 0).pipe(
       map((res: any) => res.dati),
-      map((bookDTOs: BookDTO[]) => {
-        const observables = bookDTOs.map((book) => {
-          const authorRequests = book.authors.map((id) => this.authorService.getById(id));
-          const publisherRequest = this.publisherService.getPublisher(book.publisher);
-
-          return forkJoin([...authorRequests, publisherRequest]).pipe(
-            map((results: any[]) => {
-              const authors = results.slice(0, book.authors.length).map((a) => a.dati.fullName);
-              const publisher = results[results.length - 1].dati.name;
-
-              return { ...book, authors, publisher };
-            })
-          );
-        });
-        return forkJoin(observables);
-      }),
-      // flatten the nested Observable<Observable[]> to Observable[]
-      // using switchMap
-      switchMap((obs) => obs)
+      map((books: any[]) => {
+        console.log(books);
+        return books.map((dati) => ({
+          id: dati.id,
+          title: dati.title,
+          description: dati.description,
+          coverImage: dati.coverImage,
+          languageCode: dati.languageCode,
+          publicationDate: dati.publicationDate,
+          edition: dati.edition,
+          publisher: dati.publisherName,
+          authors: dati.authors?.map((a: any) => a.fullName),
+          categories: dati.categories,
+          reviews: dati.reviews,
+          averageRating: dati.averageRating,
+        }));
+      })
     );
   }
 }
