@@ -50,6 +50,7 @@ export class Login {
               resp.token
             )}; path=/; max-age=86400; SameSite=Strict`;
             localStorage.setItem('userId', resp.id);
+            localStorage.setItem('token', resp.token);
             this.auth.setAuthentificated();
             this.msg = 'Login avvenuto con successo!';
             if (resp.role == 'ADMIN') {
