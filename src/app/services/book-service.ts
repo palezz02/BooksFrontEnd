@@ -12,8 +12,8 @@ export class BookService {
   url = 'http://localhost:8080/rest/book/';
   constructor(private http: HttpClient) {}
 
-  create(body: {}): Observable<ResponseBase> {
-    return this.http.post<ResponseBase>(this.url + 'create', { body });
+  create(body: any): Observable<ResponseBase> {
+    return this.http.post<ResponseBase>(this.url + 'create', body );
   }
 
   update(body: {}): Observable<ResponseBase> {

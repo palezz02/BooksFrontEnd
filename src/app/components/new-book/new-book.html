@@ -238,102 +238,75 @@
             </div>
 
             <div class="publisher-newPublisher">
-              <mat-form-field appearance="outline" class="full-width publisher">
-                <mat-label>Select Publisher</mat-label>
-                <mat-select
-                  multiple
-                  formControlName="selectedPublisher"
-                  (selectionChange)="onPublisherSelectionChange($event.value)"
-                >
-                 <!-- 
-                 <mat-option *ngFor="let author of authors" [value]="author"  class="custom-option">
-                    <div  class="author-remove">
-                    <span class="author-name">{{ author.fullName }}</span>
-                    
-                      <button
-                        mat-icon-button
-                        class="delete-btn"
-                        (click)="deleteAuthor($event, author)"
-                        type="button"
-                        aria-label="Delete author"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          height="24px"
-                          viewBox="0 -960 960 960"
-                          width="24px"
-                          fill="#1f1f1f"
-                        >
-                          <path
-                            d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                  </mat-option> -->
-                  <mat-option *ngFor="let publisher of publishers" [value]="publisher" class="custom-option">
-                   <div  class="publisher-remove">
-                   <span class="publisher-name">{{ publisher.name }}</span> 
-                   
-                      <button
-                        mat-icon-button
-                        class="delete-btn"
-                        (click)="deletePublisher($event, publisher)"
-                        type="button"
-                        aria-label="Delete publisher"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          height="24px"
-                          viewBox="0 -960 960 960"
-                          width="24px"
-                          fill="#1f1f1f"
-                        >
-                          <path
-                            d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                  </mat-option>
-                  <div class="select-footer">
-                    <a href="#" (click)="openNewPublisherInput($event)">Add new publisher</a>
-                    <div *ngIf="showNewPublisherInput" class="new-publisher-input">
-                      <mat-form-field appearance="outline" style="width: 90%">
-                        <mat-label>New Publisher Name</mat-label>
-                        <input
-                          #newPublisherInput
-                          matInput
-                          placeholder="Enter publisher name"
-                          formControlName="newPublisher"
-                          (keydown.enter)="addPublisher()"
-                        />
-                      </mat-form-field>
-                      <div class="add-button-container">
-                        <button
-                          mat-raised-button
-                          color="primary"
-                          type="button"
-                          (click)="addPublisher()"
-                        >
-                          Add
-                        </button>
-                        <button mat-button type="button" (click)="showNewPublisherInput = false">
-                          Cancel
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </mat-select>
-                <mat-error
-                  *ngIf="
-                    bookForm.get('publisherId')?.invalid && bookForm.get('publisherId')?.touched
-                  "
-                >
-                  Publisher is required
-                </mat-error>
-              </mat-form-field>
-            </div>
+  <mat-form-field appearance="outline" class="full-width publisher">
+    <mat-label>Select Publisher</mat-label>
+    <mat-select
+      formControlName="selectedPublisher"
+      (selectionChange)="onPublisherSelectionChange($event.value)"
+    >
+      <mat-option *ngFor="let publisher of publishers" [value]="publisher" class="custom-option">
+        <div class="publisher-remove">
+          <span class="publisher-name">{{ publisher.name }}</span> 
+          
+          <button
+            mat-icon-button
+            class="delete-btn"
+            (click)="deletePublisher($event, publisher)"
+            type="button"
+            aria-label="Delete publisher"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="24px"
+              viewBox="0 -960 960 960"
+              width="24px"
+              fill="#1f1f1f"
+            >
+              <path
+                d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"
+              />
+            </svg>
+          </button>
+        </div>
+      </mat-option>
+      <div class="select-footer">
+        <a href="#" (click)="openNewPublisherInput($event)">Add new publisher</a>
+        <div *ngIf="showNewPublisherInput" class="new-publisher-input">
+          <mat-form-field appearance="outline" style="width: 90%">
+            <mat-label>New Publisher Name</mat-label>
+            <input
+              #newPublisherInput
+              matInput
+              placeholder="Enter publisher name"
+              formControlName="newPublisher"
+              (keydown.enter)="addPublisher()"
+            />
+          </mat-form-field>
+          <div class="add-button-container">
+            <button
+              mat-raised-button
+              color="primary"
+              type="button"
+              (click)="addPublisher()"
+            >
+              Add
+            </button>
+            <button mat-button type="button" (click)="showNewPublisherInput = false">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </mat-select>
+    <mat-error
+      *ngIf="
+        bookForm.get('publisherId')?.invalid && bookForm.get('publisherId')?.touched
+      "
+    >
+      Publisher is required
+    </mat-error>
+  </mat-form-field>
+</div>
 
             <div class="pages-stock">
               <mat-form-field appearance="outline" class="number-field">
@@ -461,8 +434,8 @@
                   mat-raised-button
                   color="primary"
                   type="submit"
-                  [disabled]="bookForm.invalid"
-                >
+                   [disabled]="bookForm.invalid">
+                
                   <span>Publish Book</span>
                   <mat-icon>publish</mat-icon>
                 </button>
