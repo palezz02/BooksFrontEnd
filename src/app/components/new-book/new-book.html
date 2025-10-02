@@ -1,0 +1,449 @@
+<form [formGroup]="bookForm" (ngSubmit)="onSubmit()" class="book-form">
+  <h2 class="form-title">ADD NEW BOOK</h2>
+
+  <mat-card class="main-card">
+    <mat-card-content>
+      <div class="name-description-wrapper move-bottom">
+        <div class="name-description-container">
+          <div class="inside-card">
+            <mat-form-field appearance="outline" class="spaced-field">
+              <mat-label>Title</mat-label>
+              <input matInput formControlName="title" required />
+              <mat-error *ngIf="bookForm.get('title')?.invalid && bookForm.get('title')?.touched">
+                Title is required
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="spaced-field">
+              <mat-label>ISBN</mat-label>
+              <input matInput formControlName="isbn" maxlength="13" required />
+              <mat-error
+                *ngIf="bookForm.get('isbn')?.hasError('required') && bookForm.get('isbn')?.touched"
+              >
+                ISBN is required
+              </mat-error>
+              <mat-error
+                *ngIf="bookForm.get('isbn')?.hasError('pattern') && bookForm.get('isbn')?.touched"
+              >
+                ISBN must be exactly 13 digits
+              </mat-error>
+            </mat-form-field>
+
+            <div class="author-newAuthor">
+              <mat-form-field appearance="outline" class="full-width author">
+                <mat-label>Select Authors</mat-label>
+                <mat-select
+                  multiple
+                  formControlName="selectedAuthors"
+                  (selectionChange)="onAuthorSelectionChange($event.value)"
+                >
+                  <mat-option *ngFor="let author of authors" [value]="author"  class="custom-option">
+                    <div  class="author-remove">
+                    <span class="author-name">{{ author.fullName }}</span>
+                    
+                      <button
+                        mat-icon-button
+                        class="delete-btn"
+                        (click)="deleteAuthor($event, author)"
+                        type="button"
+                        aria-label="Delete author"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          height="24px"
+                          viewBox="0 -960 960 960"
+                          width="24px"
+                          fill="#1f1f1f"
+                        >
+                          <path
+                            d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </mat-option>
+                  <div class="select-footer">
+                    <a href="#" (click)="openNewAuthorInput($event)">Add new author</a>
+                    <div *ngIf="showNewAuthorInput" class="new-author-input">
+                      <mat-form-field appearance="outline" style="width: 90%">
+                        <mat-label>New Author Full Name</mat-label>
+                        <input
+                          #newAuthorInput
+                          matInput
+                          placeholder="Enter full name"
+                          formControlName="newAuthor"
+                          (keydown.enter)="addAuthor()"
+                        />
+                      </mat-form-field>
+                      <div class="add-button-container">
+                        <button
+                          mat-raised-button
+                          color="primary"
+                          type="button"
+                          (click)="addAuthor()"
+                        >
+                          Add
+                        </button>
+                        <button mat-button type="button" (click)="showNewAuthorInput = false">
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </mat-select>
+                <mat-error
+                  *ngIf="bookForm.get('authorIds')?.invalid && bookForm.get('authorIds')?.touched"
+                >
+                  At least one author is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="year-edition-language">
+              <mat-form-field appearance="outline" class="spaced-field-year">
+                <mat-label>Year</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="publicationDate"
+                  min="1000"
+                  [max]="currentYear"
+                  required
+                />
+                <mat-error
+                  *ngIf="
+                    bookForm.get('publicationDate')?.invalid &&
+                    bookForm.get('publicationDate')?.touched
+                  "
+                >
+                  Valid year is required
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="spaced-field-edition">
+                <mat-label>Edition</mat-label>
+                <input matInput formControlName="edition" required />
+                <mat-error
+                  *ngIf="bookForm.get('edition')?.invalid && bookForm.get('edition')?.touched"
+                >
+                  Edition is required
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="spaced-field-language">
+                <mat-label>Language Code</mat-label>
+                <input
+                  matInput
+                  formControlName="languageCode"
+                  maxlength="2"
+                  placeholder="EN, IT, FR"
+                  required
+                />
+                <mat-error
+                  *ngIf="
+                    bookForm.get('languageCode')?.invalid && bookForm.get('languageCode')?.touched
+                  "
+                >
+                  Language code required
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <mat-form-field appearance="outline" class="full-width description">
+            <mat-label>Description</mat-label>
+            <textarea
+              matInput
+              formControlName="description"
+              rows="4"
+              class="description"
+            ></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="name-description-wrapper move-bottom">
+        <div class="name-description-container">
+          <div class="inside-card">
+            <div class="category-newCategory">
+              <mat-form-field appearance="outline" class="full-width category">
+                <mat-label>Select Categories</mat-label>
+                <mat-select
+                  multiple
+                  formControlName="selectedCategories"
+                  (selectionChange)="onCategorySelectionChange($event.value)"
+                >
+               
+                  <mat-option *ngFor="let category of categories" [value]="category" class="custom-option">
+                   <div  class="category-remove">
+                    <span class="category-name"> {{ category.name }}</span>
+                    <button
+                        mat-icon-button
+                        class="delete-btn"
+                        (click)="deleteCategory($event, category)"
+                        type="button"
+                        aria-label="Delete category"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          height="24px"
+                          viewBox="0 -960 960 960"
+                          width="24px"
+                          fill="#1f1f1f"
+                        >
+                          <path
+                            d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </mat-option>
+                  <div class="select-footer">
+                    <a href="#" (click)="openNewCategoryInput($event)">Add new category</a>
+                    <div *ngIf="showNewCategoryInput" class="new-category-input">
+                      <mat-form-field appearance="outline" style="width: 90%">
+                        <mat-label>New Category Name</mat-label>
+                        <input
+                          #newCategoryInput
+                          matInput
+                          placeholder="Enter category name"
+                          formControlName="newCategory"
+                          (keydown.enter)="addCategory()"
+                        />
+                      </mat-form-field>
+                      <div class="add-button-container">
+                        <button
+                          mat-raised-button
+                          color="primary"
+                          type="button"
+                          (click)="addCategory()"
+                        >
+                          Add
+                        </button>
+                        <button mat-button type="button" (click)="showNewCategoryInput = false">
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </mat-select>
+                <mat-error
+                  *ngIf="
+                    bookForm.get('categoryIds')?.invalid && bookForm.get('categoryIds')?.touched
+                  "
+                >
+                  At least one category is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="publisher-newPublisher">
+  <mat-form-field appearance="outline" class="full-width publisher">
+    <mat-label>Select Publisher</mat-label>
+    <mat-select
+      formControlName="selectedPublisher"
+      (selectionChange)="onPublisherSelectionChange($event.value)"
+    >
+      <mat-option *ngFor="let publisher of publishers" [value]="publisher" class="custom-option">
+        <div class="publisher-remove">
+          <span class="publisher-name">{{ publisher.name }}</span> 
+          
+          <button
+            mat-icon-button
+            class="delete-btn"
+            (click)="deletePublisher($event, publisher)"
+            type="button"
+            aria-label="Delete publisher"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="24px"
+              viewBox="0 -960 960 960"
+              width="24px"
+              fill="#1f1f1f"
+            >
+              <path
+                d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"
+              />
+            </svg>
+          </button>
+        </div>
+      </mat-option>
+      <div class="select-footer">
+        <a href="#" (click)="openNewPublisherInput($event)">Add new publisher</a>
+        <div *ngIf="showNewPublisherInput" class="new-publisher-input">
+          <mat-form-field appearance="outline" style="width: 90%">
+            <mat-label>New Publisher Name</mat-label>
+            <input
+              #newPublisherInput
+              matInput
+              placeholder="Enter publisher name"
+              formControlName="newPublisher"
+              (keydown.enter)="addPublisher()"
+            />
+          </mat-form-field>
+          <div class="add-button-container">
+            <button
+              mat-raised-button
+              color="primary"
+              type="button"
+              (click)="addPublisher()"
+            >
+              Add
+            </button>
+            <button mat-button type="button" (click)="showNewPublisherInput = false">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </mat-select>
+    <mat-error
+      *ngIf="
+        bookForm.get('publisherId')?.invalid && bookForm.get('publisherId')?.touched
+      "
+    >
+      Publisher is required
+    </mat-error>
+  </mat-form-field>
+</div>
+
+            <div class="pages-stock">
+              <mat-form-field appearance="outline" class="number-field">
+                <mat-label>Pages</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="pageCount"
+                  min="1"
+                  step="1"
+                  required
+                />
+                <button
+                  mat-icon-button
+                  matSuffix
+                  type="button"
+                  (click)="decrementPages()"
+                  aria-label="Decrement pages"
+                >
+                  <mat-icon>remove</mat-icon>
+                </button>
+                <button
+                  mat-icon-button
+                  matSuffix
+                  type="button"
+                  (click)="incrementPages()"
+                  aria-label="Increment pages"
+                >
+                  <mat-icon>add</mat-icon>
+                </button>
+                <mat-error
+                  *ngIf="
+                    bookForm.get('pageCount')?.hasError('required') &&
+                    bookForm.get('pageCount')?.touched
+                  "
+                >
+                  Number of pages is required
+                </mat-error>
+                <mat-error
+                  *ngIf="
+                    bookForm.get('pageCount')?.hasError('min') && bookForm.get('pageCount')?.touched
+                  "
+                >
+                  Number of pages must be at least 1
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="number-field">
+                <mat-label>Stock</mat-label>
+                <input matInput type="number" formControlName="stock" min="0" step="1" required />
+                <button
+                  mat-icon-button
+                  matSuffix
+                  type="button"
+                  (click)="decrementStock()"
+                  aria-label="Decrement stock"
+                >
+                  <mat-icon>remove</mat-icon>
+                </button>
+                <button
+                  mat-icon-button
+                  matSuffix
+                  type="button"
+                  (click)="incrementStock()"
+                  aria-label="Increment stock"
+                >
+                  <mat-icon>add</mat-icon>
+                </button>
+                <mat-error
+                  *ngIf="
+                    bookForm.get('stock')?.hasError('required') && bookForm.get('stock')?.touched
+                  "
+                >
+                  Stock is required
+                </mat-error>
+                <mat-error
+                  *ngIf="bookForm.get('stock')?.hasError('min') && bookForm.get('stock')?.touched"
+                >
+                  Stock cannot be negative
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="image-upload-section">
+              <div *ngIf="imageSrc" class="image-preview">
+                <img [src]="imageSrc" alt="Book cover" width="150" />
+              </div>
+              <label for="cover">Cover URL:</label>
+              <input
+                type="url"
+                id="cover"
+                name="cover"
+                placeholder="https://example.com/book-cover.jpg"
+                (input)="imageSrc = $any($event.target).value"
+              />
+            </div>
+
+            <div class="price-submit">
+              <mat-form-field appearance="outline" class="number-field-price">
+                <mat-label>Price (€)</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="price"
+                  min="0"
+                  step="0.01"
+                  required
+                />
+                <mat-error
+                  *ngIf="
+                    bookForm.get('price')?.hasError('required') && bookForm.get('price')?.touched
+                  "
+                >
+                  Price is required
+                </mat-error>
+                <mat-error
+                  *ngIf="bookForm.get('price')?.hasError('min') && bookForm.get('price')?.touched"
+                >
+                  Price cannot be negative
+                </mat-error>
+              </mat-form-field>
+
+              <div class="button-row">
+                <button
+                  mat-raised-button
+                  color="primary"
+                  type="submit"
+                   [disabled]="bookForm.invalid">
+                
+                  <span>Publish Book</span>
+                  <mat-icon>publish</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</form>

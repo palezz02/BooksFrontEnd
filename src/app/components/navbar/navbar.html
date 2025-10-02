@@ -1,28 +1,53 @@
 <mat-toolbar color="primary" class="navbar">
-  <!-- Logo -->
-  <span class="logo">PageUp</span>
+  <!-- Logo SVG -->
+  <span class="logo">
+    <p>Page<span>Up</span></p>
+  </span>
 
-  <!-- Links di navigazione -->
-  <nav class="nav-links">
-    <a mat-button routerLink="/home">Home</a>
-    <a mat-button routerLink="/about">About</a>
-    <a mat-button routerLink="/contact">Contact</a>
+  <!-- Hamburger menu per mobile -->
+  <button mat-icon-button class="hamburger" (click)="toggleMenu()">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <!-- Links di navigazione desktop/tablet -->
+  <nav class="nav-links" [class.mobile-open]="menuOpen">
+    <a mat-button routerLink="/home" (click)="closeMenuIfMobile()">Home</a>
+    <a mat-button routerLink="/allBooks" (click)="closeMenuIfMobile()">Catalog</a>
+    <button mat-button (click)="scrollToFooter(); closeMenuIfMobile()">Contact</button>
   </nav>
 
   <!-- Spacer per spingere search e profilo a destra -->
   <span class="spacer"></span>
 
   <!-- Search bar -->
-  <mat-form-field appearance="outline" class="search-bar" subscriptSizing="dynamic">
+  <!-- <mat-form-field appearance="outline" class="search-bar" subscriptSizing="dynamic">
     <mat-label>Cerca</mat-label>
     <input matInput type="text" [(ngModel)]="searchQuery" />
     <button mat-icon-button matSuffix (click)="onSearch()">
       <mat-icon>search</mat-icon>
     </button>
-  </mat-form-field>
+  </mat-form-field> -->
+
+  <!-- Icona carrello -->
+  <button mat-icon-button [routerLink]="'/cart'">
+    <mat-icon>shopping_cart</mat-icon>
+  </button>
 
   <!-- Icona profilo -->
-  <button mat-icon-button>
+  <button mat-icon-button [routerLink]="'/setting'">
     <mat-icon>account_circle</mat-icon>
   </button>
+
+  <!-- Icona logged -->
+  <button mat-icon-button (click)="onLoggedInClick()" [hidden]="!loggedIn">
+    <mat-icon>logout</mat-icon>
+  </button>
+
+  <!-- Icona admin -->
+  <button mat-icon-button [routerLink]="'/admin/bookdelete'" [hidden]="!admin">
+    <mat-icon>admin_panel_settings</mat-icon>
+  </button>
 </mat-toolbar>
+
+<!-- Overlay menu mobile -->
+<div class="mobile-menu-overlay" *ngIf="menuOpen" (click)="toggleMenu()"></div>

@@ -1,19 +1,40 @@
-<div class="container">
-  <h1>Login</h1>
-  <form>
-    <mat-form-field>
-      <mat-label>User Name</mat-label>
-      <input matInput type="text" name="userName" ngModel required />
-    </mat-form-field>
+<div class="register-bg">
+  <div class="register-card">
+    <h1 class="register-title">Login</h1>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline" class="register-field">
+        <mat-label>Email</mat-label>
+        <input matInput type="text" formControlName="email" required autocomplete="email" />
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Password</mat-label>
-      <input matInput type="password" name="password" ngModel required />
-    </mat-form-field>
+      <mat-form-field appearance="outline" class="register-field">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          [type]="showPassword ? 'text' : 'password'"
+          formControlName="password"
+          required
+          autocomplete="current-password"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          type="button"
+          (click)="toggleShowPassword()"
+          aria-label="Show/hide password"
+          matTooltip="{{ showPassword ? 'Hide password' : 'Show password' }}"
+          matTooltipPosition="above"
+        >
+          <mat-icon>{{ showPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+        </button>
+      </mat-form-field>
 
-    <div class="button-group">
-      <button class="btn btn-primary me-2" type="submit">Invia</button>
-      <button type="button" class="btn btn-secondary" routerLink="/register">Registrazione</button>
-    </div>
-  </form>
+      <div class="register-buttons">
+        <button mat-raised-button color="primary" type="submit">Accedi</button>
+        <button mat-raised-button color="secondary" type="button" routerLink="/register">
+          Registrati
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

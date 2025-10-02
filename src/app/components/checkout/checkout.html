@@ -1,0 +1,77 @@
+<div class="checkout-container">
+  <mat-card class="checkout-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>payment</mat-icon>
+        Complete Your Purchase
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <!-- Order Summary -->
+      <div class="order-summary">
+        <h3>Order Summary</h3>
+        <div class="summary-items">
+          <div class="summary-item" *ngFor="let item of cartItems">
+            <span>{{ item.quantity }}x {{ item.title }}</span>
+            <span>{{ item.subtotal | currency:'EUR' }}</span>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="total-row">
+          <span class="total-label">Total:</span>
+          <span class="total-amount">{{ totalAmount | currency:'EUR' }}</span>
+        </div>
+      </div>
+
+      <!-- Payment Form -->
+      <div class="payment-form" *ngIf="!paymentComplete">
+        <h3>Payment Information</h3>
+        
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email Address</mat-label>
+          <input matInput type="email" [(ngModel)]="customerEmail" required>
+          <mat-hint>We'll send your receipt here</mat-hint>
+        </mat-form-field>
+
+        <div class="card-section">
+          <label>Card Information</label>
+          <div #cardElement class="card-element"></div>
+        </div>
+
+        <div class="error-message" *ngIf="paymentError">
+          <mat-icon color="warn">error</mat-icon>
+          {{ paymentError }}
+        </div>
+      </div>
+
+      <!-- Success Message -->
+      <div class="success-message" *ngIf="paymentComplete">
+        <mat-icon color="primary" class="success-icon">check_circle</mat-icon>
+        <h3>Payment Successful!</h3>
+        <p>Thank you for your purchase. You will receive a confirmation email shortly.</p>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions class="checkout-actions">
+      <button mat-button (click)="goBack()" [disabled]="isProcessing">
+        <mat-icon>arrow_back</mat-icon>
+        Back to Cart
+      </button>
+      
+      <button 
+        mat-raised-button 
+        color="primary" 
+        (click)="processPayment()"
+        [disabled]="isProcessing || paymentComplete || !customerEmail"
+        class="pay-button">
+        <mat-spinner diameter="20" *ngIf="isProcessing" class="button-spinner"></mat-spinner>
+        <mat-icon *ngIf="!isProcessing && !paymentComplete">credit_card</mat-icon>
+        <span *ngIf="!isProcessing">Pay {{ totalAmount | currency:'EUR' }}</span>
+        <span *ngIf="isProcessing">Processing...</span>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+  

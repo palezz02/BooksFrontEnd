@@ -1,31 +1,35 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ResponseObject } from '../models/ResponseObject';
+import { Observable } from 'rxjs';
+import { ResponseList } from '../models/ResponseList';
+import { ResponseBase } from '../models/ResponseBase';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class InventoryService {
   url = 'http://localhost:8080/rest/inventory/';
-  constructor(private http: HttpClient) { }
-  
-  create(body: {}) {
-    return this.http.post(this.url + 'create', body);
+  constructor(private http: HttpClient) {}
+
+  create(body: {}): Observable<ResponseBase> {
+    return this.http.post<ResponseBase>(this.url + 'create', body);
   }
 
-  update(body:{}) { 
-    return this.http.put(this.url + 'update', body)
+  update(body: {}): Observable<ResponseBase> {
+    return this.http.put<ResponseBase>(this.url + 'update', body);
   }
-  
-  delete(body:{}) {
-    return this.http.delete(this.url + 'delete', body);
+
+  delete(body: {}): Observable<ResponseBase> {
+    return this.http.delete<ResponseBase>(this.url + 'delete', { body });
   }
-  
-  getById(id: number) { 
+
+  getById(id: number): Observable<ResponseObject<any>> {
     let params = new HttpParams().set('id', id);
-    return this.http.get(this.url + 'getById', {params});
+    return this.http.get<ResponseObject<any>>(this.url + 'getById', { params });
   }
-  
-  getAll() {
-    return this.http.get(this.url + 'getAll');
+
+  getAll(): Observable<ResponseList<any>> {
+    return this.http.get<ResponseList<any>>(this.url + 'getAll');
   }
 }

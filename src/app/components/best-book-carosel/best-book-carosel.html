@@ -1,0 +1,21 @@
+<div class="container">
+  <h2>Raccomandation</h2>
+
+  <div class="siderContainer">
+    <button mat-icon-button (click)="scroll('left')">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+
+    <mat-grid-list [cols]="cols$ | async" rowHeight="70vh" gutterSize="20px">
+      @for (book of visibleBooks; track book.id) {
+      <mat-grid-tile>
+        <app-card-book [book]="book"></app-card-book>
+      </mat-grid-tile>
+      }
+    </mat-grid-list>
+
+    <button mat-icon-button (click)="scroll('right')">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+</div>

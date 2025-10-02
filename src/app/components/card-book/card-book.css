@@ -1,0 +1,50 @@
+.libriContainer {
+  display: flex;
+  overflow: hidden;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 20px;
+}
+
+.libro {
+  min-width: 0px;
+  max-width: 300px;
+  cursor: pointer;
+  height: 60vh;
+  margin: 8px;
+  transition: transform 0.25s ease-in-out;
+}
+
+.libro:hover {
+  transform: scale(1.03);
+}
+
+.libro img {
+  padding-top: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  object-fit: cover;
+  width: 90%;
+  height: 50%;
+  align-self: center;
+}
+
+.libro h2 {
+  text-align: center;
+}
+
+.libro p {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  line-clamp: 5;
+  -webkit-line-clamp: 5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}

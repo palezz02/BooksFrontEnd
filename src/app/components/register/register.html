@@ -1,0 +1,84 @@
+<div class="register-bg">
+  <div class="register-card">
+    <h1 class="register-title">Registrazione</h1>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline" class="register-field">
+        <mat-label>Email</mat-label>
+        <input matInput type="text" formControlName="email" required autocomplete="email" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="register-field">
+        <mat-label>Name</mat-label>
+        <input matInput type="text" formControlName="firstName" required autocomplete="name" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="register-field">
+        <mat-label>Last Name</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="lastName"
+          required
+          autocomplete="family-name"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="register-field">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          [type]="showPassword ? 'text' : 'password'"
+          formControlName="password"
+          required
+          autocomplete="new-password"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          type="button"
+          (click)="toggleShowPassword()"
+          aria-label="Show/hide password"
+          matTooltip="{{ showPassword ? 'Hide password' : 'Show password' }}"
+          matTooltipPosition="above"
+        >
+          <mat-icon>{{ showPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="register-field">
+        <mat-label>Confirm Password</mat-label>
+        <input
+          matInput
+          [type]="showConfirmPassword ? 'text' : 'password'"
+          formControlName="confirmPassword"
+          required
+          autocomplete="new-password"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          type="button"
+          (click)="toggleShowConfirmPassword()"
+          aria-label="Show/hide confirm password"
+          matTooltip="{{ showConfirmPassword ? 'Hide password' : 'Show password' }}"
+          matTooltipPosition="above"
+        >
+          <mat-icon>{{ showConfirmPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="register-field">
+        <mat-label>Data di nascita</mat-label>
+        <input matInput type="date" formControlName="birthDate" required />
+        <mat-error *ngIf="loginForm.get('birthDate')?.hasError('birthDateRange')">
+          L'età deve essere tra 14 e 100 anni.
+        </mat-error>
+      </mat-form-field>
+
+      <div class="register-buttons">
+        <button mat-raised-button color="primary" type="submit">Invia</button>
+        <button mat-raised-button color="secondary" type="button" routerLink="/login">Login</button>
+      </div>
+    </form>
+  </div>
+</div>

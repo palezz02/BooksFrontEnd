@@ -1,0 +1,84 @@
+<div class="average-rating">
+  <span>Valutazione media: {{ averageRating | number : '1.1-2' }} / 5</span>
+</div>
+<div class="review-carousel">
+  <button
+    mat-icon-button
+    class="nav-btn"
+    (click)="prev()"
+    [disabled]="currentIndex === 0"
+    *ngIf="reviews.length > 3"
+  >
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+  <div class="reviews">
+    <div class="review-card" *ngFor="let review of visibleReviews">
+      <!-- Row 1: Avatar, Nome, Stelle -->
+      <div class="review-row row1">
+        <div class="avatar">{{ review.firstName.charAt(0) }}</div>
+        <div class="reviewer">{{ review.firstName }} {{ review.lastName }}</div>
+        <div class="rating">
+          <span *ngFor="let star of [].constructor(review.rating)">★</span>
+          <span *ngFor="let star of [].constructor(5 - review.rating)">☆</span>
+        </div>
+      </div>
+      <!-- Row 2: Titolo -->
+      <div class="review-row row2">
+        <div class="title">{{ review.reviewTitle || 'Titolo recensione' }}</div>
+      </div>
+      <!-- Row 3: Testo recensione -->
+      <div class="review-row row3">
+        <div class="text">{{ review.body }}</div>
+      </div>
+    </div>
+  </div>
+  <button
+    mat-icon-button
+    class="nav-btn"
+    (click)="next()"
+    [disabled]="currentIndex >= reviews.length - 3"
+    *ngIf="reviews.length > 3"
+  >
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+</div>
+
+<div
+  class="average-rating review-btn"
+  (mouseenter)="hover = true"
+  (mouseleave)="hover = false"
+  [class.hovered]="hover"
+  (click)="showReviewForm = !showReviewForm"
+>
+  <span>Scrivi una recensione</span>
+</div>
+
+<div *ngIf="showReviewForm" class="review-form">
+  <form [formGroup]="reviewForm" (ngSubmit)="submitReview()">
+    <mat-form-field appearance="fill" class="review-form-field">
+      <mat-label>Titolo</mat-label>
+      <input matInput formControlName="title" required />
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="review-form-field">
+      <mat-label>Recensione</mat-label>
+      <textarea matInput formControlName="body" rows="3" required></textarea>
+    </mat-form-field>
+    <div class="review-form-field star-rating">
+      <label>Valutazione:</label>
+      <span class="stars">
+        <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
+          <mat-icon
+            class="star"
+            [class.selected]="reviewForm.get('rating')?.value >= star"
+            (click)="reviewForm.get('rating')?.setValue(star)"
+            >{{ reviewForm.get('rating')?.value >= star ? 'star' : 'star_border' }}</mat-icon
+          >
+        </ng-container>
+      </span>
+    </div>
+    <button mat-raised-button color="primary" type="submit" [disabled]="reviewForm.invalid">
+      Invia
+    </button>
+    <button mat-button type="button" (click)="showReviewForm = false">Annulla</button>
+  </form>
+</div>

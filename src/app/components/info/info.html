@@ -1,0 +1,49 @@
+<ng-container *ngIf="book$ | async as book; else loadingSkeleton">
+  <app-book-info [book]="book"></app-book-info>
+</ng-container>
+<ng-container *ngIf="reviews$ | async as reviews; else loadingReviews">
+  <app-reviews [reviews]="reviews"></app-reviews>
+</ng-container>
+<ng-template #loadingSkeleton>
+  <div class="layout">
+    <div class="book-image">
+      <div class="skeleton skeleton-img"></div>
+    </div>
+    <div class="book-details" style="margin-top: 2.5rem">
+      <div class="skeleton skeleton-title"></div>
+      <div class="skeleton skeleton-author"></div>
+      <div class="skeleton skeleton-publisher"></div>
+      <div class="skeleton skeleton-categories"></div>
+      <div class="skeleton skeleton-year"></div>
+      <div class="skeleton skeleton-description"></div>
+    </div>
+    <div class="book-buy" style="margin-top: 2.5rem">
+      <div class="skeleton skeleton-price"></div>
+      <div class="skeleton skeleton-quantity"></div>
+      <div class="skeleton skeleton-buy-btn"></div>
+      <div class="skeleton skeleton-buy-btn"></div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #loadingReviews>
+  <div class="average-rating">
+    <div class="skeleton skeleton-rating"></div>
+  </div>
+  <div class="review-carousel">
+    <div class="reviews">
+      <div class="review-card" *ngFor="let i of [1, 2, 3]">
+        <div class="review-row row1">
+          <div class="skeleton skeleton-avatar"></div>
+          <div class="skeleton skeleton-reviewer"></div>
+          <div class="skeleton skeleton-stars"></div>
+        </div>
+        <div class="review-row row2">
+          <div class="skeleton skeleton-review-title"></div>
+        </div>
+        <div class="review-row row3">
+          <div class="skeleton skeleton-review-text"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

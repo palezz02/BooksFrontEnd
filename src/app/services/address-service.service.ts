@@ -1,28 +1,34 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { ResponseList } from '../models/ResponseList';
+import { ResponseBase } from '../models/ResponseBase';
+import { ResponseObject } from '../models/ResponseObject';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AddressServiceService {
-
   url = 'http://localhost:8080/rest/address/';
-  constructor(private http : HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  listAddress(){
-    return this.http.get(this.url + 'listAll');
+  listAddress(): Observable<ResponseList<any>> {
+    return this.http.get<ResponseList<any>>(this.url + 'listAll');
   }
 
-  insertAddress(body:{}){
-    return this.http.post(this.url + 'create', body);
-  }
-  removeAddress(body:{}){
-    return this.http.post(this.url + 'delete', body);
+  getById(id: number): Observable<ResponseObject<any>> {
+    const params = new HttpParams().set('id', id);
+    return this.http.get<ResponseObject<any>>(this.url + 'getById', { params });
   }
 
-  updateAddress(body:{}){
-    console.log(body);
-    return this.http.put(this.url + 'update', body);
+  insertAddress(body: {}): Observable<ResponseBase> {
+    return this.http.post<ResponseBase>(this.url + 'create', body);
+  }
+  removeAddress(body: {}): Observable<ResponseBase> {
+    return this.http.post<ResponseBase>(this.url + 'delete', { body });
   }
 
+  updateAddress(body: {}): Observable<ResponseBase> {
+    return this.http.put<ResponseBase>(this.url + 'update', body);
+  }
 }

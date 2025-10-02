@@ -1,0 +1,57 @@
+<div class="layout" *ngIf="book">
+  <div class="book-image">
+    <img src="{{ book.coverImage }}" alt="Copertina libro" />
+  </div>
+  <div class="book-details">
+    <h2>{{ book.title }}</h2>
+    <h4
+      *ngFor="let author of book.authors"
+      (click)="openAuthorPopup(author)"
+      class="clickable-author"
+    >
+      Autore: {{ author }}
+    </h4>
+    <h4 (click)="openPublisherPopup()" class="clickable-publisher">
+      Editore: {{ book.publisherName }}
+    </h4>
+    <div class="categories">
+      <strong>Categorie:</strong>
+      <ng-container *ngFor="let cat of book.cat">
+        <span class="category-tag">{{ cat }}</span>
+      </ng-container>
+    </div>
+    <p><strong>Anno:</strong> {{ book.publicationDate | date : 'dd/MM/yyyy' }}</p>
+    <p><strong>Descrizione:</strong> {{ book.description }}</p>
+  </div>
+  <div class="book-buy">
+    <mat-card>
+      <mat-card-content>
+        <div class="price">
+          Prezzo: <strong>{{ book.price | currency : 'EUR' }}</strong>
+        </div>
+        <mat-form-field appearance="outline" class="quantity-field" subscriptSizing="dynamic">
+          <mat-label>Quantità</mat-label>
+          <input matInput type="number" min="1" [(ngModel)]="quantity" />
+        </mat-form-field>
+        <div class="buy-actions">
+          <button mat-raised-button color="primary" (click)="addToCart()">
+            Aggiungi al carrello
+          </button>
+          <button mat-stroked-button color="accent" (click)="buyNow()">Compra ora</button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <app-publisher-popup
+    [publisher]="publisherData"
+    [isVisible]="showPublisherPopup"
+    (close)="closePublisherPopup()"
+  >
+  </app-publisher-popup>
+  <app-author-popup
+    [author]="authorData"
+    [isVisible]="showAuthorPopup"
+    (close)="closeAuthorPopup()"
+  >
+  </app-author-popup>
+</div>

@@ -1,0 +1,111 @@
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef>Titolo</th>
+      <td mat-cell *matCellDef="let book">
+        <span>
+          {{ book.title }}
+        </span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="author">
+      <th mat-header-cell *matHeaderCellDef>Autore</th>
+      <td mat-cell *matCellDef="let book">
+        <ng-container *ngIf="(bookAuthors[book.id]?.length || 0) > 0; else noAuthor">
+          <div *ngFor="let a of bookAuthors[book.id]">
+            <span class="clickable-author" (click)="openAuthorPopup(a.id)">{{ a.name }}</span>
+          </div>
+        </ng-container>
+        <ng-template #noAuthor>N/A</ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="publisher">
+      <th mat-header-cell *matHeaderCellDef>Editore</th>
+      <td mat-cell *matCellDef="let book">
+        <span class="clickable-publisher" (click)="openPublisherPopup(book.publisherId)">
+          {{ publisherNames[book.publisherId] || '—' }}
+        </span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="year">
+      <th mat-header-cell *matHeaderCellDef>Anno</th>
+      <td mat-cell *matCellDef="let book">{{ book.publicationDate | date : 'yyyy' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef>Prezzo</th>
+      <td mat-cell *matCellDef="let book">{{ book.price | currency : 'EUR' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="stock">
+      <th mat-header-cell *matHeaderCellDef>Disponibilità</th>
+      <td mat-cell *matCellDef="let book">{{ book.stock }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Azioni</th>
+      <td mat-cell *matCellDef="let book">
+        <button
+          mat-icon-button
+          matSuffix
+          aria-label="Edit book"
+          matTooltip="Edit book"
+          matTooltipPosition="above"
+          (click)="openUpdateBookPopup(book)"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+
+        <button
+          mat-icon-button
+          matSuffix
+          aria-label="delete book"
+          matTooltip="delete book"
+          matTooltipPosition="above"
+          (click)="confirmDelete(book)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons
+    aria-label="Seleziona pagina di libri"
+  />
+
+  <div class="delete-popup" *ngIf="showDeletePopup">
+    <div class="popup-content">
+      <p>
+        Sei sicuro di voler eliminare: "<b>{{ bookToDelete?.title }}</b
+        >" ?
+      </p>
+      <div class="popup-buttons">
+        <button mat-raised-button color="warn" (click)="deleteBook()">Conferma</button>
+        <button mat-raised-button (click)="cancelDelete()">Annulla</button>
+      </div>
+    </div>
+  </div>
+
+  <app-publisher-popup
+    [publisher]="publisherData"
+    [isVisible]="showPublisherPopup"
+    (close)="closePublisherPopup()"
+  >
+  </app-publisher-popup>
+
+  <app-author-popup
+    [author]="authorData"
+    [isVisible]="showAuthorPopup"
+    (close)="closeAuthorPopup()"
+  >
+  </app-author-popup>
+</div>

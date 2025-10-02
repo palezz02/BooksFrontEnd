@@ -1,0 +1,11 @@
+<a [routerLink]="['/info', book.id]">
+  <mat-card class="libro" appearance="raised">
+    <img mat-card-image src="{{book.coverImage}}" alt="Book cover" />
+    <mat-card-content>
+      <h2>{{book.title}}</h2>
+      <p>
+        {{book.description}}
+      </p>
+    </mat-card-content>
+  </mat-card>
+</a>

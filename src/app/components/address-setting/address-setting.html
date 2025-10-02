@@ -1,0 +1,52 @@
+<div class="user-setting-container">
+  <mat-card class="user-setting-card">
+    <mat-card-header>
+      <mat-card-title>Address Settings</mat-card-title>
+      <mat-card-subtitle>Manage your address information</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="addressForm" (ngSubmit)="onAddressSubmit()">
+        <mat-form-field appearance="outline" class="form-field full-width">
+          <mat-label>Stato</mat-label>
+          <input matInput type="text" formControlName="country" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="form-field full-width">
+          <mat-label>Città</mat-label>
+          <input matInput type="text" formControlName="city" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="form-field full-width">
+          <mat-label>Regione</mat-label>
+          <input matInput type="text" formControlName="region" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="form-field full-width">
+          <mat-label>Via</mat-label>
+          <input matInput type="text" formControlName="street" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="form-field full-width">
+          <mat-label>CAP</mat-label>
+          <input matInput type="text" formControlName="cap" />
+        </mat-form-field>
+        <div class="form-row">
+          <div class="button-row">
+            <button mat-raised-button color="primary" type="submit">Save Address</button>
+          </div>
+          <div class="button-row">
+            <button mat-raised-button color="primary" routerLink="/setting">Setting</button>
+          </div>
+
+          <div class="button-row">
+            <button
+              mat-raised-button
+              color="warn"
+              class="cancel-btn"
+              aria-label="Cancel"
+              routerLink="/home"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

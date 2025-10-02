@@ -1,1 +1,40 @@
-<p>home works!</p>
+<app-best-seller *ngIf="bestCategoryBooks$ | async as books; else noBooks" [books]="books">
+</app-best-seller>
+
+<app-best-book-carosel *ngIf="books$ | async as books; else noBooksCarousel" [books]="books"
+  >>
+</app-best-book-carosel>
+
+<ng-template #noBooks>
+  <div class="skeleton-best-seller">
+    <div class="skeleton-carousel-content">
+      <div class="skeleton-left-column">
+        <div class="skeleton-title"></div>
+        <div class="skeleton-text"></div>
+        <div class="skeleton-text short"></div>
+        <div class="skeleton-text short"></div>
+      </div>
+      <div class="skeleton-middle-column">
+        <div class="skeleton-img"></div>
+      </div>
+      <div class="skeleton-right-column">
+        <div class="skeleton-book-title"></div>
+        <div class="skeleton-rating"></div>
+        <div class="skeleton-reviews"></div>
+        <div class="skeleton-pub"></div>
+        <div class="skeleton-lang"></div>
+        <div class="skeleton-edition"></div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #noBooksCarousel>
+  <div class="skeleton-best-book-carosel">
+    <div class="skeleton-container">
+      <div class="skeleton-grid">
+        <div class="skeleton-card" *ngFor="let i of [1, 2, 3, 4]"></div>
+      </div>
+    </div>
+  </div>
+</ng-template>

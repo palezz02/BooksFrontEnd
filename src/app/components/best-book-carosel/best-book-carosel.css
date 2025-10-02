@@ -1,0 +1,36 @@
+.siderContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  max-width: 100vw;
+  overflow: hidden;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.siderContainer button {
+  width: 5%;
+  min-width: 32px;
+}
+
+mat-grid-list {
+  flex: 1;
+  min-width: 0;
+}
+
+.container h2 {
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .siderContainer {
+    gap: 8px;
+    padding: 0 4px;
+  }
+  .siderContainer button {
+    width: 12vw;
+    min-width: 28px;
+    font-size: 0.9em;
+  }
+}

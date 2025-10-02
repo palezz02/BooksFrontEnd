@@ -1,0 +1,160 @@
+<div class="user-setting-container">
+  <mat-card class="user-setting-card">
+    <mat-card-header>
+      <mat-card-title>User Settings</mat-card-title>
+      <mat-card-subtitle>Manage your personal information</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>First Name</mat-label>
+            <input matInput type="text" placeholder="User name" formControlName="name" />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Last Name</mat-label>
+            <input matInput type="text" placeholder="User surname" formControlName="surname" />
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="form-field full-width">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" />
+        </mat-form-field>
+
+        <mat-form-field
+          appearance="outline"
+          class="form-field full-width"
+          *ngIf="!showPasswordEdit"
+        >
+          <mat-label>Current Password</mat-label>
+          <input matInput type="password" formControlName="currentPassword" />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="togglePasswordEdit()"
+            aria-label="Edit password"
+            matTooltip="Edit password"
+            matTooltipPosition="above"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <ng-container *ngIf="showPasswordEdit">
+          <mat-form-field appearance="outline" class="form-field full-width">
+            <mat-label>New Password</mat-label>
+            <input
+              matInput
+              [type]="showNewPassword ? 'text' : 'password'"
+              placeholder="New password"
+              formControlName="newPassword"
+            />
+            <button
+              mat-icon-button
+              matSuffix
+              type="button"
+              (click)="cancelPasswordEdit()"
+              aria-label="Cancel password edit"
+              matTooltip="Cancel password change"
+              matTooltipPosition="above"
+            >
+              <mat-icon>arrow_back</mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              matSuffix
+              type="button"
+              (click)="toggleShowNewPassword()"
+              aria-label="Show/hide new password"
+              matTooltip="{{ showNewPassword ? 'Hide password' : 'Show password' }}"
+              matTooltipPosition="above"
+            >
+              <mat-icon>{{ showNewPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field full-width">
+            <mat-label>Confirm New Password</mat-label>
+            <input
+              matInput
+              [type]="showConfirmPassword ? 'text' : 'password'"
+              placeholder="Confirm new password"
+              formControlName="confirmPassword"
+            />
+            <button
+              mat-icon-button
+              matSuffix
+              type="button"
+              (click)="toggleShowConfirmPassword()"
+              aria-label="Show/hide confirm password"
+              matTooltip="{{ showConfirmPassword ? 'Hide password' : 'Show password' }}"
+              matTooltipPosition="above"
+            >
+              <mat-icon>{{ showConfirmPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field full-width">
+            <mat-label>Old Password</mat-label>
+            <input
+              matInput
+              [type]="showOldPassword ? 'text' : 'password'"
+              placeholder="Old password"
+              formControlName="oldPassword"
+            />
+            <button
+              mat-icon-button
+              matSuffix
+              type="button"
+              (click)="toggleShowOldPassword()"
+              aria-label="Show/hide old password"
+              matTooltip="{{ showOldPassword ? 'Hide password' : 'Show password' }}"
+              matTooltipPosition="above"
+            >
+              <mat-icon>{{ showOldPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+            </button>
+          </mat-form-field>
+        </ng-container>
+
+        <mat-form-field appearance="outline" class="form-field full-width">
+          <mat-label>Date of Birth</mat-label>
+          <input matInput type="date" formControlName="birthdate" />
+          <mat-error>Data di nascita non valida</mat-error>
+        </mat-form-field>
+
+        <div class="form-row">
+          <div class="button-row">
+            <button mat-raised-button color="primary" type="submit">Save</button>
+          </div>
+          <div class="button-row">
+            <button mat-raised-button color="primary" routerLink="/address">Modify Address</button>
+          </div>
+          <div class="button-row">
+            <button
+              mat-raised-button
+              color="warn"
+              class="cancel-btn"
+              aria-label="Cancel"
+              (click)="goBack()"
+            >
+              Cancel
+            </button>
+          </div>
+
+          <div class="button-row">
+            <button
+              mat-raised-button
+              color="warn"
+              class="cancel-btn"
+              aria-label="Cancel"
+              (click)="deleteAccount()"
+            >
+              Delete Account
+            </button>
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

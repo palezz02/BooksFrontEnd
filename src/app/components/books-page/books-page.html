@@ -1,0 +1,57 @@
+<div class="books-page">
+  <div class="filters">
+    <input
+      type="text"
+      placeholder="Search by title or author..."
+      [(ngModel)]="searchTerm"
+      (input)="filterBooks()"
+    />
+
+    <select [(ngModel)]="selectedCategory" (change)="filterBooks()">
+      <option value="">All Categories</option>
+      <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+    </select>
+
+    <select [(ngModel)]="selectedLanguage" (change)="filterBooks()">
+      <option value="">All Languages</option>
+      <option *ngFor="let lang of languages" [value]="lang">{{ lang }}</option>
+    </select>
+  </div>
+
+  <ng-container *ngIf="books$ | async as books; else skeletonBooks">
+    <div class="books-grid" *ngIf="filteredBooks.length > 0; else skeletonBooks">
+      <div class="book-card" *ngFor="let book of pagedBooks">
+        <a [routerLink]="['/info', book.id]">
+          <img
+            [src]="book.coverImage || 'https://via.placeholder.com/150x220'"
+            alt="{{ book.title }}"
+          />
+          <h3>{{ book.title }}</h3>
+          <p><strong>Author:</strong> {{ getAuthorNames(book) }}</p>
+          <p><strong>Publisher:</strong> {{ book.publisherName }}</p>
+          <p class="desc">{{ book.description | slice : 0 : 100 }}...</p>
+        </a>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #skeletonBooks>
+    <div class="books-grid">
+      <div class="skeleton-book-card" *ngFor="let i of [1, 2, 3, 4, 5]">
+        <div class="skeleton-img"></div>
+        <div class="skeleton-title"></div>
+        <div class="skeleton-author"></div>
+        <div class="skeleton-publisher"></div>
+        <div class="skeleton-desc"></div>
+      </div>
+    </div>
+  </ng-template>
+
+  <mat-paginator
+    [length]="filteredBooks.length"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[pageSize]"
+    (page)="onPageChange($event)"
+  >
+  </mat-paginator>
+</div>
