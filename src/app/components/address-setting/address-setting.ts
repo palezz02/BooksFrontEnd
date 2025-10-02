@@ -4,6 +4,7 @@ import { AddressServiceService } from '../../services/address-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from '../../services/user-service';
 import { isPlatformBrowser } from '@angular/common';
+import { AuthService } from '../../auth/authService';
 
 @Component({
   selector: 'app-address-setting',
@@ -29,7 +30,8 @@ export class AddressSetting implements OnInit {
     private fb: FormBuilder,
     private addressService: AddressServiceService,
     @Inject(PLATFORM_ID) private platformId: Object,
-    private userService: UserService
+    private userService: UserService,
+    private auth: AuthService
   ) {
     this.addressForm = this.fb.group({
       city: ['', [Validators.required, Validators.minLength(2)]],
@@ -43,7 +45,7 @@ export class AddressSetting implements OnInit {
   ngOnInit() {
     // Carica l'indirizzo esistente se necessario
     if (isPlatformBrowser(this.platformId)) {
-      let userId = Number(localStorage.getItem('userId'));
+      let userId = this.auth.getUserId();
       this.userService.getById(userId).subscribe((res) => {
         if (res.rc) {
           const user = res.dati;
@@ -83,7 +85,7 @@ export class AddressSetting implements OnInit {
 
   onAddressSubmit() {
     if (this.addressForm.valid) {
-      this.address.user = Number(localStorage.getItem('userId'));
+      this.address.user = this.auth.getUserId();
 
       this.addressForm.value.id = this.address.id;
       this.addressForm.value.user = this.address.user;

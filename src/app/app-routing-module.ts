@@ -7,7 +7,6 @@ import { Register } from './components/register/register';
 import { UserSetting } from './components/user-setting/user-setting';
 import { Home } from './components/home/home';
 import { BooksPage } from './components/books-page/books-page';
-import { CartInfo } from './components/cart/cart';
 import { NewBook } from './components/new-book/new-book';
 import { BookDelete } from './components/book-delete/book-delete';
 import { UpdateBookPopup } from './components/update-book-popup/update-book-popup';

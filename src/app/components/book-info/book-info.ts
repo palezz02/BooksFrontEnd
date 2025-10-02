@@ -6,6 +6,7 @@ import { map, catchError } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { OrderService } from '../../services/order-service';
 import { OrderItemServiceService } from '../../services/order-item-service.service';
+import { AuthService } from '../../auth/authService';
 
 export type Author = {
   id: number;
@@ -74,7 +75,8 @@ export class BookInfo {
     private router: Router,
     private userService: UserService,
     private order: OrderService,
-    private orderItem: OrderItemServiceService
+    private orderItem: OrderItemServiceService,
+    private auth: AuthService
   ) {}
 
   openPublisherPopup() {
@@ -144,7 +146,7 @@ export class BookInfo {
               orderNumber: Math.floor(Math.random() * 2147483645) + 1,
               shippingAddress: Number(localStorage.getItem('userAddressId')),
               updatedAt: formattedDate.toString(),
-              user: Number(localStorage.getItem('userId')),
+              user: this.auth.getUserId(),
             };
             console.log(newOrder);
             this.order.create(newOrder).subscribe((res) => {
@@ -229,7 +231,7 @@ export class BookInfo {
               orderNumber: Math.floor(Math.random() * 2147483645) + 1,
               shippingAddress: Number(localStorage.getItem('userAddressId')),
               updatedAt: formattedDate.toString(),
-              user: Number(localStorage.getItem('userId')),
+              user: this.auth.getUserId(),
             };
             this.order.create(newOrder).subscribe((res) => {
               if (res.rc) {
@@ -267,7 +269,7 @@ export class BookInfo {
   }
 
   checkUserAddressExist(): Observable<boolean> {
-    const userId = Number(localStorage.getItem('userId'));
+    const userId = this.auth.getUserId();
     return this.userService.getById(userId).pipe(
       map((res) => {
         if (res.rc) {

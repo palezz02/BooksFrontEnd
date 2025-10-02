@@ -43,7 +43,6 @@ import { Home } from './components/home/home';
 import { MatDivider } from '@angular/material/divider';
 import { AuthorPopup } from './components/author-popup/author-popup';
 import { BooksPage } from './components/books-page/books-page';
-import { CartInfo } from './components/cart/cart';
 import { NewBook } from './components/new-book/new-book';
 import { UserPage } from './components/user-page/user-page';
 import { BookDelete } from './components/book-delete/book-delete';
@@ -73,7 +72,6 @@ import { AddressSetting } from './components/address-setting/address-setting';
     Footer,
     Home,
     BooksPage,
-    CartInfo,
     NewBook,
     BookDelete,
     UserPage,
