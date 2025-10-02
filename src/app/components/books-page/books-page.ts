@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { BookService } from '../../services/book-service';
-import { AuthorServiceService } from '../../services/author-service.service';
-import { PublisherService } from '../../services/publisher-service';
-import { forkJoin, Observable } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
-
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 interface BookDTO {
   id: number;
@@ -17,11 +14,25 @@ interface BookDTO {
   languageCode: string;
   publicationDate: string;
   edition: string;
-  authors: number[];
-  publisher: number;
+  stock: number;
+  price: number;
+  publisherId: number;
+  publisherName: string;
+  publisherDescription: string;
+  authors: {
+    id: number;
+    fullName: string;
+    biography: string;
+    birthDate: string;
+    deathDate: string;
+    coverImageUrl: string;
+    books: number[];
+  }[];
   categories: { id: number; name: string }[];
+  reviews: number[];
+  averageRating: number;
+  inventoryId: number;
 }
-
 
 @Component({
   selector: 'app-books-page',
@@ -30,18 +41,11 @@ interface BookDTO {
   standalone: false,
 })
 export class BooksPage implements OnInit {
+  constructor(private bookService: BookService) {}
 
-  constructor(
-    private bookService: BookService,
-    private authorService: AuthorServiceService,
-    private publisherService: PublisherService
-  ) {}
-
-
-  books: any[] = [];
-  filteredBooks: any[] = [];
-  pagedBooks: any[] = [];
-
+  books: BookDTO[] = [];
+  filteredBooks: BookDTO[] = [];
+  pagedBooks: BookDTO[] = [];
 
   searchTerm: string = '';
   selectedCategory: string = '';
@@ -50,59 +54,30 @@ export class BooksPage implements OnInit {
   categories: string[] = [];
   languages: string[] = [];
 
-
-
   pageSize = 10;
   currentPage = 0;
 
-  books$!: Observable<any[]>;
+  books$!: Observable<BookDTO[]>;
 
   ngOnInit() {
     this.books$ = this.bookService.getAll().pipe(
-      switchMap((res: any) => {
+      map((res: any) => {
         const bookDTOs: BookDTO[] = res.dati;
-
-        const observables = bookDTOs.map(book => {
-          const authorRequests = book.authors.map(id =>
-            this.authorService.getById(id)
-          );
-          const publisherRequest = this.publisherService.getPublisher(book.publisher);
-
-          return forkJoin([...authorRequests, publisherRequest]).pipe(
-            map((results: any[]) => {
-              const authors = results.slice(0, book.authors.length).map(a => ({
-                id: a.dati.id,
-                fullName: a.dati.fullName,
-              }));
-              const publisher = {
-                id: results[results.length - 1].dati.id,
-                name: results[results.length - 1].dati.name,
-              };
-              return { ...book, authors, publisher };
-            })
-          );
-        });
-
-        return forkJoin(observables);
-      }),
-      tap(books => {
-        this.books = books;
-        this.filteredBooks = books;
-        this.categories = Array.from(new Set(books.flatMap(b => b.categories.map((c: any) => c.name))));
-        this.languages = Array.from(new Set(books.map(b => b.languageCode.toUpperCase())));
+        this.books = bookDTOs;
+        this.filteredBooks = bookDTOs;
+        this.categories = Array.from(
+          new Set(bookDTOs.flatMap((b) => b.categories.map((c: any) => c.name)))
+        );
+        this.languages = Array.from(new Set(bookDTOs.map((b) => b.languageCode.toUpperCase())));
         this.updatePagedBooks();
+        return bookDTOs;
       })
     );
   }
 
-
-
-
-
-  getAuthorNames(book: any): string {
+  getAuthorNames(book: BookDTO): string {
     return book.authors.map((a: any) => a.fullName).join(', ');
   }
-
 
   filterBooks() {
     this.filteredBooks = this.books.filter((book) => {
@@ -115,15 +90,11 @@ export class BooksPage implements OnInit {
 
       const matchesCategory =
         this.selectedCategory === '' ||
-        book.categories.some((c: { id: number; name: string }) =>
-          c.name === this.selectedCategory
-        );
+        book.categories.some((c: { id: number; name: string }) => c.name === this.selectedCategory);
 
-        
       const matchesLanguage =
         this.selectedLanguage === '' ||
         book.languageCode.toLowerCase() === this.selectedLanguage.toLowerCase();
-
 
       return matchesSearch && matchesCategory && matchesLanguage;
     });
@@ -131,8 +102,6 @@ export class BooksPage implements OnInit {
     this.currentPage = 0;
     this.updatePagedBooks();
   }
-
-
 
   onPageChange(event: PageEvent) {
     this.currentPage = event.pageIndex;
@@ -145,5 +114,4 @@ export class BooksPage implements OnInit {
     const end = start + this.pageSize;
     this.pagedBooks = this.filteredBooks.slice(start, end);
   }
-
 }

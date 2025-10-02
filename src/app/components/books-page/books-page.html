@@ -28,7 +28,7 @@
           />
           <h3>{{ book.title }}</h3>
           <p><strong>Author:</strong> {{ getAuthorNames(book) }}</p>
-          <p><strong>Publisher:</strong> {{ book.publisher!.name }}</p>
+          <p><strong>Publisher:</strong> {{ book.publisherName }}</p>
           <p class="desc">{{ book.description | slice : 0 : 100 }}...</p>
         </a>
       </div>

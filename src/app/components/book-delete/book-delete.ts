@@ -1,12 +1,18 @@
-import { AfterViewInit, Component, ViewChild, OnInit, ChangeDetectorRef } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ViewChild,
+  OnInit,
+  ChangeDetectorRef,
+  Inject,
+} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { BookService } from '../../services/book-service';
-import { AuthorServiceService } from '../../services/author-service.service';
-import { PublisherService } from '../../services/publisher-service';
-import { forkJoin } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { UpdateBookPopup } from '../update-book-popup/update-book-popup';
+import { PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-book-delete',
@@ -24,10 +30,10 @@ export class BookDelete implements AfterViewInit, OnInit {
     'stock',
     'actions',
   ];
-  dataSource = new MatTableDataSource<Book>([]);
+  dataSource = new MatTableDataSource<BookDTO>([]);
 
-  public publisherNames: Record<number, string> = {};
   public bookAuthors: Record<number, { id: number; name: string }[]> = {};
+  public publisherNames: Record<number, string> = {};
 
   showAuthorPopup = false;
   showPublisherPopup = false;
@@ -38,44 +44,34 @@ export class BookDelete implements AfterViewInit, OnInit {
 
   constructor(
     private bookService: BookService,
-    private authorService: AuthorServiceService,
-    private publisherService: PublisherService,
     private cdr: ChangeDetectorRef,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit(): void {
-    this.bookService.getBooksOrderedByName().subscribe((response) => {
+    this.bookService.getAll().subscribe((response) => {
       if (!response?.rc) {
         console.error(response?.msg ?? 'Errore nel recupero libri');
         return;
       }
 
-      const books: Book[] = response.dati as Book[];
+      // Supponiamo che response.dati sia un array di BookDTO
+      const books: BookDTO[] = (
+        Array.isArray(response.dati) ? response.dati : [response.dati]
+      ).sort((a, b) => a.title.localeCompare(b.title));
+
       this.dataSource.data = books;
 
       books.forEach((book) => {
-        const calls = book.authors.map((id) => this.authorService.getById(id));
-        forkJoin(calls).subscribe((resps) => {
-          this.bookAuthors[book.id] = resps
-            .map((r, idx) => {
-              const id = book.authors[idx];
-              const name = r?.dati?.fullName as string | undefined;
-              return name ? { id, name } : undefined;
-            })
-            .filter(Boolean) as { id: number; name: string }[];
-          this.cdr.markForCheck();
-        });
+        // Popola autori
+        this.bookAuthors[book.id] = (book.authors || []).map((a) => ({
+          id: a.id,
+          name: a.fullName,
+        }));
 
-        const pubId = book.publisher;
-        if (this.publisherNames[pubId] == null) {
-          this.publisherService.getById(pubId).subscribe((pubResp) => {
-            const pubName: string | undefined =
-              pubResp?.dati?.name ?? pubResp?.dati?.fullName ?? pubResp?.dati?.publisherName;
-            this.publisherNames[pubId] = pubName ?? '—';
-            this.cdr.markForCheck();
-          });
-        }
+        // Popola editore
+        this.publisherNames[book.publisherId] = book.publisherName || '—';
       });
 
       this.cdr.detectChanges();
@@ -83,20 +79,23 @@ export class BookDelete implements AfterViewInit, OnInit {
   }
 
   openAuthorPopup(authorId: number): void {
-    this.authorService.getById(authorId).subscribe((resp) => {
-      if (resp?.rc) {
-        this.authorData = resp.dati;
+    // Trova l'autore nei dati già disponibili
+    for (const book of this.dataSource.data) {
+      const author = (book.authors || []).find((a) => a.id === authorId);
+      if (author) {
+        this.authorData = author;
         this.showAuthorPopup = true;
         this.cdr.markForCheck();
+        return;
       }
-    });
+    }
   }
   closeAuthorPopup(): void {
     this.showAuthorPopup = false;
     this.authorData = null;
   }
 
-  openUpdateBookPopup(book: Book): void {
+  openUpdateBookPopup(book: BookDTO): void {
     this.dialog.open(UpdateBookPopup, {
       data: { book },
     });
@@ -107,13 +106,19 @@ export class BookDelete implements AfterViewInit, OnInit {
   }
 
   openPublisherPopup(publisherId: number): void {
-    this.publisherService.getById(publisherId).subscribe((resp) => {
-      if (resp?.rc) {
-        this.publisherData = resp.dati;
+    // Trova l'editore nei dati già disponibili
+    for (const book of this.dataSource.data) {
+      if (book.publisherId === publisherId) {
+        this.publisherData = {
+          id: book.publisherId,
+          name: book.publisherName,
+          description: book.publisherDescription,
+        };
         this.showPublisherPopup = true;
         this.cdr.markForCheck();
+        return;
       }
-    });
+    }
   }
   closePublisherPopup(): void {
     this.showPublisherPopup = false;
@@ -121,9 +126,9 @@ export class BookDelete implements AfterViewInit, OnInit {
   }
 
   showDeletePopup = false;
-  bookToDelete: Book | null = null;
+  bookToDelete: BookDTO | null = null;
 
-  confirmDelete(book: Book): void {
+  confirmDelete(book: BookDTO): void {
     this.bookToDelete = book;
     this.showDeletePopup = true;
   }
@@ -163,15 +168,33 @@ export class BookDelete implements AfterViewInit, OnInit {
   }
 }
 
-export interface Book {
+// Nuova interfaccia BookDTO secondo il nuovo backend
+export interface BookDTO {
   id: number;
+  isbn: string;
   title: string;
-  authors: number[];
-  publisher: number;
-  category?: any[];
-  publicationDate: string;
+  pageCount: number;
   description: string;
+  coverImage: string;
+  languageCode: string;
+  publicationDate: string;
+  edition: string;
+  stock: number;
   price: number;
-  imageUrl?: string;
-  stock?: number;
+  publisherId: number;
+  publisherName: string;
+  publisherDescription: string;
+  authors: {
+    id: number;
+    fullName: string;
+    biography: string;
+    birthDate: string;
+    deathDate: string;
+    coverImageUrl: string;
+    books: number[];
+  }[];
+  categories: { id: number; name: string }[];
+  reviews: number[];
+  averageRating: number;
+  inventoryId: number;
 }

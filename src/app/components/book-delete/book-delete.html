@@ -24,8 +24,8 @@
     <ng-container matColumnDef="publisher">
       <th mat-header-cell *matHeaderCellDef>Editore</th>
       <td mat-cell *matCellDef="let book">
-        <span class="clickable-publisher" (click)="openPublisherPopup(book.publisher)">
-          {{ publisherNames[book.publisher] || '—' }}
+        <span class="clickable-publisher" (click)="openPublisherPopup(book.publisherId)">
+          {{ publisherNames[book.publisherId] || '—' }}
         </span>
       </td>
     </ng-container>
