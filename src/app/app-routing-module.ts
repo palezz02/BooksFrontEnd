@@ -29,7 +29,7 @@ const routes: Routes = [
   { path: 'allBooks', component: BooksPage },
   { path: 'cart', component: NewCart },
   { path: 'new', component: NewBook },
-  { path: 'bookdelete', component: BookDelete },
+  { path: 'admin/bookdelete', component: BookDelete },
   { path: 'updateBook', component: UpdateBookPopup },
   { path: 'error', component: ErrorPage },
   { path: 'checkout', component: CheckoutComponent },
