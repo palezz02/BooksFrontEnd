@@ -7,6 +7,7 @@ import { PasswordFunctions } from '../../Utils/password-functions';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteAccountConfirmDialog } from '../delete-account-confirm-dialog/delete-account-confirm-dialog';
 import { Router } from '@angular/router';
+import { AuthService } from '../../auth/authService';
 @Component({
   selector: 'app-user-setting',
   standalone: false,
@@ -26,7 +27,7 @@ export class UserSetting {
           this._snackBar.open('Account eliminato con successo.', 'Chiudi', {
             duration: 3000,
           });
-          const userId = Number(localStorage.getItem('userId'));
+          const userId = this.auth.getUserId();
 
           this.userService.delete({ id: userId }).subscribe(
             (res) => {
@@ -69,7 +70,8 @@ export class UserSetting {
     private userService: UserService,
     @Inject(PLATFORM_ID) private platformId: Object,
     private PasswordFunctions: PasswordFunctions,
-    private router: Router
+    private router: Router,
+    private auth: AuthService
   ) {
     this.form = this.fb.group(
       {
@@ -88,7 +90,7 @@ export class UserSetting {
 
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
-      const userId = localStorage.getItem('userId');
+      const userId = this.auth.getUserId();
       if (userId) {
         this.userService.getById(Number(userId)).subscribe((res) => {
           if (res && res.dati) {
@@ -183,7 +185,7 @@ export class UserSetting {
     if (this.form.valid) {
       // Qui puoi gestire l'invio dei dati aggiornati dell'utente
       console.log('Form submitted:', this.form.getRawValue());
-      let id = localStorage.getItem('userId');
+      let id = this.auth.getUserId();
       let email = null;
       let firstName = this.form.get('name')?.value;
       let lastName = this.form.get('surname')?.value;

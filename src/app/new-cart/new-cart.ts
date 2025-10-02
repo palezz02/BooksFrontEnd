@@ -7,6 +7,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { AuthService } from '../auth/authService';
 
 @Component({
   selector: 'app-new-cart',
@@ -23,12 +24,13 @@ export class NewCart {
     private userService: UserService,
     private orderItemService: OrderItemServiceService,
     private router: Router,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private auth: AuthService
   ) {}
 
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
-      const userId = Number(localStorage.getItem('userId')) || -1;
+      const userId = this.auth.getUserId();
 
       this.cartItems$ = this.userService.getCartBooks(userId).pipe(
         map((res) =>

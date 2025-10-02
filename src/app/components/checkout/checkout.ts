@@ -4,12 +4,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { PaymentService, CreatePaymentIntentReq } from '../../services/payment-service';
 import { UserService } from '../../services/user-service';
 import { loadStripe, type Stripe } from '@stripe/stripe-js';
+import { AuthService } from '../../auth/authService';
 
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.html',
   styleUrls: ['./checkout.css'],
-  standalone: false
+  standalone: false,
 })
 export class CheckoutComponent implements OnInit {
   @ViewChild('cardElement') cardElement!: ElementRef;
@@ -32,7 +33,8 @@ export class CheckoutComponent implements OnInit {
     private router: Router,
     private snackBar: MatSnackBar,
     private userService: UserService,
-    private cd: ChangeDetectorRef // <--- Inject ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private auth: AuthService
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -47,7 +49,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   loadCartData(): void {
-    const userId = Number(localStorage.getItem('userId')) || -1;
+    const userId = this.auth.getUserId();
 
     if (userId === -1) {
       this.router.navigate(['/cart']);
@@ -127,7 +129,8 @@ export class CheckoutComponent implements OnInit {
       };
 
       const response = await this.paymentService.createPaymentIntent(paymentIntentReq).toPromise();
-      if (!response?.rc || !response.dati) throw new Error(response?.msg || 'Failed to create payment intent');
+      if (!response?.rc || !response.dati)
+        throw new Error(response?.msg || 'Failed to create payment intent');
 
       this.clientSecret = response.dati.clientSecret;
       const paymentIntentId = response.dati.paymentIntentId;
@@ -138,14 +141,22 @@ export class CheckoutComponent implements OnInit {
 
       if (result.error) throw new Error(result.error.message);
 
-      const confirmResponse = await this.paymentService.confirmPayment(paymentIntentId, this.orderId).toPromise();
-      if (!confirmResponse?.rc) throw new Error(confirmResponse?.msg || 'Failed to confirm payment');
+      const confirmResponse = await this.paymentService
+        .confirmPayment(paymentIntentId, this.orderId)
+        .toPromise();
+      if (!confirmResponse?.rc)
+        throw new Error(confirmResponse?.msg || 'Failed to confirm payment');
 
       this.paymentComplete = true;
-      this.snackBar.open('Payment successful! Your order has been processed.', 'Close', { duration: 5000 });
+      this.snackBar.open('Payment successful! Your order has been processed.', 'Close', {
+        duration: 5000,
+      });
 
-      setTimeout(() =>
-        this.router.navigate(['/order-success'], { queryParams: { paymentIntentId: result.paymentIntent!.id } }),
+      setTimeout(
+        () =>
+          this.router.navigate(['/order-success'], {
+            queryParams: { paymentIntentId: result.paymentIntent!.id },
+          }),
         3000
       );
     } catch (err: any) {
