@@ -61,10 +61,21 @@ export class Info implements OnInit {
     this.reviews$ = this.route.paramMap.pipe(
       switchMap((params) => {
         const idString = params.get('bookId');
-        return this.bookService
-          .getBookReviews(Number(idString))
-          .pipe(map((response: ResponseObject<any>) => response.dati || []));
+        const bookId = Number(idString);
+        return this.bookService.getBookReviews(bookId).pipe(
+          map((response: ResponseObject<any>) => {
+            const reviews = response.dati || [];
+            // aggiungi bookId a ogni review
+            return reviews.map((review: any) => ({
+              ...review,
+              bookId: bookId,
+            }));
+          })
+        );
       })
     );
   }
 }
+
+// When using <app-reviews> in info.html, pass the reviews array like this:
+// <app-reviews [reviews]="reviews$ | async"></app-reviews>
