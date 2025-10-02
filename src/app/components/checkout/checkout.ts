@@ -8,6 +8,7 @@ import { BookService } from '../../services/book-service';
 import { OrderItemServiceService } from '../../services/order-item-service.service';
 import { OrderService } from '../../services/order-service';
 import { loadStripe, type Stripe } from '@stripe/stripe-js';
+import { UserService } from '../../services/user-service';
 
 declare var Stripe: any;
 
@@ -42,7 +43,8 @@ stripe: Stripe | null = null;
     private orderService: OrderService,
     private route: ActivatedRoute,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private userService: UserService,
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -58,10 +60,23 @@ stripe: Stripe | null = null;
   }
 
   loadCartData(): void {
-    this.inventoryService.getAll().subscribe({
+    const userId = Number(localStorage.getItem('userId')) || -1;
+
+    if (userId === -1) {
+      this.router.navigate(['/cart']);
+      return;
+    }
+
+    this.userService.getCartBooks(userId).subscribe({
       next: (response) => {
         if (response.rc && response.dati) {
-          this.processInventoryData(response.dati);
+          this.cartItems = response.dati.map((item: any) => ({
+            ...item,
+            subtotal: item.unitPrice * item.quantity
+          }));
+          this.calculateTotal();
+        } else {
+          this.router.navigate(['/cart']);
         }
       },
       error: (error) => {
@@ -71,73 +86,11 @@ stripe: Stripe | null = null;
     });
   }
 
-  processInventoryData(inventories: any[]): void {
-    this.cartItems = [];
-    let itemsProcessed = 0;
-    let totalItems = 0;
-
-    // Count total items to process
-    inventories.forEach(inv => {
-      if (inv.bookId && inv.orderItem?.length > 0) {
-        totalItems += inv.orderItem.length;
-      }
-    });
-
-    if (totalItems === 0) {
-      this.router.navigate(['/cart']);
-      return;
-    }
-
-    inventories.forEach(inventory => {
-      if (inventory.bookId && inventory.orderItem?.length > 0) {
-        this.bookService.getById(inventory.bookId).subscribe({
-          next: (bookResponse) => {
-            if (bookResponse.rc && bookResponse.dati) {
-              const book = bookResponse.dati;
-              
-              inventory.orderItem.forEach((orderItemId: number) => {
-                this.orderItemService.getOrderItem(orderItemId).subscribe({
-                  next: (orderItemResponse) => {
-                    if (orderItemResponse.rc && orderItemResponse.dati) {
-                      const orderItem = orderItemResponse.dati;
-                      
-                      const cartItem = {
-                        inventory: inventory,
-                        book: book,
-                        orderItem: orderItem,
-                        quantity: orderItem.quantity,
-                        unitPrice: orderItem.unitPrice,
-                        subtotal: orderItem.subtotal
-                      };
-                      
-                      this.cartItems.push(cartItem);
-                      this.calculateTotal();
-                    }
-                    
-                    itemsProcessed++;
-                    if (itemsProcessed === totalItems && this.cartItems.length === 0) {
-                      this.router.navigate(['/cart']);
-                    }
-                  },
-                  error: (error) => {
-                    console.error('Error loading order item:', error);
-                    itemsProcessed++;
-                  }
-                });
-              });
-            }
-          },
-          error: (error) => {
-            console.error('Error loading book:', error);
-          }
-        });
-      }
-    });
-  }
 
   calculateTotal(): void {
     this.totalAmount = this.cartItems.reduce((total, item) => total + item.subtotal, 0);
   }
+
 
   setupStripeElements(): void {
     // Create card element
