@@ -184,6 +184,77 @@
   text-align: center;
 }
 
+.review-form {
+  margin: 24px auto 0 auto;
+  padding: 24px 24px 16px 24px;
+  max-width: 420px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08), 0 1.5px 4px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.review-form-field {
+  width: 100%;
+}
+
+.review-form button[type='submit'] {
+  margin-right: 12px;
+  min-width: 90px;
+}
+
+.review-form button[type='button'] {
+  min-width: 90px;
+}
+
+.review-form mat-form-field {
+  margin-bottom: 12px;
+}
+
+.review-form mat-label {
+  font-weight: 500;
+}
+
+.review-form textarea {
+  resize: vertical;
+}
+
+.review-form .mat-form-field-infix {
+  background: #f8f9fa;
+  border-radius: 6px;
+}
+
+.review-form .mat-form-field-appearance-fill .mat-form-field-flex {
+  background-color: #f8f9fa;
+  border-radius: 6px;
+}
+
+.review-form .mat-form-field-appearance-fill .mat-form-field-outline {
+  color: #bdbdbd;
+}
+
+.review-form .mat-form-field-appearance-fill.mat-focused .mat-form-field-flex {
+  background-color: #e3f2fd;
+}
+
+.review-form .mat-form-field-appearance-fill.mat-focused .mat-form-field-outline {
+  color: #1976d2;
+}
+
 /* Responsive styles */
 @media (max-width: 900px) {
   .reviews {

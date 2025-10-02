@@ -2,7 +2,13 @@
   <span>Valutazione media: {{ averageRating | number : '1.1-2' }} / 5</span>
 </div>
 <div class="review-carousel">
-  <button mat-icon-button class="nav-btn" (click)="prev()" [disabled]="currentIndex === 0" *ngIf="reviews.length > 3">
+  <button
+    mat-icon-button
+    class="nav-btn"
+    (click)="prev()"
+    [disabled]="currentIndex === 0"
+    *ngIf="reviews.length > 3"
+  >
     <mat-icon>chevron_left</mat-icon>
   </button>
   <div class="reviews">
@@ -37,9 +43,29 @@
   </button>
 </div>
 
-<div class="average-rating review-btn"
-    (mouseenter)="hover=true" 
-    (mouseleave)="hover=false" 
-    [class.hovered]="hover">
+<div
+  class="average-rating review-btn"
+  (mouseenter)="hover = true"
+  (mouseleave)="hover = false"
+  [class.hovered]="hover"
+  (click)="showReviewForm = !showReviewForm"
+>
   <span>Scrivi una recensione</span>
+</div>
+
+<div *ngIf="showReviewForm" class="review-form">
+  <form [formGroup]="reviewForm" (ngSubmit)="submitReview()">
+    <mat-form-field appearance="fill" class="review-form-field">
+      <mat-label>Titolo</mat-label>
+      <input matInput formControlName="title" required />
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="review-form-field">
+      <mat-label>Recensione</mat-label>
+      <textarea matInput formControlName="body" rows="3" required></textarea>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit" [disabled]="reviewForm.invalid">
+      Invia
+    </button>
+    <button mat-button type="button" (click)="showReviewForm = false">Annulla</button>
+  </form>
 </div>

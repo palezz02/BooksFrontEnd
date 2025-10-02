@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
-
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ReviewService } from '../../services/review-service';
 
 @Component({
   selector: 'app-reviews',
@@ -12,6 +13,15 @@ export class Reviews {
 
   currentIndex = 0;
   hover = false;
+  showReviewForm: boolean = false;
+  reviewForm: FormGroup;
+
+  constructor(private fb: FormBuilder, private reviewService: ReviewService) {
+    this.reviewForm = this.fb.group({
+      title: ['', Validators.required],
+      body: ['', Validators.required],
+    });
+  }
 
   get averageRating(): number {
     if (!this.reviews.length) return 0;
@@ -32,5 +42,13 @@ export class Reviews {
     if (this.currentIndex < this.reviews.length - 3) {
       this.currentIndex += 1;
     }
+  }
+
+  submitReview() {
+    // Da implementare: invio della recensione
+    // Esempio: console.log(this.reviewForm.value);
+    this.reviewService.create(this.reviewForm.value).subscribe((res) => {
+      // Gestisci la risposta positiva
+    });
   }
 }
