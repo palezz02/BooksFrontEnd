@@ -38,6 +38,11 @@
     <mat-icon>account_circle</mat-icon>
   </button>
 
+  <!-- Icona logged -->
+  <button mat-icon-button (click)="onLoggedInClick()" [hidden]="!loggedIn">
+    <mat-icon>logout</mat-icon>
+  </button>
+
   <!-- Icona admin -->
   <button mat-icon-button [routerLink]="'/admin/bookdelete'" [hidden]="!admin">
     <mat-icon>admin_panel_settings</mat-icon>

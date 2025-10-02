@@ -51,10 +51,10 @@ export class Login {
             )}; path=/; max-age=86400; SameSite=Strict`;
             localStorage.setItem('userId', resp.id);
             localStorage.setItem('token', resp.token);
-            this.auth.setAuthentificated();
+            this.auth.isAuthenticated();
             this.msg = 'Login avvenuto con successo!';
             if (resp.role == 'ADMIN') {
-              this.auth.setAdmin();
+              this.auth.isRoleAdmin();
               window.location.href = '/home';
             }
             this._snackBar.open(this.msg, 'Chiudi', {

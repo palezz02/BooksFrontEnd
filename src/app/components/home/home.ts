@@ -33,7 +33,6 @@ export class Home {
     this.bestCategoryBooks$ = this.bookService.getBestByCategory(5, 0).pipe(
       map((res: any) => res.dati),
       map((books: any[]) => {
-        console.log(books);
         return books.map((dati) => ({
           id: dati.id,
           title: dati.title,

@@ -9,9 +9,11 @@
       (click)="openAuthorPopup(author)"
       class="clickable-author"
     >
-      {{ author }}
+      Autore: {{ author }}
     </h4>
-    <h4 (click)="openPublisherPopup()" class="clickable-publisher">{{ book.publisherName }}</h4>
+    <h4 (click)="openPublisherPopup()" class="clickable-publisher">
+      Editore: {{ book.publisherName }}
+    </h4>
     <div class="categories">
       <strong>Categorie:</strong>
       <ng-container *ngFor="let cat of book.cat">

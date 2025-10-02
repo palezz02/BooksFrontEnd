@@ -1,5 +1,6 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+// import { ConfigService } from '../services/config.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,43 +15,52 @@ export class AuthService {
 
     // controllo se l'app é un browser
     if (isPlatformBrowser(this.platformId)) {
-      const isLoggedValue = localStorage.getItem('isLogged');
-      const isAdminValue = localStorage.getItem('isAdmin');
-
-      if (isLoggedValue != null && isAdminValue != null) {
-        console.log('token exist');
-        this.isLogged = isLoggedValue === '1';
-        this.isAdmin = isAdminValue === '1';
-      } else {
-        localStorage.setItem('isLogged', '0');
-        localStorage.setItem('isAdmin', '0');
-      }
-
-      console.log('isLogged:', this.isLogged);
-      console.log('isAdmin:', this.isAdmin);
+      this.isLogged = localStorage.getItem('token') ? true : false;
+      this.isAdmin = this.isRoleAdmin();
     }
+
+    // this.buildURL();
   }
 
-  isAutentificated() {
-    return this.isLogged;
+  // public buildURL() {
+  //   if (isPlatformBrowser(this.platformId)) {
+  //     this.conf.getConfig().subscribe((r: any) => {
+  //       localStorage.setItem('configurationURL', r.urlConfig);
+  //       //       console.log("ulr trovata:" + r.urlConfig);
+  //     });
+  //   }
+  // }
+
+  isAuthenticated() {
+    const token = isPlatformBrowser(this.platformId) ? localStorage.getItem('token') : null;
+    if (!token) return false;
+    this.isLogged = true;
+    return true;
   }
 
   isRoleAdmin() {
-    return this.isAdmin;
+    // Cerca il token JWT in localStorage
+    const token = isPlatformBrowser(this.platformId) ? localStorage.getItem('token') : null;
+    if (!token) return false;
+
+    // Decodifica il payload del JWT
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      // Cerca il ruolo ADMIN (supporta sia array che stringa)
+      if (payload && payload.roles) {
+        if (Array.isArray(payload.roles)) {
+          return payload.roles[0].includes('ADMIN');
+        }
+        return payload.roles[0] === 'ADMIN';
+      }
+    } catch {
+      return false;
+    }
+    return false;
   }
-  setAuthentificated() {
-    localStorage.setItem('isLogged', '1');
-    localStorage.setItem('isAdmin', '0');
-    this.isLogged = true;
-    this.isAdmin = false;
-  }
-  setAdmin() {
-    localStorage.setItem('isAdmin', '1');
-    this.isAdmin = true;
-  }
+
   resetAll() {
-    localStorage.setItem('isLogged', '0');
-    localStorage.setItem('isAdmin', '0');
+    localStorage.clear();
     this.isLogged = false;
     this.isAdmin = false;
   }

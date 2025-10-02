@@ -1,6 +1,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Component, HostListener, Inject, PLATFORM_ID } from '@angular/core';
-
+import { AuthService } from '../../auth/authService';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-navbar',
   standalone: false,
@@ -11,15 +12,27 @@ export class Navbar {
   searchQuery = '';
   menuOpen = false;
   admin = false;
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  loggedIn = false;
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   updateAdminStatus() {
     if (isPlatformBrowser(this.platformId)) {
-      const role = localStorage.getItem('isAdmin');
-      this.admin = role == '1';
+      this.loggedIn = this.authService.isAuthenticated();
+      this.admin = this.authService.isRoleAdmin();
     }
   }
-
+  onLoggedInClick() {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('token');
+      cookieStore.delete('token');
+      this.authService.isAuthenticated();
+      this.router.navigate(['login']);
+    }
+  }
   ngOnInit() {
     this.updateAdminStatus();
   }
