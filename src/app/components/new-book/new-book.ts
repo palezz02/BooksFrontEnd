@@ -40,16 +40,15 @@ export class NewBook implements OnInit {
       languageCode: ['', [Validators.required, Validators.maxLength(2)]],
       publicationDate: ['', Validators.required],
       edition: ['', Validators.required],
-      publisherId: [null, Validators.required], // Single publisher ID
+      publisherId: [null, Validators.required],
       stock: [0, [Validators.required, Validators.min(0)]],
       price: [0, [Validators.required, Validators.min(0)]],
-      authorIds: [[], Validators.required], // Array of author IDs
-      categoryIds: [[], Validators.required], // Array of category IDs
-      // For adding new entities
+      authorIds: [[], Validators.required],
+      categoryIds: [[], Validators.required],
+  
       newAuthor: [''],
       newCategory: [''],
       newPublisher: [''],
-      // For UI binding
       selectedAuthors: [[]],
       selectedCategories: [[]],
       selectedPublisher: [null],
@@ -99,19 +98,19 @@ export class NewBook implements OnInit {
     });
   }
 
-  // Handle author selection changes
+
   onAuthorSelectionChange(selectedAuthors: any[]): void {
     const authorIds = selectedAuthors.map((author) => author.id);
     this.bookForm.get('authorIds')?.setValue(authorIds);
   }
 
-  // Handle category selection changes
+
   onCategorySelectionChange(selectedCategories: any[]): void {
     const categoryIds = selectedCategories.map((category) => category.id);
     this.bookForm.get('categoryIds')?.setValue(categoryIds);
   }
 
-  // Handle publisher selection change
+
   onPublisherSelectionChange(selectedPublisher: any): void {
     this.bookForm.get('publisherId')?.setValue(selectedPublisher?.id || null);
   }
@@ -136,8 +135,7 @@ export class NewBook implements OnInit {
       this.authorService.insertAuthor(authorReq).subscribe({
         next: (response) => {
           if (response.rc) {
-            // console.log('Author created successfully');
-            this.loadAuthors(); // Reload authors list
+            this.loadAuthors();
             this.bookForm.get('newAuthor')?.reset('');
             this.showNewAuthorInput = false;
           } else {
@@ -145,7 +143,6 @@ export class NewBook implements OnInit {
           }
         },
         error: (err) => {
-          // console.error('Error creating author:', err);
           alert('Error creating author');
         },
       });
@@ -195,8 +192,7 @@ export class NewBook implements OnInit {
       this.categoryService.create(categoryReq).subscribe({
         next: (response) => {
           if (response.rc) {
-            // console.log('Category created successfully');
-            this.loadCategories(); // Reload categories list
+            this.loadCategories();
             this.bookForm.get('newCategory')?.reset('');
             this.showNewCategoryInput = false;
           } else {
@@ -204,7 +200,6 @@ export class NewBook implements OnInit {
           }
         },
         error: (err) => {
-          // console.error('Error creating category:', err);
           alert('Error creating category');
         },
       });
@@ -256,8 +251,7 @@ export class NewBook implements OnInit {
       this.publisherService.insertPublisher(publisherReq).subscribe({
         next: (response) => {
           if (response.rc) {
-            // console.log('Publisher created successfully');
-            this.loadPublishers(); // Reload publishers list
+            this.loadPublishers();
             this.bookForm.get('newPublisher')?.reset('');
             this.showNewPublisherInput = false;
           } else {
@@ -265,7 +259,6 @@ export class NewBook implements OnInit {
           }
         },
         error: (err) => {
-          // console.error('Error creating publisher:', err);
           alert('Error creating publisher');
         },
       });
@@ -311,15 +304,14 @@ export class NewBook implements OnInit {
       return;
     }
 
-    // Get cover image URL from the separate input field
+
     const coverImageInput = document.getElementById('cover') as HTMLInputElement;
     const coverImageUrl = coverImageInput?.value || '';
 
-    // Format the date correctly for the backend
+
     const publicationDate = this.bookForm.value.publicationDate;
     let formattedDate = null;
     if (publicationDate) {
-      // If it's a year only, create a date object
       if (typeof publicationDate === 'string' && publicationDate.length === 4) {
         formattedDate = `${publicationDate}-01-01`;
       } else {
@@ -327,7 +319,6 @@ export class NewBook implements OnInit {
       }
     }
 
-    // Create the BookReq object that matches your backend expectations
     const bookReq = {
       isbn: this.bookForm.value.isbn,
       title: this.bookForm.value.title,
@@ -344,11 +335,9 @@ export class NewBook implements OnInit {
       categoryIds: this.bookForm.value.categoryIds,
     };
 
-    // console.log('Sending book request:', bookReq);
 
     this.bookService.create(bookReq).subscribe({
       next: (response) => {
-        // console.log('Book creation response:', response);
         if (response.rc) {
           alert('Book created successfully!');
           this.bookForm.reset();
@@ -358,7 +347,6 @@ export class NewBook implements OnInit {
         }
       },
       error: (err) => {
-        // console.error('Error creating book:', err);
         let errorMessage = 'Error creating book.';
         if (err.error && err.error.msg) {
           errorMessage = 'Error: ' + err.error.msg;

@@ -42,7 +42,4 @@ export class PaymentService {
     });
   }
 
-//   getPaymentByOrder(orderId: number): Observable<ResponseObject<PaymentDTO>> {
-//     return this.http.get<ResponseObject<PaymentDTO>>(this.url + by-order?orderId=${orderId});
-//   }
 }

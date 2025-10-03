@@ -22,7 +22,6 @@ const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
   { path: 'login', component: Login },
   { path: 'register', component: Register },
-  // { path: 'raccomandation', component: BestBookCarosel }, // , canActivate:[authGuard]
   { path: 'info/:bookId', component: Info, canActivate: [authGuard] },
   { path: 'setting', component: UserSetting, canActivate: [authGuard] },
   { path: 'home', component: Home, canActivate: [authGuard] },

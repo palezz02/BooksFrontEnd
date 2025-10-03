@@ -1,4 +1,4 @@
-/* Base navbar styles */
+
 .navbar {
   display: flex;
   align-items: center;
@@ -10,7 +10,7 @@
   border-bottom: 1px solid #e0e0e0;
 }
 
-/* Left side container - Logo and Navigation */
+
 .left-side {
   display: flex;
   align-items: center;
@@ -18,13 +18,13 @@
   flex-shrink: 0;
 }
 
-/* Hamburger menu (hidden by default) */
+
 .hamburger {
   display: none;
   z-index: 1002;
 }
 
-/* Logo styles */
+
 .logo {
   font-size: 2rem;
   font-weight: 600;
@@ -43,7 +43,7 @@
   flex-shrink: 0;
 }
 
-/* Navigation links */
+
 .nav-links {
   display: flex;
   gap: 16px;
@@ -71,12 +71,12 @@
   display: none;
 }
 
-/* Spacer */
+
 .spacer {
   flex: 1;
 }
 
-/* Right side container - Search and Actions */
+
 .right-side {
   display: flex;
   align-items: center;
@@ -84,7 +84,7 @@
   flex-shrink: 0;
 }
 
-/* Search container */
+
 .search-container {
   display: flex;
   align-items: center;
@@ -96,7 +96,7 @@
   transition: width 0.3s ease;
 }
 
-/* Action buttons */
+
 .action-buttons {
   display: flex;
   gap: 8px;
@@ -111,7 +111,7 @@
   background-color: rgba(0, 0, 0, 0.04);
 }
 
-/* Material form field customization */
+
 mat-form-field {
   border-radius: 4px;
 }
@@ -122,7 +122,7 @@ mat-icon {
   height: 24px;
 }
 
-/* Large desktop screens (1400px+) */
+
 @media (min-width: 1400px) {
   .navbar {
     padding: 0 48px;

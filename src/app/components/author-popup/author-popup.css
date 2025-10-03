@@ -1,4 +1,4 @@
-/* Dark semi-transparent background */
+
 .popup-overlay {
   position: fixed;
   top: 0;
@@ -12,7 +12,7 @@
   z-index: 1000;
 }
 
-/* Modal box */
+
 .popup-content {
   background: #fff;
   padding: 2rem;
@@ -24,7 +24,7 @@
   text-align: left;
 }
 
-/* Close button */
+
 .close-btn {
   position: absolute;
   top: 10px;

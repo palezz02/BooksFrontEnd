@@ -83,7 +83,7 @@
 }
 
 
-/* Tablets */
+
 @media (max-width: 1024px) {
   .carousel-content {
     grid-template-columns: 1fr 1fr;
@@ -109,7 +109,7 @@
   }
 }
 
-/* Mobile */
+
 @media (max-width: 768px) {
   .carousel-content {
     grid-template-columns: 1fr;
@@ -142,7 +142,7 @@
   }
 }
 
-/* Small Mobile */
+
 @media (max-width: 480px) {
   .arrow {
     font-size: 2rem;

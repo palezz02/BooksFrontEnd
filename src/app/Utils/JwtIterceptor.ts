@@ -7,7 +7,6 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
   if (isBrowser) {
     token = window.localStorage.getItem('token');
   }
-  // Don't add token for login or register
   if (req.url.endsWith('/rest/user/signin') || req.url.endsWith('/rest/user/create')) {
     return next(req);
   }
