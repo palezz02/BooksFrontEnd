@@ -28,7 +28,7 @@ const routes: Routes = [
   { path: 'home', component: Home, canActivate: [authGuard] },
   { path: 'allBooks', component: BooksPage, canActivate: [authGuard] },
   { path: 'cart', component: NewCart, canActivate: [authGuard] },
-  { path: 'new', component: NewBook, canActivate: [authAdminGuard] },
+  { path: 'admin/new', component: NewBook, canActivate: [authAdminGuard] },
   { path: 'admin/bookdelete', component: BookDelete, canActivate: [authAdminGuard] },
   { path: 'updateBook', component: UpdateBookPopup, canActivate: [authAdminGuard] },
   { path: 'error', component: ErrorPage },
