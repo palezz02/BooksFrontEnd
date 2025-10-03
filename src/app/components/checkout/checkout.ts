@@ -38,13 +38,11 @@ export class CheckoutComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    // Load Stripe
     this.stripe = await loadStripe('pk_test_your_publishable_key_here');
     this.elements = this.stripe?.elements();
 
     this.loadCartData();
 
-    // Mount Stripe after a short delay
     setTimeout(() => this.setupStripeElements(), 100);
   }
 
@@ -65,7 +63,6 @@ export class CheckoutComponent implements OnInit {
           }));
           this.calculateTotal();
 
-          // <-- Force Angular to detect changes
           this.cd.detectChanges();
         } else {
           this.router.navigate(['/cart']);

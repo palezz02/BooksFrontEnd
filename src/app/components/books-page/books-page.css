@@ -6,22 +6,22 @@
   display: flex;
   gap: 1rem;
   margin-bottom: 2rem;
-  flex-wrap: wrap; /* allows wrapping on small screens */
+  flex-wrap: wrap;
 }
 
 .filters input,
 .filters select {
   padding: 0.6rem 1rem;
   font-size: 1rem;
-  border-radius: 8px; /* rounded corners */
-  border: 1px solid #ccc; /* subtle border */
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05); /* soft inner shadow */
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
   transition: all 0.2s ease-in-out;
 }
 
 .filters input:focus,
 .filters select:focus {
-  border-color: #3f51b5; /* accent color on focus */
+  border-color: #3f51b5;
   box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.2);
   outline: none;
 }

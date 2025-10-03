@@ -39,7 +39,6 @@ export class Navbar {
 
   onSearch() {
     console.log('Ricerca:', this.searchQuery);
-    // Qui puoi gestire la logica della ricerca
   }
 
   toggleMenu() {

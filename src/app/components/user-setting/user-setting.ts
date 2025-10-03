@@ -94,7 +94,6 @@ export class UserSetting {
       if (userId) {
         this.userService.getById(Number(userId)).subscribe((res) => {
           if (res && res.dati) {
-            // console.log('User data:', res.dati);
             const utente = res.dati;
             this.user = {
               name: utente.firstName,
@@ -124,7 +123,6 @@ export class UserSetting {
     const newPasswordControl = this.form.get('newPassword');
     const confirmPasswordControl = this.form.get('confirmPassword');
     const oldPasswordControl = this.form.get('oldPassword');
-    // Aggiunge i validators se si abilita la modifica
     if (this.showPasswordEdit) {
       newPasswordControl?.setValidators([Validators.required, Validators.minLength(6)]);
       confirmPasswordControl?.setValidators([Validators.required]);
@@ -141,7 +139,6 @@ export class UserSetting {
       this.showConfirmPassword = false;
       this.showOldPassword = false;
     }
-    // Aggiorna lo stato di validità dei controlli
     newPasswordControl?.updateValueAndValidity();
     confirmPasswordControl?.updateValueAndValidity();
     oldPasswordControl?.updateValueAndValidity();
@@ -153,11 +150,9 @@ export class UserSetting {
     const confirmPasswordControl = this.form.get('confirmPassword');
     const oldPasswordControl = this.form.get('oldPassword');
 
-    // Toglie i validators se si annulla la modifica
     newPasswordControl?.setValidators([Validators.minLength(6)]);
     confirmPasswordControl?.setValidators([]);
     oldPasswordControl?.setValidators([]);
-    // Aggiorna lo stato di validità dei controlli
     newPasswordControl?.updateValueAndValidity();
     confirmPasswordControl?.updateValueAndValidity();
     oldPasswordControl?.updateValueAndValidity();
@@ -170,7 +165,6 @@ export class UserSetting {
     this.showOldPassword = false;
   }
 
-  // Mostra o no la password
   toggleShowNewPassword() {
     this.showNewPassword = !this.showNewPassword;
   }
@@ -183,7 +177,6 @@ export class UserSetting {
 
   onSubmit() {
     if (this.form.valid) {
-      // Qui puoi gestire l'invio dei dati aggiornati dell'utente
       console.log('Form submitted:', this.form.getRawValue());
       let id = this.auth.getUserId();
       let email = null;

@@ -61,7 +61,6 @@
   background-color: #c0c0c0;
 }
 
-/* Responsive design */
 @media (max-width: 1300px) {
   .layout {
     flex-direction: column;

@@ -68,7 +68,7 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  position: relative; /* necessario per posizionare row4 */
+  position: relative;
 }
 
 .review-row {
@@ -123,7 +123,7 @@
   font-size: 15px;
   margin-bottom: 0;
   margin-top: 2px;
-  padding-bottom: 40px; /* spazio per evitare che il testo vada sotto i like/dislike */
+  padding-bottom: 40px;
 }
 
 .row4 {
@@ -280,19 +280,19 @@
   color: #ffb300;
 }
 
-/* Colora anche le star vuote (solo il bordo) */
+
 .star:not(.selected) {
   color: #ffb300;
   opacity: 0.5;
 }
 
-/* Corretto effetto hover: colora tutte le stelle a sinistra di quella sotto il mouse */
+
 .stars .star:hover,
 .stars .star:hover ~ .star {
   color: #ffb300;
 }
 
-/* Responsive styles */
+
 @media (max-width: 900px) {
   .reviews {
     gap: 12px;
@@ -372,6 +372,5 @@
     justify-content: flex-end;
     align-items: flex-end;
     z-index: 2;
-    /* background: rgba(255,255,255,0.85);  // opzionale per leggibilità */
   }
 }

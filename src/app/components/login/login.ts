@@ -45,7 +45,6 @@ export class Login {
         .subscribe((resp: any) => {
           console.log(resp);
           if (resp.logged) {
-            // Salva il token nei cookie (esempio: valido per 1 giorno, path root)
             document.cookie = `token=${encodeURIComponent(
               resp.token
             )}; path=/; max-age=86400; SameSite=Strict`;

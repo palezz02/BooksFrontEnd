@@ -65,7 +65,6 @@ export class Info implements OnInit {
         return this.bookService.getBookReviews(bookId).pipe(
           map((response: ResponseObject<any>) => {
             const reviews = response.dati || [];
-            // aggiungi bookId a ogni review
             return reviews.map((review: any) => ({
               ...review,
               bookId: bookId,
@@ -76,6 +75,3 @@ export class Info implements OnInit {
     );
   }
 }
-
-// When using <app-reviews> in info.html, pass the reviews array like this:
-// <app-reviews [reviews]="reviews$ | async"></app-reviews>
