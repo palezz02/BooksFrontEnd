@@ -91,7 +91,6 @@ function birthDateRangeValidator(control: any) {
   const age = today.getFullYear() - birthDate.getFullYear();
   const m = today.getMonth() - birthDate.getMonth();
   const d = today.getDate() - birthDate.getDate();
-  // Adjust age if birthday hasn't occurred yet this year
   const realAge = m < 0 || (m === 0 && d < 0) ? age - 1 : age;
   if (realAge < 14 || realAge > 100) {
     return { birthDateRange: true };

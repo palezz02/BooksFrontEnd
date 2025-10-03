@@ -1,12 +1,11 @@
 <div class="cart-page" *ngIf="cartItems$ | async as cartItems">
-  <!-- Empty cart -->
   <div *ngIf="cartItems.length === 0" class="empty-cart">
     <mat-icon class="empty-icon">shopping_cart</mat-icon>
     <h2>Your cart is empty</h2>
     <p>Add some books to get started!</p>
   </div>
 
-  <!-- Cart items -->
+
   <mat-card *ngIf="cartItems.length > 0" class="cart-card">
     <div class="cart-header">
       <h3>Your Cart ({{ getQuantity(cartItems) }} items)</h3>
@@ -56,7 +55,6 @@
     </div>
   </mat-card>
 
-  <!-- Price details -->
   <mat-card *ngIf="cartItems.length > 0" class="price-details-card">
     <mat-card-header>
       <mat-card-title>Price Details</mat-card-title>

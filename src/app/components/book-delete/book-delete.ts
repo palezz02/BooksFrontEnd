@@ -56,7 +56,6 @@ export class BookDelete implements AfterViewInit, OnInit {
         return;
       }
 
-      // Supponiamo che response.dati sia un array di BookDTO
       const books: BookDTO[] = (
         Array.isArray(response.dati) ? response.dati : [response.dati]
       ).sort((a, b) => a.title.localeCompare(b.title));
@@ -64,13 +63,11 @@ export class BookDelete implements AfterViewInit, OnInit {
       this.dataSource.data = books;
 
       books.forEach((book) => {
-        // Popola autori
         this.bookAuthors[book.id] = (book.authors || []).map((a) => ({
           id: a.id,
           name: a.fullName,
         }));
 
-        // Popola editore
         this.publisherNames[book.publisherId] = book.publisherName || '—';
       });
 

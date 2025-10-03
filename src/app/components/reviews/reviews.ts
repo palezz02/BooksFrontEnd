@@ -23,7 +23,7 @@ export class Reviews {
     private fb: FormBuilder,
     private reviewService: ReviewService,
     private userService: UserService,
-    public auth: AuthService // cambia da private a public
+    public auth: AuthService
   ) {
     this.reviewForm = this.fb.group({
       title: ['', Validators.required],
@@ -66,8 +66,8 @@ export class Reviews {
       rating: this.reviewForm.value.rating,
       title: this.reviewForm.value.title,
       body: this.reviewForm.value.body,
-      firstName: '', // aggiungi default
-      lastName: '', // aggiungi default
+      firstName: '',
+      lastName: '',
       reviewTitle: this.reviewForm.value.title,
     };
     console.log(review);
@@ -78,18 +78,13 @@ export class Reviews {
       }
       this.reviewService.create(review).subscribe((res) => {
         console.log('Review submitted successfully', res);
-        // Inserisci la recensione subito dopo la risposta del backend
         this.reviews = [{ ...review }, ...this.reviews];
-        // Resetta il modulo
         this.reviewForm.reset({ rating: 0 });
-        // Nascondi il modulo di recensione
         this.showReviewForm = false;
-        // Torna all'inizio della lista per mostrare la nuova recensione
         this.currentIndex = 0;
       });
     });
   }
 }
 
-// Make sure ReviewService, UserService, and AuthService are all decorated with:
-// @Injectable({ providedIn: 'root' })
+

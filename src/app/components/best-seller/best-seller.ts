@@ -57,10 +57,6 @@ export class BestSeller implements OnChanges {
     this.currentIndex = (this.currentIndex + 1) % this.books.length;
   }
 
-  //get currentBookCategories(): string {
-  //  return this.currentBook?.categories?.map(c => c.name).join(', ') || '';
-  //}
-
   get currentBookAuthors(): string {
     return this.currentBook?.authors?.join(', ') || '';
   }

@@ -13,7 +13,6 @@
   </button>
   <div class="reviews">
     <div class="review-card" *ngFor="let review of visibleReviews">
-      <!-- Row 1: Avatar, Nome, Stelle -->
       <div class="review-row row1">
         <div class="avatar">{{ review.firstName.charAt(0) }}</div>
         <div class="reviewer">{{ review.firstName }} {{ review.lastName }}</div>
@@ -22,11 +21,9 @@
           <span *ngFor="let star of [].constructor(5 - review.rating)">☆</span>
         </div>
       </div>
-      <!-- Row 2: Titolo -->
       <div class="review-row row2">
         <div class="title">{{ review.reviewTitle || 'Titolo recensione' }}</div>
       </div>
-      <!-- Row 3: Testo recensione -->
       <div class="review-row row3">
         <div class="text">{{ review.body }}</div>
       </div>

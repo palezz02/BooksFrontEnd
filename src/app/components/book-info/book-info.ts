@@ -42,15 +42,15 @@ export type Book = {
   price: number;
   publisherName: string;
   publisherDescription: string;
-  authors: string[]; // array di nomi autori
-  authorsFull: Author[]; // array di oggetti autore completi
-  cat: string[]; // array di nomi categorie
+  authors: string[]; 
+  authorsFull: Author[];
+  cat: string[];
   reviews: any[];
   averageRating: number;
   inventoryId: number;
 };
 
-export type CompleteBook = Book; // ora CompleteBook è uguale a Book
+export type CompleteBook = Book;
 
 @Component({
   selector: 'app-book-info',
@@ -81,7 +81,6 @@ export class BookInfo {
 
   openPublisherPopup() {
     if (!this.book) return;
-    // Adatta per mostrare nome e descrizione editore
     this.publisherData = {
       id: 0,
       name: this.book.publisherName,
@@ -96,7 +95,6 @@ export class BookInfo {
 
   openAuthorPopup(authorName: string) {
     if (!this.book) return;
-    // Cerca autore per nome tra authorsFull
     const selectedAuthor = this.book.authorsFull?.find((a) => a.fullName === authorName);
     if (selectedAuthor) {
       this.authorData = selectedAuthor;
@@ -118,7 +116,6 @@ export class BookInfo {
         try {
           const orderId = Number(localStorage.getItem('orderId')) || -1;
           if (orderId !== -1 && orderId !== undefined && orderId !== null) {
-            // console.log(orderId);
 
             let orderItem = {
               id: 0,
@@ -133,10 +130,9 @@ export class BookInfo {
               }
             });
           } else {
-            // console.log('Creazione nuovo ordine');
             const today = new Date();
             const yyyy = today.getFullYear();
-            const mm = String(today.getMonth() + 1).padStart(2, '0'); // Mese da 1 a 12
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
             const dd = String(today.getDate()).padStart(2, '0');
             const formattedDate = `${yyyy}-${mm}-${dd}`;
             let newOrder = {
@@ -151,7 +147,6 @@ export class BookInfo {
             console.log(newOrder);
             this.order.create(newOrder).subscribe((res) => {
               if (res.rc) {
-                // console.log(this.book!.inventoryId);
                 console.log(res);
                 localStorage.setItem('orderId', res.dati.id);
                 let orderItem = {

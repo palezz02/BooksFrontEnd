@@ -137,7 +137,6 @@ mat-form-field {
 
 .add-category{
   width: 10% !important;
-  /* border-radius: 100%; */
   display: flex;
   justify-content: center;
 }

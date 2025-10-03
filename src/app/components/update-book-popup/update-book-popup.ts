@@ -20,7 +20,6 @@ export class UpdateBookPopup implements OnInit, AfterViewInit {
   publishersList: Publisher[] = [];
   imageSrc: string | ArrayBuffer | null = null;
 
-  /** snapshot iniziale normalizzato per confronto */
   private originalDto!: BookDto;
 
   constructor(
@@ -101,7 +100,6 @@ export class UpdateBookPopup implements OnInit, AfterViewInit {
   onCoverUrlInput(url: string) { this.imageSrc = url || null; }
   cancel() { this.dialogRef.close(false); }
 
-  /** Mappa i valori del form nel DTO Swagger (tipi coerenti) */
   private mapFormToDto(raw: any): BookDto {
     const toNum = (v:any) => Number.isFinite(Number(v)) ? Number(v) : 0;
     const toIds = (v:any): number[] =>
@@ -129,7 +127,6 @@ export class UpdateBookPopup implements OnInit, AfterViewInit {
     };
   }
 
-  /** Confronto robusto (stringhe, numeri, array ordinati) */
   private isEqual(a: any, b: any): boolean {
     if (Array.isArray(a) && Array.isArray(b)) {
       if (a.length !== b.length) return false;
@@ -139,7 +136,6 @@ export class UpdateBookPopup implements OnInit, AfterViewInit {
     return a === b;
   }
 
-  /** Costruisce PATCH con null per invariati (id sempre presente) */
   private buildNullPatch(prev: BookDto, curr: BookDto): Partial<BookDto> & { id: number } {
     const patch: any = { id: prev.id };
     (Object.keys(curr) as (keyof BookDto)[])
@@ -177,7 +173,6 @@ export class UpdateBookPopup implements OnInit, AfterViewInit {
   }
 }
 
-/*** MODELS ***/
 interface Author { id: number; fullName: string; }
 interface Category { id: number; name: string; }
 interface Publisher { id: number; name: string; }
@@ -190,7 +185,6 @@ interface BookIncoming {
   categoryIds?: number[]; categories?: any[]; category?: any[]; publicationDate?: string;
 }
 
-/** DTO Swagger (usato per confronto e patch) */
 interface BookDto {
   id: number;
   isbn: string;

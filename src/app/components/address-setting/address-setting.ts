@@ -43,13 +43,11 @@ export class AddressSetting implements OnInit {
   }
 
   ngOnInit() {
-    // Carica l'indirizzo esistente se necessario
     if (isPlatformBrowser(this.platformId)) {
       let userId = this.auth.getUserId();
       this.userService.getById(userId).subscribe((res) => {
         if (res.rc) {
           const user = res.dati;
-          // Controllo aggiuntivo su user.address
           let addressId = null;
           if (user.addresses && Array.isArray(user.addresses) && user.addresses.length > 0) {
             addressId = user.addresses[0];

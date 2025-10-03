@@ -8,7 +8,6 @@
     </mat-card-header>
 
     <mat-card-content>
-      <!-- Order Summary -->
       <div class="order-summary">
         <h3>Order Summary</h3>
         <div class="summary-items">
@@ -24,7 +23,6 @@
         </div>
       </div>
 
-      <!-- Payment Form -->
       <div class="payment-form" *ngIf="!paymentComplete">
         <h3>Payment Information</h3>
         
@@ -45,7 +43,6 @@
         </div>
       </div>
 
-      <!-- Success Message -->
       <div class="success-message" *ngIf="paymentComplete">
         <mat-icon color="primary" class="success-icon">check_circle</mat-icon>
         <h3>Payment Successful!</h3>
